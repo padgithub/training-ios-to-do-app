@@ -18,6 +18,9 @@ class AddVC: UIViewController {
     @IBOutlet weak var txtTextView: UITextView!
     @IBOutlet weak var dateTimeToShow: UILabel!
     @IBOutlet weak var viewChooseDate: UIView!
+    @IBAction func btnBack(_ sender: Any) {
+        self.navigationController?.popViewController(animated: true)
+    }
     
     var arrTag: [TypeTag] = [TypeTag(textTag: "Work", backGround: "42AAFD"),
                              TypeTag(textTag: "Personal", backGround: "01BACC"),

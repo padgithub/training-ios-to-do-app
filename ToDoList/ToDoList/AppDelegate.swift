@@ -15,9 +15,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        let vc = AddVC.init(nibName: "AddVC", bundle: nil)
+//        let vc = AddVC.init(nibName: "AddVC", bundle: nil)
 //        let vc = EditVC.init(nibName: "EditVC", bundle: nil)
-//        let vc = ShowTaskVC.init(nibName: "ShowTaskVC", bundle: nil)
+        let vc = ShowTaskVC.init(nibName: "ShowTaskVC", bundle: nil)
         let nav = UINavigationController(rootViewController: vc)
         nav.isNavigationBarHidden = true
         window?.rootViewController = nav

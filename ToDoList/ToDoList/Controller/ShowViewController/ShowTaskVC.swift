@@ -12,6 +12,11 @@ class ShowTaskVC: UIViewController {
     @IBOutlet weak var collectionTagCount: UICollectionView!
     @IBOutlet weak var tableTimeLine: UITableView!
     
+    @IBAction func btnAdd(_ sender: Any) {
+        let addVC = AddVC.init(nibName: "AddVC", bundle: nil)
+        self.navigationController?.pushViewController(addVC, animated: true)
+    }
+    
     var arrTag: [TypeTag] = [TypeTag(textTag: "Work", backGround: "42AAFD"),
                              TypeTag(textTag: "Personal", backGround: "01BACC"),
                              TypeTag(textTag: "Shopping", backGround: "CD42FD"),
@@ -43,7 +48,7 @@ extension ShowTaskVC {
     func initUI() {
         //MARK: - Layout collection view cell
         let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
-        layout.sectionInset = UIEdgeInsets(top: 0, left: 5, bottom: 10, right: 5)
+        layout.sectionInset = UIEdgeInsets(top: 0, left: 5, bottom: 10, right: 10)
         layout.itemSize = CGSize(width: collectionTagCount.frame.width/2 - 10, height: collectionTagCount.frame.height/2 - 10)
         layout.minimumInteritemSpacing = 5
         layout.minimumLineSpacing = 10
@@ -54,11 +59,16 @@ extension ShowTaskVC {
     func initData() {
         collectionTagCount.dataSource = self
         collectionTagCount.delegate = self
+        
+        tableTimeLine.dataSource = self
+        tableTimeLine.delegate = self
     
         collectionTagCount.register(TagCount.self)
+        tableTimeLine.register(TimeLineCell.self)
     }
 }
 
+//MARK: - CollectionView
 extension ShowTaskVC: UICollectionViewDataSource {
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -97,6 +107,7 @@ extension ShowTaskVC: UICollectionViewDelegate {
     
 }
 
+//MARK: - TableView
 extension ShowTaskVC: UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
@@ -107,7 +118,9 @@ extension ShowTaskVC: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let taskCell = listTodo[indexPath.row]
         let cell = tableView.dequeueReusableCell(forIndexPath: indexPath) as TimeLineCell
+        cell.initData(taskData: taskCell)
         return cell
     }
     
@@ -115,5 +128,7 @@ extension ShowTaskVC: UITableViewDataSource {
 }
 
 extension ShowTaskVC: UITableViewDelegate {
-    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 61
+    }
 }

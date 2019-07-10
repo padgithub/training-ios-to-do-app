@@ -16,7 +16,7 @@ class TypeViewCell: UICollectionViewCell {
     }
     
     func cofig(typeTag: TypeTag) {
-        lbTagType.layer.cornerRadius = 10
+        lbTagType.layer.cornerRadius = 3
         lbTagType.clipsToBounds = true
         lbTagType.textColor = UIColor.white
         lbTagType.backgroundColor = UIColor(typeTag.backGround, alpha: 1.0)

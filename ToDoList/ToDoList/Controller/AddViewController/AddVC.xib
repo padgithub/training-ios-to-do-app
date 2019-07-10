@@ -243,6 +243,9 @@
                                 <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="P1l-cd-s1L">
                                     <rect key="frame" x="10.333333333333332" y="13.666666666666664" width="54.333333333333343" height="27"/>
                                     <state key="normal" title="Button" image="ic_back"/>
+                                    <connections>
+                                        <action selector="btnBack:" destination="-1" eventType="touchUpInside" id="8bG-ZI-dLa"/>
+                                    </connections>
                                 </button>
                             </subviews>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

@@ -23,8 +23,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="199" height="152"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Task count" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OfR-Dn-WRB">
-                                <rect key="frame" x="0.0" y="65.5" width="84" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <rect key="frame" x="20" y="69" width="57.5" height="14"/>
+                                <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="12"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -37,8 +37,8 @@
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name Tag" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bwq-zS-Yju">
-                                <rect key="frame" x="0.0" y="44.5" width="77" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <rect key="frame" x="20" y="55" width="54.5" height="14"/>
+                                <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="12"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -46,11 +46,11 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="OfR-Dn-WRB" firstAttribute="centerY" secondItem="qcs-up-uEc" secondAttribute="centerY" id="5WQ-hA-UGa"/>
-                            <constraint firstItem="OfR-Dn-WRB" firstAttribute="leading" secondItem="qcs-up-uEc" secondAttribute="leading" id="J7W-qD-e2O"/>
+                            <constraint firstItem="OfR-Dn-WRB" firstAttribute="leading" secondItem="qcs-up-uEc" secondAttribute="leading" constant="20" id="J7W-qD-e2O"/>
                             <constraint firstAttribute="trailing" secondItem="6c1-dC-hyP" secondAttribute="trailing" constant="10" id="Rgj-dq-SPh"/>
                             <constraint firstItem="6c1-dC-hyP" firstAttribute="top" secondItem="qcs-up-uEc" secondAttribute="top" constant="10" id="qMS-Jc-PWc"/>
                             <constraint firstItem="OfR-Dn-WRB" firstAttribute="top" secondItem="bwq-zS-Yju" secondAttribute="bottom" id="thG-nJ-Kby"/>
-                            <constraint firstItem="bwq-zS-Yju" firstAttribute="leading" secondItem="qcs-up-uEc" secondAttribute="leading" id="zYI-i5-uC9"/>
+                            <constraint firstItem="bwq-zS-Yju" firstAttribute="leading" secondItem="qcs-up-uEc" secondAttribute="leading" constant="20" id="zYI-i5-uC9"/>
                         </constraints>
                     </view>
                 </subviews>
