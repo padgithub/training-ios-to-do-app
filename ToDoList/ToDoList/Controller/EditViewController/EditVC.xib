@@ -12,6 +12,8 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="EditVC" customModule="ToDoList" customModuleProvider="target">
             <connections>
+                <outlet property="btnSearchButton" destination="teI-6c-wK1" id="iui-rE-0Fs"/>
+                <outlet property="searchBar" destination="UNg-jG-iFZ" id="hwD-vc-avn"/>
                 <outlet property="toDoListTable" destination="RU5-j7-J3w" id="Uxw-ca-df0"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
@@ -52,6 +54,9 @@
                                                 <constraint firstAttribute="width" secondItem="teI-6c-wK1" secondAttribute="height" multiplier="1:1" id="Fvw-f2-xbP"/>
                                             </constraints>
                                             <state key="normal" title="Button" image="ic_search"/>
+                                            <connections>
+                                                <action selector="btnSearch:" destination="-1" eventType="touchUpInside" id="E2f-q8-mEb"/>
+                                            </connections>
                                         </button>
                                     </subviews>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -61,12 +66,20 @@
                                         <constraint firstItem="teI-6c-wK1" firstAttribute="height" secondItem="rxr-Uw-QFU" secondAttribute="height" multiplier="1:2" id="eph-k5-IzP"/>
                                     </constraints>
                                 </view>
+                                <searchBar hidden="YES" contentMode="redraw" searchBarStyle="minimal" showsCancelButton="YES" translatesAutoresizingMaskIntoConstraints="NO" id="UNg-jG-iFZ">
+                                    <rect key="frame" x="-8" y="4" width="300" height="56"/>
+                                    <textInputTraits key="textInputTraits"/>
+                                </searchBar>
                             </subviews>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
+                                <constraint firstItem="UNg-jG-iFZ" firstAttribute="centerY" secondItem="eZj-RO-XU8" secondAttribute="centerY" constant="-1.8333333333333357" id="2l8-wn-lvk"/>
                                 <constraint firstItem="rxr-Uw-QFU" firstAttribute="height" secondItem="eZj-RO-XU8" secondAttribute="height" id="AKw-Z1-oxh"/>
+                                <constraint firstItem="UNg-jG-iFZ" firstAttribute="centerX" secondItem="eZj-RO-XU8" secondAttribute="centerX" constant="-8" id="Blh-2g-ksX"/>
                                 <constraint firstItem="rxr-Uw-QFU" firstAttribute="top" secondItem="eZj-RO-XU8" secondAttribute="top" id="IQ5-8v-gaZ"/>
+                                <constraint firstItem="UNg-jG-iFZ" firstAttribute="height" secondItem="eZj-RO-XU8" secondAttribute="height" constant="-11.666666666666671" id="Mws-W7-aek"/>
                                 <constraint firstAttribute="trailing" secondItem="rxr-Uw-QFU" secondAttribute="trailing" id="c6h-a6-J3E"/>
+                                <constraint firstItem="UNg-jG-iFZ" firstAttribute="width" secondItem="eZj-RO-XU8" secondAttribute="width" id="dXi-iS-eto"/>
                                 <constraint firstItem="rxr-Uw-QFU" firstAttribute="width" secondItem="eZj-RO-XU8" secondAttribute="width" multiplier="1:4" id="hFg-Ul-FjD"/>
                             </constraints>
                         </view>

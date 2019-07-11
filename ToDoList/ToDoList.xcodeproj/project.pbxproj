@@ -13,7 +13,8 @@
 		34182D5C22D5A0DD00808401 /* TagCount.xib in Resources */ = {isa = PBXBuildFile; fileRef = 34182D5A22D5A0DD00808401 /* TagCount.xib */; };
 		34182D5F22D5CE7500808401 /* TimeLineCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34182D5D22D5CE7500808401 /* TimeLineCell.swift */; };
 		34182D6022D5CE7500808401 /* TimeLineCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 34182D5E22D5CE7500808401 /* TimeLineCell.xib */; };
-		34182D6422D5D41700808401 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 34182D6322D5D41700808401 /* Assets.xcassets */; };
+		34182D6622D6C9AA00808401 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 34182D6522D6C9AA00808401 /* Assets.xcassets */; };
+		34182D6B22D6D55600808401 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 34182D6A22D6D55500808401 /* GoogleService-Info.plist */; };
 		3419BB4B22CF3BA500D34722 /* TypeTag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3419BB4A22CF3BA500D34722 /* TypeTag.swift */; };
 		3419BB5022CF531000D34722 /* EditVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3419BB4E22CF531000D34722 /* EditVC.swift */; };
 		3419BB5122CF531000D34722 /* EditVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3419BB4F22CF531000D34722 /* EditVC.xib */; };
@@ -27,6 +28,7 @@
 		349FAA0722CDF38D00009361 /* AddVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 349FAA0522CDF38D00009361 /* AddVC.xib */; };
 		349FAA0A22CE086D00009361 /* TypeViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 349FAA0822CE086D00009361 /* TypeViewCell.swift */; };
 		349FAA0B22CE086D00009361 /* TypeViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 349FAA0922CE086D00009361 /* TypeViewCell.xib */; };
+		34A088E522D70FAB0070D013 /* Tag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34A088E422D70FAB0070D013 /* Tag.swift */; };
 		34CB95CA22D4318800F8B480 /* ListTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34CB95C922D4318800F8B480 /* ListTask.swift */; };
 		34CB95CD22D44C1300F8B480 /* CellTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34CB95CB22D44C1300F8B480 /* CellTask.swift */; };
 		34CB95CE22D44C1300F8B480 /* CellTask.xib in Resources */ = {isa = PBXBuildFile; fileRef = 34CB95CC22D44C1300F8B480 /* CellTask.xib */; };
@@ -41,7 +43,8 @@
 		34182D5A22D5A0DD00808401 /* TagCount.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TagCount.xib; sourceTree = "<group>"; };
 		34182D5D22D5CE7500808401 /* TimeLineCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeLineCell.swift; sourceTree = "<group>"; };
 		34182D5E22D5CE7500808401 /* TimeLineCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TimeLineCell.xib; sourceTree = "<group>"; };
-		34182D6322D5D41700808401 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = ../../../../Desktop/Assets.xcassets; sourceTree = "<group>"; };
+		34182D6522D6C9AA00808401 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		34182D6A22D6D55500808401 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		3419BB4A22CF3BA500D34722 /* TypeTag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeTag.swift; sourceTree = "<group>"; };
 		3419BB4E22CF531000D34722 /* EditVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditVC.swift; sourceTree = "<group>"; };
 		3419BB4F22CF531000D34722 /* EditVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EditVC.xib; sourceTree = "<group>"; };
@@ -57,6 +60,7 @@
 		349FAA0522CDF38D00009361 /* AddVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AddVC.xib; sourceTree = "<group>"; };
 		349FAA0822CE086D00009361 /* TypeViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeViewCell.swift; sourceTree = "<group>"; };
 		349FAA0922CE086D00009361 /* TypeViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TypeViewCell.xib; sourceTree = "<group>"; };
+		34A088E422D70FAB0070D013 /* Tag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tag.swift; sourceTree = "<group>"; };
 		34CB95C922D4318800F8B480 /* ListTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListTask.swift; sourceTree = "<group>"; };
 		34CB95CB22D44C1300F8B480 /* CellTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellTask.swift; sourceTree = "<group>"; };
 		34CB95CC22D44C1300F8B480 /* CellTask.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CellTask.xib; sourceTree = "<group>"; };
@@ -81,6 +85,7 @@
 			children = (
 				3419BB4A22CF3BA500D34722 /* TypeTag.swift */,
 				34CB95C922D4318800F8B480 /* ListTask.swift */,
+				34A088E422D70FAB0070D013 /* Tag.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -108,11 +113,13 @@
 			children = (
 				3419BB4922CF3B7200D34722 /* Model */,
 				349FA9F822CDE06600009361 /* Controller */,
+				34182D6522D6C9AA00808401 /* Assets.xcassets */,
 				349FA9E622CDDD5200009361 /* AppDelegate.swift */,
 				349FA9E822CDDD5200009361 /* ViewController.swift */,
 				349FA9EA22CDDD5200009361 /* Main.storyboard */,
 				349FA9EF22CDDD5300009361 /* LaunchScreen.storyboard */,
 				349FA9F222CDDD5300009361 /* Info.plist */,
+				34182D6A22D6D55500808401 /* GoogleService-Info.plist */,
 			);
 			path = ToDoList;
 			sourceTree = "<group>";
@@ -123,7 +130,6 @@
 				349FA9FB22CDE0BA00009361 /* ShowViewController */,
 				349FA9F922CDE06F00009361 /* AddViewController */,
 				349FA9FA22CDE0A600009361 /* EditViewController */,
-				34182D6322D5D41700808401 /* Assets.xcassets */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -244,9 +250,10 @@
 			files = (
 				349FA9F122CDDD5300009361 /* LaunchScreen.storyboard in Resources */,
 				3466DF0222D49FF90030A383 /* SpecialCell.xib in Resources */,
-				34182D6422D5D41700808401 /* Assets.xcassets in Resources */,
+				34182D6622D6C9AA00808401 /* Assets.xcassets in Resources */,
 				34182D5C22D5A0DD00808401 /* TagCount.xib in Resources */,
 				349FAA0722CDF38D00009361 /* AddVC.xib in Resources */,
+				34182D6B22D6D55600808401 /* GoogleService-Info.plist in Resources */,
 				3419BB5122CF531000D34722 /* EditVC.xib in Resources */,
 				34182D5822D58D5900808401 /* ShowTaskVC.xib in Resources */,
 				349FAA0B22CE086D00009361 /* TypeViewCell.xib in Resources */,
@@ -269,12 +276,28 @@
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-ToDoList/Pods-ToDoList-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/ActionSheetPicker-3.0/ActionSheetPicker_3_0.framework",
+				"${BUILT_PRODUCTS_DIR}/BoringSSL-GRPC/openssl_grpc.framework",
+				"${BUILT_PRODUCTS_DIR}/GoogleUtilities/GoogleUtilities.framework",
+				"${BUILT_PRODUCTS_DIR}/Protobuf/Protobuf.framework",
+				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
+				"${BUILT_PRODUCTS_DIR}/gRPC-C++/grpcpp.framework",
+				"${BUILT_PRODUCTS_DIR}/gRPC-Core/grpc.framework",
+				"${BUILT_PRODUCTS_DIR}/leveldb-library/leveldb.framework",
+				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 			);
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ActionSheetPicker_3_0.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/openssl_grpc.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleUtilities.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Protobuf.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyJSON.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/grpcpp.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/grpc.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/leveldb.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -322,6 +345,7 @@
 				3466DF0122D49FF90030A383 /* SpecialCell.swift in Sources */,
 				349FA9E722CDDD5200009361 /* AppDelegate.swift in Sources */,
 				34182D5B22D5A0DD00808401 /* TagCount.swift in Sources */,
+				34A088E522D70FAB0070D013 /* Tag.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Firebase
 
 class ShowTaskVC: UIViewController {
     @IBOutlet weak var collectionTagCount: UICollectionView!
@@ -16,6 +17,8 @@ class ShowTaskVC: UIViewController {
         let addVC = AddVC.init(nibName: "AddVC", bundle: nil)
         self.navigationController?.pushViewController(addVC, animated: true)
     }
+    
+    var db: Firestore!
     
     var arrTag: [TypeTag] = [TypeTag(textTag: "Work", backGround: "42AAFD"),
                              TypeTag(textTag: "Personal", backGround: "01BACC"),
@@ -38,9 +41,17 @@ class ShowTaskVC: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+         // [START setup]
+        let settings = FirestoreSettings()
+        
+        Firestore.firestore().settings = settings
+        // [END setup]
+        db = Firestore.firestore()
         
         initUI()
         initData()
+//        getTag()
+        getWithID()
     }
 }
 
@@ -65,6 +76,36 @@ extension ShowTaskVC {
     
         collectionTagCount.register(TagCount.self)
         tableTimeLine.register(TimeLineCell.self)
+        
+        
+    }
+    
+//    func getTag() {
+//        db.collection("Tag").getDocuments() { (querySnapshot, err) in
+//            if let err = err {
+//                print("Error getting documents: \(err)")
+//            } else {
+//                for document in querySnapshot!.documents {
+//                    print("DATA HERE\(document.documentID) => \(document.data())")
+//                }
+//            }
+//        }
+//    }
+    
+    func getWithID() {
+        let docRef = db.collection("Tag").document("4EQWrRd2MJLujycVNSpk")
+        
+        docRef.getDocument { (document, error) in
+            if let city = document.flatMap({
+                $0.data().flatMap({ (data) in
+                    return City(dictionary: data)
+                })
+            }) {
+                print("City: \(city)")
+            } else {
+                print("Document does not exist")
+            }
+        }
     }
 }
 

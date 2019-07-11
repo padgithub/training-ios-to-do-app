@@ -7,4 +7,7 @@ target 'ToDoList' do
 
   # Pods for ToDoList
     pod 'ActionSheetPicker-3.0'
+    pod 'Firebase/Core'
+    pod 'SwiftyJSON'
+    pod 'Firebase/Firestore'
 end

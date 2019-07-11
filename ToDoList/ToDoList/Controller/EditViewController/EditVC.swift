@@ -22,6 +22,12 @@ class EditVC: UIViewController {
     ]
     
     @IBOutlet weak var toDoListTable: UITableView!
+    @IBOutlet weak var searchBar: UISearchBar!
+    @IBOutlet weak var btnSearchButton: UIButton!
+    @IBAction func btnSearch(_ sender: Any) {
+        searchBar.isHidden = !searchBar.isHidden
+        btnSearchButton.isHidden = !btnSearchButton.isHidden
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -41,6 +47,7 @@ extension EditVC{
     func initData(){
         toDoListTable.dataSource = self
         toDoListTable.delegate = self
+        searchBar.delegate = self
     }
 }
 
@@ -96,7 +103,13 @@ extension EditVC: UITableViewDelegate{
         cell!.isHide = false
         cell!.setHide()
     }
+}
 
+extension EditVC: UISearchBarDelegate {
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.isHidden = !searchBar.isHidden
+        btnSearchButton.isHidden = !btnSearchButton.isHidden
+    }
 }
 
 

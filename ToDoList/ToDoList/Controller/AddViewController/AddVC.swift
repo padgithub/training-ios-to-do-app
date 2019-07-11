@@ -95,8 +95,8 @@ extension AddVC: UITextViewDelegate,UINavigationBarDelegate {
         
         //MARK: - Layout collection view cell
         let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
-        layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 10, right: 0)
-        layout.itemSize = CGSize(width: typeCollection.frame.width/3 - 10, height: typeCollection.frame.height/3)
+        layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        layout.itemSize = CGSize(width: typeCollection.frame.width/3 - 10, height: typeCollection.frame.height/2 - 5)
         layout.minimumInteritemSpacing = 5
         layout.minimumLineSpacing = 5
         layout.scrollDirection = .vertical
