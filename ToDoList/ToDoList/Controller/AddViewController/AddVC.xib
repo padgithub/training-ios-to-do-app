@@ -17,6 +17,7 @@
                 <outlet property="dateTimeToShow" destination="ilf-y9-Wgu" id="l6j-Ig-3Oi"/>
                 <outlet property="imgShowDate" destination="Neh-j4-3Ju" id="iJz-SH-Hhz"/>
                 <outlet property="txtChooseDate" destination="7qw-oc-FET" id="lg8-Dt-I0A"/>
+                <outlet property="txtNameTask" destination="Yg8-Yy-qSz" id="65y-g7-iDw"/>
                 <outlet property="txtTextView" destination="lgb-Bp-R1X" id="Yzg-9f-F6N"/>
                 <outlet property="typeCollection" destination="74I-xq-g9i" id="nq2-rC-kW4"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
@@ -50,6 +51,9 @@
                             <state key="normal" title="Add task">
                                 <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </state>
+                            <connections>
+                                <action selector="btnAddTask:" destination="-1" eventType="touchUpInside" id="QF9-rC-cnL"/>
+                            </connections>
                         </button>
                     </subviews>
                     <constraints>
@@ -122,8 +126,8 @@
                                     <nil key="textColor"/>
                                     <nil key="highlightedColor"/>
                                 </label>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Today, 12:00 - 13:00 hjgkh" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ilf-y9-Wgu">
-                                    <rect key="frame" x="0.0" y="31" width="174" height="20"/>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Today, 12:00 - 13:00" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ilf-y9-Wgu">
+                                    <rect key="frame" x="0.0" y="31" width="134.33333333333334" height="20"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="20" id="zzD-Ty-L9k"/>
                                     </constraints>
@@ -132,7 +136,7 @@
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_showtime" translatesAutoresizingMaskIntoConstraints="NO" id="Neh-j4-3Ju">
-                                    <rect key="frame" x="194" y="37.666666666666686" width="6.6666666666666572" height="6.6666666666666643"/>
+                                    <rect key="frame" x="154.33333333333331" y="37.666666666666686" width="6.6666666666666572" height="6.6666666666666643"/>
                                     <constraints>
                                         <constraint firstAttribute="width" secondItem="Neh-j4-3Ju" secondAttribute="height" multiplier="1:1" id="adJ-J1-bQO"/>
                                     </constraints>

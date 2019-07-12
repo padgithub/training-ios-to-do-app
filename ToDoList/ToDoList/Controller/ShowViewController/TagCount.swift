@@ -19,7 +19,9 @@ class TagCount: UICollectionViewCell {
 
     func cofig(typeTag: TypeTag) {
         imgTag.layer.masksToBounds = false
-        imgTag.layer.cornerRadius = self.imgTag.bounds.height/2
+        DispatchQueue.main.async {
+            self.imgTag.layer.cornerRadius = self.imgTag.bounds.height/2
+        }
         imgTag.clipsToBounds = true
         imgTag.backgroundColor = UIColor(typeTag.backGround, alpha: 1.0)
         lbNametag.text = typeTag.textTag

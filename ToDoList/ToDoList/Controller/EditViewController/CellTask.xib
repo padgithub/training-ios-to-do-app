@@ -28,6 +28,9 @@
                                     <constraint firstAttribute="width" secondItem="LLg-9L-zOa" secondAttribute="height" multiplier="1:1" id="U82-Nj-TBf"/>
                                 </constraints>
                                 <state key="normal" image="ic_edit"/>
+                                <connections>
+                                    <action selector="btnEdit:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="b2y-09-7wR"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

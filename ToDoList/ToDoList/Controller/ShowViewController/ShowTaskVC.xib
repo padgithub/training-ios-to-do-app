@@ -13,6 +13,8 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ShowTaskVC" customModule="ToDoList" customModuleProvider="target">
             <connections>
                 <outlet property="collectionTagCount" destination="Agx-gh-hma" id="xuS-bH-cEz"/>
+                <outlet property="countTaskDoing" destination="QDE-7k-GuX" id="TBz-5Y-9gv"/>
+                <outlet property="countTaskDone" destination="JCV-G3-7LA" id="b3q-nS-VUn"/>
                 <outlet property="tableTimeLine" destination="9w9-n7-R2c" id="qZG-9L-dbN"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
@@ -25,7 +27,7 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Wpi-8F-cdb" userLabel="TaskTimeLineView">
                     <rect key="frame" x="37.666666666666657" y="453.33333333333326" width="337.33333333333337" height="324.66666666666674"/>
                     <subviews>
-                        <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="9w9-n7-R2c">
+                        <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="9w9-n7-R2c">
                             <rect key="frame" x="0.0" y="0.0" width="337.33333333333331" height="324.66666666666669"/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         </tableView>

@@ -17,7 +17,8 @@ class TimeLineCell: UITableViewCell {
     @IBOutlet weak var viewCenterTimeLine: UIView!
     @IBOutlet weak var viewLineTimeLine: UIView!
     
-    var taskData = ListTask(nameTask: "nil", descriptionTask: "nil", tagColor: "nil")
+    var taskData = ListTask(nameTask: "nil", descriptionTask: "nil", tagID: "nil")
+    let dateFormatter = DateFormatter()
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -44,40 +45,29 @@ extension TimeLineCell {
     }
     
     func initData(taskData: ListTask) {
-        imgColorTask.backgroundColor = UIColor(taskData.tagColor, alpha: 1.0)
+        imgColorTask.backgroundColor = UIColor(taskData.tag.backGround, alpha: 1.0)
         lbNameTask.text = taskData.nameTask
         lbDescriptionTask.text = taskData.descriptionTask
         
-        viewCenterTimeLine.backgroundColor = UIColor(taskData.tagColor, alpha: 1.0)
-        viewLineTimeLine.backgroundColor = UIColor(taskData.tagColor, alpha: 1.0)
+        viewCenterTimeLine.backgroundColor = UIColor(taskData.tag.backGround, alpha: 1.0)
+        viewLineTimeLine.backgroundColor = UIColor(taskData.tag.backGround, alpha: 1.0)
         
-        dateStart.text = getDate(data: taskData.timeStart)
-        timeStart.text = getTime(data: taskData.timeStart)
+        dateStart.text = getDate(date: taskData.timeStart)
+        timeStart.text = getTime(date: taskData.timeStart)
     }
     
-    func getTime(data: String) -> String {
-        let inFormatter = DateFormatter()
-        inFormatter.dateFormat = "dd-MM h:m"
-        
-        let outFormatter = DateFormatter()
-        outFormatter.dateFormat = "h:m"
-        
-        let date = inFormatter.date(from: data)!
-        let outStr = outFormatter.string(from: date)
-        
-        return outStr
+    func getDate(date: Double) -> String{
+        dateFormatter.dateFormat = "dd-MM"
+        let dateDate = Date(timeIntervalSince1970: date)
+        let dateString = dateFormatter.string(from: dateDate)
+        return dateString
     }
     
-    func getDate(data: String) -> String {
-        let inFormater = DateFormatter()
-        inFormater.dateFormat = "dd-MM h:m"
-        
-        let outFormater = DateFormatter()
-        outFormater.dateFormat = "dd-MM"
-        
-        let date = inFormater.date(from: data)!
-        let outString = outFormater.string(from: date)
-        
-        return outString
+    func getTime(date: Double) -> String{
+        dateFormatter.dateFormat = "HH:mm"
+        let timeDate = Date(timeIntervalSince1970: date)
+        let timeString = dateFormatter.string(from: timeDate)
+        return timeString
     }
+    
 }

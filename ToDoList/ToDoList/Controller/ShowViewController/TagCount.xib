@@ -29,11 +29,10 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="6c1-dC-hyP">
-                                <rect key="frame" x="179" y="10" width="10" height="10"/>
+                                <rect key="frame" x="175.5" y="10" width="13.5" height="13.5"/>
                                 <color key="backgroundColor" red="0.0" green="0.58980089430000004" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="10" id="A7s-3t-cDe"/>
-                                    <constraint firstAttribute="width" constant="10" id="Zlc-NB-XMx"/>
+                                    <constraint firstAttribute="width" secondItem="6c1-dC-hyP" secondAttribute="height" id="37K-Zl-da3"/>
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name Tag" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bwq-zS-Yju">
@@ -46,6 +45,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="OfR-Dn-WRB" firstAttribute="centerY" secondItem="qcs-up-uEc" secondAttribute="centerY" id="5WQ-hA-UGa"/>
+                            <constraint firstItem="6c1-dC-hyP" firstAttribute="width" secondItem="qcs-up-uEc" secondAttribute="width" multiplier="1:15" id="BFd-yY-5lm"/>
                             <constraint firstItem="OfR-Dn-WRB" firstAttribute="leading" secondItem="qcs-up-uEc" secondAttribute="leading" constant="20" id="J7W-qD-e2O"/>
                             <constraint firstAttribute="trailing" secondItem="6c1-dC-hyP" secondAttribute="trailing" constant="10" id="Rgj-dq-SPh"/>
                             <constraint firstItem="6c1-dC-hyP" firstAttribute="top" secondItem="qcs-up-uEc" secondAttribute="top" constant="10" id="qMS-Jc-PWc"/>

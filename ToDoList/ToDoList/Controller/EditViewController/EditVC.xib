@@ -31,7 +31,10 @@
                             <subviews>
                                 <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Abk-lv-oD1">
                                     <rect key="frame" x="18.666666666666668" y="16.999999999999996" width="37.666666666666657" height="33.666666666666657"/>
-                                    <state key="normal" title="Button" image="ic_back"/>
+                                    <state key="normal" image="ic_back"/>
+                                    <connections>
+                                        <action selector="btnBack:" destination="-1" eventType="touchUpInside" id="IFo-sz-GzO"/>
+                                    </connections>
                                 </button>
                             </subviews>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

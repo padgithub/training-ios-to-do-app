@@ -28,7 +28,6 @@
 		349FAA0722CDF38D00009361 /* AddVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 349FAA0522CDF38D00009361 /* AddVC.xib */; };
 		349FAA0A22CE086D00009361 /* TypeViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 349FAA0822CE086D00009361 /* TypeViewCell.swift */; };
 		349FAA0B22CE086D00009361 /* TypeViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 349FAA0922CE086D00009361 /* TypeViewCell.xib */; };
-		34A088E522D70FAB0070D013 /* Tag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34A088E422D70FAB0070D013 /* Tag.swift */; };
 		34CB95CA22D4318800F8B480 /* ListTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34CB95C922D4318800F8B480 /* ListTask.swift */; };
 		34CB95CD22D44C1300F8B480 /* CellTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34CB95CB22D44C1300F8B480 /* CellTask.swift */; };
 		34CB95CE22D44C1300F8B480 /* CellTask.xib in Resources */ = {isa = PBXBuildFile; fileRef = 34CB95CC22D44C1300F8B480 /* CellTask.xib */; };
@@ -60,7 +59,6 @@
 		349FAA0522CDF38D00009361 /* AddVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AddVC.xib; sourceTree = "<group>"; };
 		349FAA0822CE086D00009361 /* TypeViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeViewCell.swift; sourceTree = "<group>"; };
 		349FAA0922CE086D00009361 /* TypeViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TypeViewCell.xib; sourceTree = "<group>"; };
-		34A088E422D70FAB0070D013 /* Tag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tag.swift; sourceTree = "<group>"; };
 		34CB95C922D4318800F8B480 /* ListTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListTask.swift; sourceTree = "<group>"; };
 		34CB95CB22D44C1300F8B480 /* CellTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellTask.swift; sourceTree = "<group>"; };
 		34CB95CC22D44C1300F8B480 /* CellTask.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CellTask.xib; sourceTree = "<group>"; };
@@ -85,7 +83,6 @@
 			children = (
 				3419BB4A22CF3BA500D34722 /* TypeTag.swift */,
 				34CB95C922D4318800F8B480 /* ListTask.swift */,
-				34A088E422D70FAB0070D013 /* Tag.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -345,7 +342,6 @@
 				3466DF0122D49FF90030A383 /* SpecialCell.swift in Sources */,
 				349FA9E722CDDD5200009361 /* AppDelegate.swift in Sources */,
 				34182D5B22D5A0DD00808401 /* TagCount.swift in Sources */,
-				34A088E522D70FAB0070D013 /* Tag.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

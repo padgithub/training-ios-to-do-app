@@ -13,7 +13,13 @@ class CellTask: UITableViewCell {
     @IBOutlet weak var lbNameTask: UILabel!
     @IBOutlet weak var lbDescription: UILabel!
     
-    var taskData = ListTask(nameTask: "nil", descriptionTask: "nil", tagColor: "nil")
+    @IBAction func btnEdit(_ sender: Any) {
+        handleEdit?()
+    }
+    
+    var handleEdit: (()->Void)?
+    
+    var taskData = ListTask(nameTask: "nil", descriptionTask: "nil", tagID: "nil")
     var isHide = false
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -42,7 +48,7 @@ extension CellTask{
     }
     
     func initData(){
-        imgTag.backgroundColor = UIColor(taskData.tagColor, alpha: 1.0)
+        imgTag.backgroundColor = UIColor(taskData.tag.backGround, alpha: 1.0)
         lbNameTask.text = taskData.nameTask
         lbDescription.text = taskData.descriptionTask
         print(taskData.nameTask)

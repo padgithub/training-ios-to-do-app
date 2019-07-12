@@ -9,28 +9,50 @@
 import UIKit
 import Firebase
 import FirebaseFirestore
+import SwiftyJSON
+
+let TAppDelegate = UIApplication.shared.delegate as! AppDelegate
+let TApp = UIApplication.shared
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
-
     var window: UIWindow?
-
+    var db: Firestore!
+    var arrTag = [TypeTag]()
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        UINavigationBar.appearance().barTintColor = UIColor.white
+        FirebaseApp.configure()
+        db = Firestore.firestore()
+        
+        fetchTag()
+        
+        return true
+    }
+    
+    func fetchTag() {
+        db.collection("Tag").getDocuments() { (querySnapshot, err) in
+            if let err = err {
+                print("Error getting documents: \(err)")
+            } else {
+                self.arrTag.removeAll()
+                for document in querySnapshot!.documents {
+                    let obj = TypeTag.init(data: JSON.init(document.data()), firebaseKey: document.documentID)
+                    self.arrTag.append(obj)
+                }
+                self.initHome()
+            }
+        }
+    }
+    
+    func initHome() {
 //        let vc = AddVC.init(nibName: "AddVC", bundle: nil)
-//        let vc = EditVC.init(nibName: "EditVC", bundle: nil)
+//        let Editvc = EditVC.init(nibName: "EditVC", bundle: nil)
         let vc = ShowTaskVC.init(nibName: "ShowTaskVC", bundle: nil)
         let nav = UINavigationController(rootViewController: vc)
         nav.isNavigationBarHidden = true
         window?.rootViewController = nav
         window?.makeKeyAndVisible()
-        
-        UINavigationBar.appearance().barTintColor = UIColor.white
-        
-        FirebaseApp.configure()
-        let db = Firestore.firestore()
-        
-        return true
     }
 
     func applicationWillResignActive(_ application: UIApplication) {

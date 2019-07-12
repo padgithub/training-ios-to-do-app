@@ -7,19 +7,13 @@
 //
 
 import UIKit
+import SwiftyJSON
 
 class EditVC: UIViewController {
-    var listTodo: [ListTask] = [
-        ListTask(nameTask: "Do yoga", descriptionTask: "Do yoga", tagColor: "EE2375"),
-        ListTask(nameTask: "Go Shopping", descriptionTask: "Buy bread", tagColor: "CD42FD"),
-        ListTask(nameTask: "Go Shopping", descriptionTask: "Bananas", tagColor: "CD42FD"),
-        ListTask(nameTask: "Meeting", descriptionTask: "Skype meeting whit Anh", tagColor: "01BACC"),
-        ListTask(nameTask: "Running", descriptionTask: "Running", tagColor: "EE2375"),
-        ListTask(nameTask: "Other", descriptionTask: "Other", tagColor: "8539F9"),
-        ListTask(nameTask: "Do yoga", descriptionTask: "Do yoga", tagColor: "EE2375"),
-        ListTask(nameTask: "Other", descriptionTask: "Other", tagColor: "8539F9"),
-        ListTask(nameTask: "Do yoga", descriptionTask: "Do yoga", tagColor: "EE2375")
-    ]
+    
+    var tagSelected: TypeTag!
+    
+    var listTodo: [ListTask] = []
     
     @IBOutlet weak var toDoListTable: UITableView!
     @IBOutlet weak var searchBar: UISearchBar!
@@ -27,6 +21,9 @@ class EditVC: UIViewController {
     @IBAction func btnSearch(_ sender: Any) {
         searchBar.isHidden = !searchBar.isHidden
         btnSearchButton.isHidden = !btnSearchButton.isHidden
+    }
+    @IBAction func btnBack(_ sender: Any) {
+        self.navigationController?.popViewController(animated: true)
     }
     
     override func viewDidLoad() {
@@ -49,6 +46,28 @@ extension EditVC{
         toDoListTable.delegate = self
         searchBar.delegate = self
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        fetchTaskWithTag(tag: tagSelected)
+    }
+    
+    
+    func fetchTaskWithTag(tag: TypeTag) {
+        TAppDelegate.db.collection("Task").whereField("tagID", isEqualTo: tag.firebaseKey).getDocuments() { (querySnapshot, err) in
+            if let err = err {
+                print("Error getting documents: \(err)")
+            } else {
+                self.listTodo.removeAll()
+                for document in querySnapshot!.documents {
+                    let obj = ListTask.init(data: JSON.init(document.data()))
+                    self.listTodo.append(obj)
+                }
+                if self.listTodo.count > 0 {
+                    self.toDoListTable.reloadData()
+                }
+            }
+        }
+    }
 }
 
 extension EditVC: UITableViewDataSource{
@@ -63,6 +82,12 @@ extension EditVC: UITableViewDataSource{
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(forIndexPath: indexPath) as CellTask
         cell.taskData = listTodo[indexPath.row]
+        cell.handleEdit = {
+            let addVC = AddVC.init(nibName: "AddVC", bundle: nil)
+            addVC.isEdit = true
+            addVC.taskEdit = self.listTodo[indexPath.row]
+                self.navigationController?.pushViewController(addVC, animated: true)
+        }
         cell.initData()
         return cell
     }
@@ -79,15 +104,28 @@ extension EditVC: UITableViewDelegate{
     }
     
     func deleteAction(at indexPath: IndexPath) -> UIContextualAction{
-        let action = UIContextualAction(style: .normal, title: "Delete") { (action, view, completion) in
-            self.listTodo.remove(at: indexPath.row)
+        let action = UIContextualAction(style: .destructive, title: "Delete") { (action, view, completion) in
+            let taskRemove = self.listTodo[indexPath.row]
+            self.deleteTask(taskRemove)
+            self.listTodo.remove(at: indexPath.item)
             self.toDoListTable.deleteRows(at: [indexPath], with: .automatic)
             completion(true)
         }
+    
         action.image = UIImage(named: "ic_remove")
         action.backgroundColor = UIColor("EE2375", alpha: 1.0)
         
         return action
+    }
+    
+    func deleteTask(_ taskRemove : ListTask) {
+        TAppDelegate.db.collection("Task").document("\(taskRemove.taskID)").delete() { err in
+            if let err = err {
+                print("Error removing document: \(err)")
+            } else {
+                print("Document successfully removed!")
+            }
+        }
     }
     
     func tableView(_ tableView: UITableView, willBeginEditingRowAt indexPath: IndexPath) {
