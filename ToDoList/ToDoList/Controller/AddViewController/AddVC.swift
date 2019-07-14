@@ -139,6 +139,9 @@ class AddVC: UIViewController {
                         print("Error updating document: \(err)")
                     } else {
                         print("Document successfully updated")
+                        let alert = UIAlertController(title: "Thông báo", message: "Thay đổi thành công", preferredStyle: UIAlertController.Style.alert)
+                        alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
+                        self.present(alert, animated: true, completion: nil)
                     }
                 }
             }else{
@@ -160,6 +163,9 @@ class AddVC: UIViewController {
                                 "taskID": taskID
                                 ])
                         }
+                        let alert = UIAlertController(title: "Thông báo", message: "Thêm thành công", preferredStyle: UIAlertController.Style.alert)
+                        alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
+                        self.present(alert, animated: true, completion: nil)
                     }
             }
         }
@@ -193,6 +199,7 @@ extension AddVC: UITextViewDelegate,UINavigationBarDelegate {
     func initData() {
         typeCollection.dataSource = self
         typeCollection.delegate = self
+        txtTextView.delegate = self
         
         if isEdit{
             let index = TAppDelegate.arrTag.firstIndex { (objs) -> Bool in
@@ -206,6 +213,24 @@ extension AddVC: UITextViewDelegate,UINavigationBarDelegate {
                 cell?.layer.cornerRadius = 4
                 cell?.layer.borderColor = UIColor.black.cgColor
             }
+        }
+    }
+    
+    //MARK: - Edit Text View  r
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        
+        if txtTextView.textColor == UIColor.lightGray {
+            txtTextView.text = ""
+            txtTextView.textColor = UIColor.black
+        }
+    }
+    
+    func textViewDidEndEditing(_ textView: UITextView) {
+        
+        if txtTextView.text == "" {
+            
+            txtTextView.text = "Description..."
+            txtTextView.textColor = UIColor.lightGray
         }
     }
     

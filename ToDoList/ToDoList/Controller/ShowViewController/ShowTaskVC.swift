@@ -19,14 +19,9 @@ class ShowTaskVC: UIViewController {
         self.navigationController?.pushViewController(addVC, animated: true)
     }
     
-//    var arrTag: [TypeTag] = [TypeTag(textTag: "Work", backGround: "42AAFD"),
-//                             TypeTag(textTag: "Personal", backGround: "01BACC"),
-//                             TypeTag(textTag: "Shopping", backGround: "CD42FD"),
-//                             TypeTag(textTag: "Health", backGround: "EE2375"),
-//                             TypeTag(textTag: "Other", backGround: "8539F9")
-   // ]
-    
     var listTodo = [ListTask]()
+    var listSort = [ListTask]()
+    
     @IBOutlet weak var countTaskDone: UILabel!
     @IBOutlet weak var countTaskDoing: UILabel!
     
@@ -39,9 +34,6 @@ class ShowTaskVC: UIViewController {
         Firestore.firestore().settings = settings
         // [END setup]
        // TAppDelegate.db = Firestore.firestore()
-        
-        
-        
         initUI()
         initData()
     }
@@ -99,6 +91,11 @@ extension ShowTaskVC {
                     self.listTodo.append(obj)
                 }
                 if self.listTodo.count > 0 {
+                    self.listSort.removeAll()
+                    self.addTempTask()
+                    self.sortArray()
+                    self.listSort = self.listSort.sorted(by: { $0.timeEnd < $1.timeEnd })
+                    
                     self.tableTimeLine.reloadData()
                 }
                 self.coutTask()
@@ -106,21 +103,46 @@ extension ShowTaskVC {
         }
     }
     
-//    func addTag() {
-//
-//        let docRef = db.collection("Tag")
-//        arrTag.forEach { (tag) in
-//            let tagString = ["textTag": tag.textTag, "backGround": tag.backGround]
-//            docRef.addDocument(data: tagString, completion: { (err) in
-//                if (err != nil) {
-//                    print(err as Any)
-//                }else{
-//                    print("Document added with ID: \(docRef.document().documentID)")
-//                }
-//            })
-//        }
-//    }
+    //MARK: - Func Sort Array By Date
+    func sortArray() {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "dd-MM-yyyy HH:mm:ss"
+
+        let currentDay = Date()
+        dateFormatter.string(from: currentDay)
+        for item in listTodo {
+            let date = Date(timeIntervalSince1970: item.timeEnd)
+            if date > currentDay {
+                listSort.append(item)
+            }
+        }
+    }
     
+    func addTempTask() {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "dd-MM-yyyy"
+        
+        var currentDay = Date()
+        var isHave = false
+        
+        for _ in 1 ... 10 {
+            for item in listTodo {
+                let currentDayStr = dateFormatter.string(from: currentDay)
+                let date = Date(timeIntervalSince1970: item.timeEnd)
+                let dateStr = dateFormatter.string(from: date)
+                
+                if currentDayStr != dateStr {
+                    break
+                }
+                isHave = true
+            }
+            if (isHave) {
+                let data = ListTask(nameTask: "Không có", descriptionTask: "việc cần làm", tagID: "nil", timeStart: currentDay.timeIntervalSince1970, timeEnd: currentDay.timeIntervalSince1970, taskID: "nil")
+                listSort.append(data)
+            }
+            currentDay = Calendar.current.date(byAdding: .day, value: 1, to: currentDay)!
+        }
+    }
 }
 
 //MARK: - CollectionView
@@ -177,11 +199,13 @@ extension ShowTaskVC: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return listTodo.count
+//        return listTodo.count
+        return listSort.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let taskCell = listTodo[indexPath.row]
+//        let taskCell = listTodo[indexPath.row]
+        let taskCell = listSort[indexPath.row]
         let cell = tableView.dequeueReusableCell(forIndexPath: indexPath) as TimeLineCell
         cell.initData(taskData: taskCell)
         return cell
