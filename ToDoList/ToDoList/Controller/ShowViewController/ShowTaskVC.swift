@@ -21,6 +21,7 @@ class ShowTaskVC: UIViewController {
     
     var listTodo = [ListTask]()
     var listSort = [ListTask]()
+    var tempArray = [ListTask]()
     
     @IBOutlet weak var countTaskDone: UILabel!
     @IBOutlet weak var countTaskDoing: UILabel!
@@ -92,8 +93,8 @@ extension ShowTaskVC {
                 }
                 if self.listTodo.count > 0 {
                     self.listSort.removeAll()
-                    self.addTempTask()
                     self.sortArray()
+                    self.addTempTask()
                     self.listSort = self.listSort.sorted(by: { $0.timeEnd < $1.timeEnd })
                     
                     self.tableTimeLine.reloadData()
@@ -124,24 +125,30 @@ extension ShowTaskVC {
         
         var currentDay = Date()
         var isHave = false
+        var i = 0
+        
+        tempArray = listSort
         
         for _ in 1 ... 10 {
-            for item in listTodo {
+            while i < listSort.count {
                 let currentDayStr = dateFormatter.string(from: currentDay)
-                let date = Date(timeIntervalSince1970: item.timeEnd)
+                let date = Date(timeIntervalSince1970: listSort[i].timeStart)
                 let dateStr = dateFormatter.string(from: date)
                 
-                if currentDayStr != dateStr {
+                if currentDayStr != dateStr  {
+                    isHave = true
                     break
                 }
-                isHave = true
+                i = i + 1
+                currentDay = Calendar.current.date(byAdding: .day, value: 1, to: currentDay)!
             }
             if (isHave) {
                 let data = ListTask(nameTask: "Không có", descriptionTask: "việc cần làm", tagID: "nil", timeStart: currentDay.timeIntervalSince1970, timeEnd: currentDay.timeIntervalSince1970, taskID: "nil")
-                listSort.append(data)
+                tempArray.append(data)
             }
             currentDay = Calendar.current.date(byAdding: .day, value: 1, to: currentDay)!
         }
+        listSort = tempArray
     }
 }
 

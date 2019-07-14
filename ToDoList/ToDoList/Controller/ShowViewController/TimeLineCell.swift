@@ -16,6 +16,8 @@ class TimeLineCell: UITableViewCell {
     @IBOutlet weak var imgColorTask: UIImageView!
     @IBOutlet weak var viewCenterTimeLine: UIView!
     @IBOutlet weak var viewLineTimeLine: UIView!
+    @IBOutlet weak var dateEnd: UILabel!
+    @IBOutlet weak var timeEnd: UILabel!
     
     var taskData = ListTask(nameTask: "nil", descriptionTask: "nil", tagID: "nil")
     let dateFormatter = DateFormatter()
@@ -54,6 +56,8 @@ extension TimeLineCell {
         
         dateStart.text = getDate(date: taskData.timeStart)
         timeStart.text = getTime(date: taskData.timeStart)
+        dateEnd.text = getDate(date: taskData.timeEnd)
+        timeEnd.text = getTime(date: taskData.timeEnd)
     }
     
     func getDate(date: Double) -> String{

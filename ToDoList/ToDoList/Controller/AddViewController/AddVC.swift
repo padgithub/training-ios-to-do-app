@@ -124,7 +124,7 @@ class AddVC: UIViewController {
     @IBOutlet weak var txtNameTask: UITextField!
     
     @IBAction func btnAddTask(_ sender: Any) {
-        if isEdit{
+        if isEdit {
             let taskAdd: ListTask = ListTask(nameTask: txtNameTask.text ?? "nil", descriptionTask: txtTextView.text ?? "nil", tagID: tagID , timeStart: startDate.timeIntervalSince1970, timeEnd: endDate.timeIntervalSince1970)
             
                 let editRef = TAppDelegate.db.collection("Task").document("\(taskEdit.taskID)")
@@ -144,8 +144,10 @@ class AddVC: UIViewController {
                         self.present(alert, animated: true, completion: nil)
                     }
                 }
-            }else{
+            } else {
             let taskAdd: ListTask = ListTask(nameTask: txtNameTask.text ?? "nil", descriptionTask: txtTextView.text ?? "nil", tagID: tagID , timeStart: startDate.timeIntervalSince1970, timeEnd: endDate.timeIntervalSince1970)
+            
+            validateData()
             
             ref = TAppDelegate.db.collection("Task").addDocument(data: [
                 "nameTask": taskAdd.nameTask,
@@ -168,6 +170,17 @@ class AddVC: UIViewController {
                         self.present(alert, animated: true, completion: nil)
                     }
             }
+        }
+    }
+    
+    //MARK: - Valtidate Fucn
+    func validateData() {
+        if (txtNameTask.text == "") || (txtTextView.text == "") || (tagID == "") || (startDate.timeIntervalSince1970 > endDate.timeIntervalSince1970) {
+            let alert = UIAlertController(title: "Thông báo", message: "Cần nhập đầy đủ dữ liệu", preferredStyle: UIAlertController.Style.alert)
+            alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: { (action: UIAlertAction!) in
+                self.actionCancel((Any).self)
+            }))
+            self.present(alert, animated: true, completion: nil)
         }
     }
 }
@@ -282,13 +295,13 @@ extension AddVC : UICollectionViewDataSource, UICollectionViewDelegateFlowLayout
 //MARK: - CollectionView Delegate
 extension AddVC : UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let tag = TAppDelegate.arrTag[indexPath.row]
-        tagID = tag.firebaseKey
-        let cell = typeCollection.cellForItem(at: indexPath)
-        
-        cell?.layer.borderWidth = 3.0
-        cell?.layer.cornerRadius = 4
-        cell?.layer.borderColor = UIColor.black.cgColor
+            let tag = TAppDelegate.arrTag[indexPath.row]
+            tagID = tag.firebaseKey
+            let cell = typeCollection.cellForItem(at: indexPath)
+            
+            cell?.layer.borderWidth = 3.0
+            cell?.layer.cornerRadius = 4
+            cell?.layer.borderColor = UIColor.black.cgColor
     }
     
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {

@@ -137,9 +137,9 @@ extension EditVC: UITableViewDelegate{
     
     func tableView(_ tableView: UITableView, didEndEditingRowAt indexPath: IndexPath?) {
         let cell = toDoListTable.cellForRow(at: indexPath!) as? CellTask
-        cell!.backgroundColor = .clear
-        cell!.isHide = false
-        cell!.setHide()
+        cell?.backgroundColor = .clear
+        cell?.isHide = false
+        cell?.setHide()
     }
 }
 
