@@ -40,7 +40,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     let obj = TypeTag.init(data: JSON.init(document.data()), firebaseKey: document.documentID)
                     self.arrTag.append(obj)
                 }
+                self.arrTag = self.arrTag.sorted(by: { $0.createTime < $1.createTime })
+                self.arrTag.append(TypeTag(textTag: "", backGround: "", type: .special))
                 self.initHome()
+            }
+        }
+    }
+    
+    func fetchTagNormal() {
+        db.collection("Tag").getDocuments() { (querySnapshot, err) in
+            if let err = err {
+                print("Error getting documents: \(err)")
+            } else {
+                self.arrTag.removeAll()
+                for document in querySnapshot!.documents {
+                    let obj = TypeTag.init(data: JSON.init(document.data()), firebaseKey: document.documentID)
+                    self.arrTag.append(obj)
+                }
+                self.arrTag = self.arrTag.sorted(by: { $0.createTime < $1.createTime })
+                self.arrTag.append(TypeTag(textTag: "", backGround: "", type: .special))
             }
         }
     }

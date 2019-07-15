@@ -14,6 +14,7 @@ class SpecialCell: UICollectionViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
+//        btnAdd.frame.height = TypeViewCell.frame(UIView)
     }
 
 }

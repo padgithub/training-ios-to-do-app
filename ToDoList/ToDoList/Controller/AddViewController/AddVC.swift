@@ -9,6 +9,7 @@
 import UIKit
 import FirebaseFirestore
 import SwiftyJSON
+import ContactsUI
 
 enum TypeCell {
     case nomal
@@ -31,6 +32,7 @@ class AddVC: UIViewController {
     @IBOutlet weak var dateChoose: UIDatePicker!
     @IBOutlet weak var txtChooseDate: UILabel!
     @IBOutlet weak var imgShowDate: UIImageView!
+    @IBOutlet weak var lbPeopleName: UILabel!
     
     let dateFormatter = DateFormatter()
     var ref: DocumentReference? = nil
@@ -39,6 +41,11 @@ class AddVC: UIViewController {
     var tagID = String()
     var startDate = Date()
     var endDate = Date()
+    let contactPicker = CNContactPickerViewController()
+    
+    @IBAction func btnAddPeople(_ sender: Any) {
+        self.present(contactPicker, animated: true, completion: nil)
+    }
     
     //MARK: - Action Pick Date
     @IBAction func actionDone(_ sender: Any) {
@@ -60,12 +67,54 @@ class AddVC: UIViewController {
             startDate = dateChoose.date
             print(startDate)
         }
-       
+        
     }
     @IBAction func actionCancel(_ sender: Any) {
         viewDatePicker.isHidden = true
         txtChooseDate.text = "Choose Start Date"
         txtChooseDate.tag = 0
+    }
+    //MARK: - Func Edit Tag
+    @objc func cellTap(_ sender:Demo){
+//        if let demo = sender as? Demo {
+//            print(demo.obj)
+//        }
+        let editTag = sender.obj
+        let alertController = UIAlertController(title: "Sửa tag", message: "", preferredStyle: UIAlertController.Style.alert)
+        alertController.addTextField { (textField) in
+            textField.text = editTag.textTag
+        }
+        let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertAction.Style.default, handler: nil)
+        let saveAction = UIAlertAction(title: "Save", style: UIAlertAction.Style.default, handler: { alert -> Void in
+            
+           let txtTag = alertController.textFields![0].text
+            let backGround = alertController.textFields![1].text
+            
+            let refEdit = TAppDelegate.db.collection("Tag").document("\(editTag.firebaseKey)")
+            refEdit.updateData([
+                "textTag": txtTag as Any,
+                "backGround": backGround as Any,
+                ]) { err in
+                    if let err = err {
+                        print("Error adding document: \(err)")
+                    } else {
+                        TAppDelegate.fetchTagNormal()
+                        self.typeCollection.reloadData()
+                        let alert = UIAlertController(title: "Thông báo", message: "Thêm thành công", preferredStyle: UIAlertController.Style.alert)
+                        alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
+                        self.typeCollection.reloadData()
+                        self.present(alert, animated: true, completion: nil)
+                    }
+            }
+        })
+        alertController.addTextField { (textField) in
+            textField.text = editTag.backGround
+        }
+        
+        alertController.addAction(cancelAction)
+        alertController.addAction(saveAction)
+        
+        self.present(alertController, animated: true, completion: nil)
     }
     
     func configDate(startDate: Date, endDate: Date) -> String {
@@ -109,7 +158,7 @@ class AddVC: UIViewController {
         initUI()
         initData()
         checkEdit(edit: isEdit)
-
+        
         let tap = UITapGestureRecognizer(target: self, action: #selector(AddVC.tapFunction))
         viewChooseDate.isUserInteractionEnabled = true
         viewChooseDate.addGestureRecognizer(tap)
@@ -125,15 +174,17 @@ class AddVC: UIViewController {
     
     @IBAction func btnAddTask(_ sender: Any) {
         if isEdit {
-            let taskAdd: ListTask = ListTask(nameTask: txtNameTask.text ?? "nil", descriptionTask: txtTextView.text ?? "nil", tagID: tagID , timeStart: startDate.timeIntervalSince1970, timeEnd: endDate.timeIntervalSince1970)
+            let taskAdd: ListTask = ListTask(nameTask: txtNameTask.text ?? "nil", descriptionTask: txtTextView.text ?? "nil", tagID: tagID , timeStart: startDate.timeIntervalSince1970, timeEnd: endDate.timeIntervalSince1970, peopleName: lbPeopleName.text ?? "")
             
+            if validateData() {
                 let editRef = TAppDelegate.db.collection("Task").document("\(taskEdit.taskID)")
                 editRef.updateData([
                     "nameTask": taskAdd.nameTask,
                     "descriptionTask": taskAdd.descriptionTask,
                     "tagID": taskAdd.tagID,
                     "timeStar": taskAdd.timeStart,
-                    "timeEnd": taskAdd.timeEnd
+                    "timeEnd": taskAdd.timeEnd,
+                    "peopleName": taskAdd.peopleName,
                 ]) { err in
                     if let err = err {
                         print("Error updating document: \(err)")
@@ -145,42 +196,55 @@ class AddVC: UIViewController {
                     }
                 }
             } else {
-            let taskAdd: ListTask = ListTask(nameTask: txtNameTask.text ?? "nil", descriptionTask: txtTextView.text ?? "nil", tagID: tagID , timeStart: startDate.timeIntervalSince1970, timeEnd: endDate.timeIntervalSince1970)
+                let alert = UIAlertController(title: "Thông báo", message: "Cần nhập đầy đủ dữ liệu", preferredStyle: UIAlertController.Style.alert)
+                alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: { (action: UIAlertAction!) in
+                    self.actionCancel((Any).self)
+                }))
+                self.present(alert, animated: true, completion: nil)
+            }
             
-            validateData()
+        } else {
+            let taskAdd: ListTask = ListTask(nameTask: txtNameTask.text ?? "nil", descriptionTask: txtTextView.text ?? "nil", tagID: tagID , timeStart: startDate.timeIntervalSince1970, timeEnd: endDate.timeIntervalSince1970, peopleName: lbPeopleName.text ?? "")
             
-            ref = TAppDelegate.db.collection("Task").addDocument(data: [
-                "nameTask": taskAdd.nameTask,
-                "descriptionTask": taskAdd.descriptionTask,
-                "tagID": taskAdd.tagID,
-                "timeStar": taskAdd.timeStart,
-                "timeEnd": taskAdd.timeEnd,
-                ]) { err in
-                    if let err = err {
-                        print("Error adding document: \(err)")
-                    } else {
-                        print("Document added with ID: \(self.ref!.documentID)")
-                        if let taskID = self.ref?.documentID{
-                            TAppDelegate.db.collection("Task").document("\(taskID)").updateData([
-                                "taskID": taskID
-                                ])
+            if validateData() {
+                ref = TAppDelegate.db.collection("Task").addDocument(data: [
+                    "nameTask": taskAdd.nameTask,
+                    "descriptionTask": taskAdd.descriptionTask,
+                    "tagID": taskAdd.tagID,
+                    "timeStar": taskAdd.timeStart,
+                    "timeEnd": taskAdd.timeEnd,
+                    "peopleName": taskAdd.peopleName,
+                    ]) { err in
+                        if let err = err {
+                            print("Error adding document: \(err)")
+                        } else {
+                            print("Document added with ID: \(self.ref!.documentID)")
+                            if let taskID = self.ref?.documentID{
+                                TAppDelegate.db.collection("Task").document("\(taskID)").updateData([
+                                    "taskID": taskID
+                                    ])
+                            }
+                            let alert = UIAlertController(title: "Thông báo", message: "Thêm thành công", preferredStyle: UIAlertController.Style.alert)
+                            alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
+                            self.present(alert, animated: true, completion: nil)
                         }
-                        let alert = UIAlertController(title: "Thông báo", message: "Thêm thành công", preferredStyle: UIAlertController.Style.alert)
-                        alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
-                        self.present(alert, animated: true, completion: nil)
-                    }
+                }
+            } else {
+                let alert = UIAlertController(title: "Thông báo", message: "Cần nhập đầy đủ dữ liệu", preferredStyle: UIAlertController.Style.alert)
+                alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: { (action: UIAlertAction!) in
+                    self.actionCancel((Any).self)
+                }))
+                self.present(alert, animated: true, completion: nil)
             }
         }
     }
     
-    //MARK: - Valtidate Fucn
-    func validateData() {
+    //MARK: - Valtidate Func
+    func validateData() -> Bool {
         if (txtNameTask.text == "") || (txtTextView.text == "") || (tagID == "") || (startDate.timeIntervalSince1970 > endDate.timeIntervalSince1970) {
-            let alert = UIAlertController(title: "Thông báo", message: "Cần nhập đầy đủ dữ liệu", preferredStyle: UIAlertController.Style.alert)
-            alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: { (action: UIAlertAction!) in
-                self.actionCancel((Any).self)
-            }))
-            self.present(alert, animated: true, completion: nil)
+            return false
+        } else {
+            return true
         }
     }
 }
@@ -207,12 +271,14 @@ extension AddVC: UITextViewDelegate,UINavigationBarDelegate {
         
         txtTextView.text = "Description..."
         txtTextView.textColor = UIColor.lightGray
+        tagID = taskEdit.tag.firebaseKey
     }
     
     func initData() {
         typeCollection.dataSource = self
         typeCollection.delegate = self
         txtTextView.delegate = self
+        contactPicker.delegate = self
         
         if isEdit{
             let index = TAppDelegate.arrTag.firstIndex { (objs) -> Bool in
@@ -229,7 +295,7 @@ extension AddVC: UITextViewDelegate,UINavigationBarDelegate {
         }
     }
     
-    //MARK: - Edit Text View  r
+    //MARK: - Edit Text View
     func textViewDidBeginEditing(_ textView: UITextView) {
         
         if txtTextView.textColor == UIColor.lightGray {
@@ -247,16 +313,19 @@ extension AddVC: UITextViewDelegate,UINavigationBarDelegate {
         }
     }
     
-    //MARK: - Edit View
+    //MARK: - Set Data Edit View
     func checkEdit(edit: Bool){
         if edit{
             btnAddTask.setTitle("Save", for: .normal)
             txtNameTask.text = taskEdit.nameTask
             txtTextView.text = taskEdit.descriptionTask
+            lbPeopleName.text = taskEdit.peopleName
             //TODO: Set Tag Choose
             let editStartTime = Date(timeIntervalSince1970: taskEdit.timeStart)
-            let editEndTIme = Date(timeIntervalSince1970: taskEdit.timeEnd)
-            dateTimeToShow.text = configDate(startDate: editStartTime, endDate: editEndTIme)
+            let editEndTime = Date(timeIntervalSince1970: taskEdit.timeEnd)
+            startDate = editStartTime
+            endDate = editEndTime
+            dateTimeToShow.text = configDate(startDate: editStartTime, endDate: editEndTime)
         }
     }
 }
@@ -280,14 +349,65 @@ extension AddVC : UICollectionViewDataSource, UICollectionViewDelegateFlowLayout
             return cell
         default:
             let cell = collectionView.dequeueReusableCell(forIndexPath: indexPath) as TypeViewCell
+            
+            let gestureCreated = Demo(target: self, action: #selector(cellTap(_:)))
+            gestureCreated.obj = tag
+            cell.addGestureRecognizer(gestureCreated)
+            
             cell.cofig(typeTag: tag)
+            if tagID == tag.firebaseKey {
+                cell.layer.borderWidth = 3.0
+                cell.layer.cornerRadius = 4
+                cell.layer.borderColor = UIColor.black.cgColor
+            } else {
+                cell.layer.borderWidth = 0
+                cell.layer.borderColor = UIColor.clear.cgColor
+            }
             return cell
         }
     }
-    
+    //MARK: - Add New Tag
     @objc func addButtonTapped(sender: UIButton) {
-        print("Show UI to add new tag")
-//        arrTag.insert(TypeTag(textTag: "Hello", backGround: "000000"), at: arrTag.count - 1)
+        let alertController = UIAlertController(title: "Thêm tag mới", message: "", preferredStyle: UIAlertController.Style.alert)
+        alertController.addTextField { (textField) in
+            textField.placeholder = "Nhập tên tag"
+        }
+        let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertAction.Style.default, handler: nil)
+        let saveAction = UIAlertAction(title: "Save", style: UIAlertAction.Style.default, handler: { alert -> Void in
+            let nameTag = alertController.textFields![0].text
+            let backgroundTag = alertController.textFields![1].text
+            
+            let newTag = TypeTag(textTag: nameTag ?? "nil", backGround: backgroundTag ?? "")
+            let today = Date()
+            
+            self.ref = TAppDelegate.db.collection("Tag").addDocument(data: [
+                "textTag": newTag.textTag,
+                "backGround": newTag.backGround,
+                "createTime":today.timeIntervalSince1970,
+                ]) { err in
+                    if let err = err {
+                        print("Error adding document: \(err)")
+                    } else {
+                        print("Document added with ID: \(self.ref!.documentID)")
+                        let alert = UIAlertController(title: "Thông báo", message: "Thêm thành công", preferredStyle: UIAlertController.Style.alert)
+                        alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
+                        self.present(alert, animated: true, completion: nil)
+                    }
+            }
+            TAppDelegate.fetchTagNormal()
+            TAppDelegate.arrTag.insert(TypeTag(textTag: nameTag ?? "nil", backGround: backgroundTag ?? "nil"), at: TAppDelegate.arrTag.count - 1)
+            
+            self.typeCollection.reloadData()
+        })
+        alertController.addTextField { (textField) in
+            textField.placeholder = "Mã màu, ngẫu nhiên nếu trống"
+        }
+        
+        alertController.addAction(cancelAction)
+        alertController.addAction(saveAction)
+        
+        self.present(alertController, animated: true, completion: nil)
+        
         typeCollection.reloadData()
     }
 }
@@ -295,19 +415,26 @@ extension AddVC : UICollectionViewDataSource, UICollectionViewDelegateFlowLayout
 //MARK: - CollectionView Delegate
 extension AddVC : UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-            let tag = TAppDelegate.arrTag[indexPath.row]
-            tagID = tag.firebaseKey
-            let cell = typeCollection.cellForItem(at: indexPath)
-            
-            cell?.layer.borderWidth = 3.0
-            cell?.layer.cornerRadius = 4
-            cell?.layer.borderColor = UIColor.black.cgColor
+        let tag = TAppDelegate.arrTag[indexPath.row]
+        tagID = tag.firebaseKey
+        typeCollection.reloadData()
+    }
+}
+
+extension AddVC: CNContactPickerDelegate {
+    
+    func contactPicker(_ picker: CNContactPickerViewController,
+                       didSelect contactProperty: CNContactProperty) {
+        
     }
     
-    func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
-        let cell = collectionView.cellForItem(at: indexPath)
-        cell?.layer.borderWidth = 0
-        cell?.layer.borderColor = UIColor.clear.cgColor
+    func contactPicker(_ picker: CNContactPickerViewController, didSelect contact: CNContact) {
+        let userName:String = contact.givenName
+        lbPeopleName.text = userName
+    }
+    
+    func contactPickerDidCancel(_ picker: CNContactPickerViewController) {
+        
     }
 }
 

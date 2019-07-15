@@ -11,8 +11,18 @@ import UIKit
 class TypeViewCell: UICollectionViewCell {
     @IBOutlet weak var lbTagType: UILabel!
     
+    
+    
     override func awakeFromNib() {
         super.awakeFromNib()
+        let gestureCreated = UITapGestureRecognizer(target: self, action: #selector(showCreated(_:)))
+        lbTagType.addGestureRecognizer(gestureCreated)
+    }
+    
+    var handleFunc: (()->Void)?
+    @objc func showCreated(_ sender:UITapGestureRecognizer){
+//       handleFunc?()
+        print("tap")
     }
     
     func cofig(typeTag: TypeTag) {
@@ -21,6 +31,7 @@ class TypeViewCell: UICollectionViewCell {
         lbTagType.textColor = UIColor.white
         lbTagType.backgroundColor = UIColor(typeTag.backGround, alpha: 1.0)
         lbTagType.text = typeTag.textTag
+        
     }
 }
 

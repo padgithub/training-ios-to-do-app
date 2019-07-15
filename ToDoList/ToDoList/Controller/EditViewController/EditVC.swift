@@ -12,8 +12,11 @@ import SwiftyJSON
 class EditVC: UIViewController {
     
     var tagSelected: TypeTag!
+    var isDoing = false
     
     var listTodo: [ListTask] = []
+    var filteredList = [ListTask]()
+    var isSearch = false
     
     @IBOutlet weak var toDoListTable: UITableView!
     @IBOutlet weak var searchBar: UISearchBar!
@@ -48,9 +51,18 @@ extension EditVC{
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        fetchTaskWithTag(tag: tagSelected)
+        fetchData()
     }
     
+    func fetchData() {
+        if (tagSelected != nil) {
+            fetchTaskWithTag(tag: tagSelected)
+        } else if isDoing {
+            fetchDataDoing()
+        } else {
+            fetchDataNormal()
+        }
+    }
     
     func fetchTaskWithTag(tag: TypeTag) {
         TAppDelegate.db.collection("Task").whereField("tagID", isEqualTo: tag.firebaseKey).getDocuments() { (querySnapshot, err) in
@@ -62,7 +74,50 @@ extension EditVC{
                     let obj = ListTask.init(data: JSON.init(document.data()))
                     self.listTodo.append(obj)
                 }
+                
                 if self.listTodo.count > 0 {
+                    self.listTodo = self.listTodo.sorted(by: { $0.timeEnd > $1.timeEnd })
+                    self.filteredList = self.listTodo
+                    self.toDoListTable.reloadData()
+                }
+            }
+        }
+    }
+    
+    func fetchDataNormal() {
+        TAppDelegate.db.collection("Task").getDocuments() { (querySnapshot, err) in
+            if let err = err {
+                print("Error getting documents: \(err)")
+            } else {
+                self.listTodo.removeAll()
+                for document in querySnapshot!.documents {
+                    let obj = ListTask.init(data: JSON.init(document.data()))
+                    self.listTodo.append(obj)
+                }
+                if self.listTodo.count > 0 {
+                    self.listTodo = self.listTodo.sorted(by: { $0.timeEnd > $1.timeEnd })
+                    self.filteredList = self.listTodo
+                    self.toDoListTable.reloadData()
+                }
+            }
+        }
+    }
+    
+    func fetchDataDoing() {
+         let currentDay = Date().timeIntervalSince1970
+        
+        TAppDelegate.db.collection("Task").whereField("timeEnd", isGreaterThanOrEqualTo: currentDay).getDocuments() { (querySnapshot, err) in
+            if let err = err {
+                print("Error getting documents: \(err)")
+            } else {
+                self.listTodo.removeAll()
+                for document in querySnapshot!.documents {
+                    let obj = ListTask.init(data: JSON.init(document.data()))
+                    self.listTodo.append(obj)
+                }
+                if self.listTodo.count > 0 {
+                    self.listTodo = self.listTodo.sorted(by: { $0.timeEnd > $1.timeEnd })
+                    self.filteredList = self.listTodo
                     self.toDoListTable.reloadData()
                 }
             }
@@ -70,30 +125,45 @@ extension EditVC{
     }
 }
 
-extension EditVC: UITableViewDataSource{
+extension EditVC: UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return listTodo.count
+        if isSearch {
+            return filteredList.count
+        } else {
+            return listTodo.count
+        }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(forIndexPath: indexPath) as CellTask
-        cell.taskData = listTodo[indexPath.row]
-        cell.handleEdit = {
-            let addVC = AddVC.init(nibName: "AddVC", bundle: nil)
-            addVC.isEdit = true
-            addVC.taskEdit = self.listTodo[indexPath.row]
+        if isSearch {
+            cell.taskData = filteredList[indexPath.row]
+            cell.handleEdit = {
+                let addVC = AddVC.init(nibName: "AddVC", bundle: nil)
+                addVC.isEdit = true
+                addVC.taskEdit = self.filteredList[indexPath.row]
                 self.navigationController?.pushViewController(addVC, animated: true)
+            }
+            cell.initData()
+        } else {
+            cell.taskData = listTodo[indexPath.row]
+            cell.handleEdit = {
+                let addVC = AddVC.init(nibName: "AddVC", bundle: nil)
+                addVC.isEdit = true
+                addVC.taskEdit = self.listTodo[indexPath.row]
+                self.navigationController?.pushViewController(addVC, animated: true)
+            }
+            cell.initData()
         }
-        cell.initData()
         return cell
     }
 }
 
-extension EditVC: UITableViewDelegate{
+extension EditVC: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return tableView.frame.height/9
     }
@@ -147,7 +217,18 @@ extension EditVC: UISearchBarDelegate {
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         searchBar.isHidden = !searchBar.isHidden
         btnSearchButton.isHidden = !btnSearchButton.isHidden
+        fetchData()
+    }
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        if !searchText.isEmpty {
+            
+            filteredList = listTodo.filter({( item : ListTask) -> Bool in
+                return item.nameTask.lowercased().contains(searchText.lowercased())
+            })
+        isSearch = true
+        }
+        toDoListTable.reloadData()
     }
 }
-
 

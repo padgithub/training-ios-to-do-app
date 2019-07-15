@@ -19,11 +19,16 @@ class ShowTaskVC: UIViewController {
         self.navigationController?.pushViewController(addVC, animated: true)
     }
     
+    //MARK: - Task Created, Left Action
+    @IBOutlet weak var taskCreated: UIView!
+    @IBOutlet weak var taskLeft: UIView!
+    @IBOutlet weak var lbTaskToday: UILabel!
+    
     var listTodo = [ListTask]()
     var listSort = [ListTask]()
     var tempArray = [ListTask]()
     
-    @IBOutlet weak var countTaskDone: UILabel!
+    @IBOutlet weak var countTask: UILabel!
     @IBOutlet weak var countTaskDoing: UILabel!
     
     override func viewDidLoad() {
@@ -41,6 +46,7 @@ class ShowTaskVC: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         fetchTask()
+        collectionTagCount.reloadData()
     }
 }
 
@@ -54,6 +60,22 @@ extension ShowTaskVC {
         layout.minimumLineSpacing = 10
         layout.scrollDirection = .vertical
         collectionTagCount!.collectionViewLayout = layout
+        
+        let gestureCreated = UITapGestureRecognizer(target: self, action: #selector(showCreated(_:)))
+        let gestureLeft = UITapGestureRecognizer(target: self, action: #selector(showLeft(_:)))
+        taskCreated.addGestureRecognizer(gestureCreated)
+        taskLeft.addGestureRecognizer(gestureLeft)
+    }
+    
+    @objc func showCreated(_ sender:UITapGestureRecognizer){
+        let editVC = EditVC.init(nibName: "EditVC", bundle: nil)
+        self.navigationController?.pushViewController(editVC, animated: true)
+    }
+    
+    @objc func showLeft(_ sender:UITapGestureRecognizer){
+        let editVC = EditVC.init(nibName: "EditVC", bundle: nil)
+        editVC.isDoing = true
+        self.navigationController?.pushViewController(editVC, animated: true)
     }
     
     func initData() {
@@ -69,16 +91,21 @@ extension ShowTaskVC {
     }
     
     func coutTask() {
-        var countDone = 0
+        var countDoing = 0
+        var countToday = 0
         
         let currentDay = Date().startDate.timeIntervalSince1970
         listTodo.forEach { (objs) in
             if Date.init(seconds: objs.timeEnd).endDate.timeIntervalSince1970 > currentDay {
-                countDone += 1
+                countDoing += 1
+            }
+            if (Date.init(seconds: objs.timeEnd).startDate.timeIntervalSince1970 == currentDay) || Date.init(seconds: objs.timeStart).startDate.timeIntervalSince1970 == currentDay {
+                countToday += 1
             }
         }
-        countTaskDone.text = "\(countDone)"
-        countTaskDoing.text = "\(listTodo.count - countDone)"
+        countTask.text = "\(listTodo.count)"
+        countTaskDoing.text = "\(countDoing)"
+        lbTaskToday.text = "Today, you have \(countToday) task"
     }
     
     func fetchTask() {
@@ -95,7 +122,7 @@ extension ShowTaskVC {
                     self.listSort.removeAll()
                     self.sortArray()
                     self.addTempTask()
-                    self.listSort = self.listSort.sorted(by: { $0.timeEnd < $1.timeEnd })
+                    self.listSort = self.listSort.sorted(by: { $0.timeStart < $1.timeStart })
                     
                     self.tableTimeLine.reloadData()
                 }
@@ -130,17 +157,23 @@ extension ShowTaskVC {
         tempArray = listSort
         
         for _ in 1 ... 10 {
-            while i < listSort.count {
-                let currentDayStr = dateFormatter.string(from: currentDay)
-                let date = Date(timeIntervalSince1970: listSort[i].timeStart)
-                let dateStr = dateFormatter.string(from: date)
-                
-                if currentDayStr != dateStr  {
-                    isHave = true
-                    break
+            if listSort.count > 0 {
+                while i < listSort.count {
+                    let currentDayStr = dateFormatter.string(from: currentDay.startDate)
+                    let dateStart = Date(timeIntervalSince1970: listSort[i].timeStart)
+                    let dateEnd = Date(timeIntervalSince1970: listSort[i].timeEnd)
+                    let dateStartStr = dateFormatter.string(from: dateStart)
+                    let dateEndStr = dateFormatter.string(from: dateEnd)
+                    
+                    if currentDayStr != dateStartStr && currentDayStr != dateEndStr {
+                        isHave = true
+                        break
+                    }
+                    i = i + 1
+                    currentDay = Calendar.current.date(byAdding: .day, value: 1, to: currentDay)!
                 }
-                i = i + 1
-                currentDay = Calendar.current.date(byAdding: .day, value: 1, to: currentDay)!
+            } else {
+                isHave = true
             }
             if (isHave) {
                 let data = ListTask(nameTask: "Không có", descriptionTask: "việc cần làm", tagID: "nil", timeStart: currentDay.timeIntervalSince1970, timeEnd: currentDay.timeIntervalSince1970, taskID: "nil")
@@ -160,7 +193,8 @@ extension ShowTaskVC: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return TAppDelegate.arrTag.count
+//        TAppDelegate.fetchTagNormal()
+        return TAppDelegate.arrTag.count - 1
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {

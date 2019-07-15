@@ -17,8 +17,9 @@ struct ListTask{
     var timeStart: Double = 0
     var timeEnd: Double = 0
     var taskID: String = ""
+    var peopleName: String = ""
     
-    init(nameTask: String, descriptionTask: String, tagID: String, timeStart: Double = 0, timeEnd: Double = 0, taskID: String = "") {
+    init(nameTask: String, descriptionTask: String, tagID: String, timeStart: Double = 0, timeEnd: Double = 0, taskID: String = "", peopleName: String = "") {
         self.nameTask = nameTask
         self.descriptionTask = descriptionTask
         self.timeStart = timeStart
@@ -26,6 +27,7 @@ struct ListTask{
         self.tagID = tagID
         self.tag = getTagWithID(id: tagID)
         self.taskID = taskID
+        self.peopleName = peopleName
     }
     
     init(data: JSON) {
@@ -36,6 +38,7 @@ struct ListTask{
         self.timeStart = data["timeStar"].doubleValue
         self.timeEnd = data["timeEnd"].doubleValue
         self.taskID = data["taskID"].stringValue
+        self.peopleName = data["peopleName"].stringValue
     }
     
     func getTagWithID(id: String) -> TypeTag{

@@ -13,9 +13,12 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ShowTaskVC" customModule="ToDoList" customModuleProvider="target">
             <connections>
                 <outlet property="collectionTagCount" destination="Agx-gh-hma" id="xuS-bH-cEz"/>
+                <outlet property="countTask" destination="JCV-G3-7LA" id="b3q-nS-VUn"/>
                 <outlet property="countTaskDoing" destination="QDE-7k-GuX" id="TBz-5Y-9gv"/>
-                <outlet property="countTaskDone" destination="JCV-G3-7LA" id="b3q-nS-VUn"/>
+                <outlet property="lbTaskToday" destination="AVj-TA-m7F" id="Qr8-zD-jfB"/>
                 <outlet property="tableTimeLine" destination="9w9-n7-R2c" id="qZG-9L-dbN"/>
+                <outlet property="taskCreated" destination="wxh-38-tgQ" id="fqk-mp-7ZB"/>
+                <outlet property="taskLeft" destination="0el-v3-jfI" id="H2M-9q-n0a"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>

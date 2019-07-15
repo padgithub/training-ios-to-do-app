@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		34027ED622DC907A00157D9A /* Demo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34027ED522DC907A00157D9A /* Demo.swift */; };
 		34182D5722D58D5900808401 /* ShowTaskVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34182D5522D58D5900808401 /* ShowTaskVC.swift */; };
 		34182D5822D58D5900808401 /* ShowTaskVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 34182D5622D58D5900808401 /* ShowTaskVC.xib */; };
 		34182D5B22D5A0DD00808401 /* TagCount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34182D5922D5A0DD00808401 /* TagCount.swift */; };
@@ -36,6 +37,7 @@
 
 /* Begin PBXFileReference section */
 		24963C2EEC788C704E830FC2 /* Pods-ToDoList.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ToDoList.debug.xcconfig"; path = "Target Support Files/Pods-ToDoList/Pods-ToDoList.debug.xcconfig"; sourceTree = "<group>"; };
+		34027ED522DC907A00157D9A /* Demo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Demo.swift; sourceTree = "<group>"; };
 		34182D5522D58D5900808401 /* ShowTaskVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowTaskVC.swift; sourceTree = "<group>"; };
 		34182D5622D58D5900808401 /* ShowTaskVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ShowTaskVC.xib; sourceTree = "<group>"; };
 		34182D5922D5A0DD00808401 /* TagCount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagCount.swift; sourceTree = "<group>"; };
@@ -117,6 +119,7 @@
 				349FA9EF22CDDD5300009361 /* LaunchScreen.storyboard */,
 				349FA9F222CDDD5300009361 /* Info.plist */,
 				34182D6A22D6D55500808401 /* GoogleService-Info.plist */,
+				34027ED522DC907A00157D9A /* Demo.swift */,
 			);
 			path = ToDoList;
 			sourceTree = "<group>";
@@ -336,6 +339,7 @@
 				349FAA0622CDF38D00009361 /* AddVC.swift in Sources */,
 				349FA9E922CDDD5200009361 /* ViewController.swift in Sources */,
 				34CB95CD22D44C1300F8B480 /* CellTask.swift in Sources */,
+				34027ED622DC907A00157D9A /* Demo.swift in Sources */,
 				349FAA0A22CE086D00009361 /* TypeViewCell.swift in Sources */,
 				34182D5722D58D5900808401 /* ShowTaskVC.swift in Sources */,
 				3419BB5022CF531000D34722 /* EditVC.swift in Sources */,
