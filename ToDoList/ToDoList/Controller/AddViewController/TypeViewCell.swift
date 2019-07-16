@@ -33,6 +33,10 @@ class TypeViewCell: UICollectionViewCell {
         lbTagType.text = typeTag.textTag
         
     }
+    func returnWidth() -> CGFloat {
+        let width = contentView.frame.size.width
+        return width
+    }
 }
 
 extension UIColor {

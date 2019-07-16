@@ -88,7 +88,11 @@ class AddVC: UIViewController {
         let saveAction = UIAlertAction(title: "Save", style: UIAlertAction.Style.default, handler: { alert -> Void in
             
            let txtTag = alertController.textFields![0].text
-            let backGround = alertController.textFields![1].text
+            var backGround = alertController.textFields![1].text
+            
+            if backGround == "" {
+                backGround = self.hexString()
+            }
             
             let refEdit = TAppDelegate.db.collection("Tag").document("\(editTag.firebaseKey)")
             refEdit.updateData([
@@ -98,10 +102,29 @@ class AddVC: UIViewController {
                     if let err = err {
                         print("Error adding document: \(err)")
                     } else {
-                        TAppDelegate.fetchTagNormal()
+                        TAppDelegate.fetchTagNormal {
+                            self.typeCollection.reloadData()
+                        }
+                        let alert = UIAlertController(title: "Thông báo", message: "Thay đổi thành công", preferredStyle: UIAlertController.Style.alert)
+                        alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.cancel, handler: nil))
                         self.typeCollection.reloadData()
-                        let alert = UIAlertController(title: "Thông báo", message: "Thêm thành công", preferredStyle: UIAlertController.Style.alert)
-                        alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
+                        self.present(alert, animated: true, completion: nil)
+                    }
+            }
+        })
+        
+        let deleteAction = UIAlertAction(title: "Delete", style: UIAlertAction.Style.default, handler: { alert -> Void in
+            
+            let refEdit = TAppDelegate.db.collection("Tag").document("\(editTag.firebaseKey)")
+            refEdit.delete() { err in
+                    if let err = err {
+                        print("Error adding document: \(err)")
+                    } else {
+                        TAppDelegate.fetchTagNormal(success: {
+                            self.typeCollection.reloadData()
+                        })
+                        let alert = UIAlertController(title: "Thông báo", message: "Xoá thành công", preferredStyle: UIAlertController.Style.alert)
+                        alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.destructive, handler: nil))
                         self.typeCollection.reloadData()
                         self.present(alert, animated: true, completion: nil)
                     }
@@ -111,8 +134,9 @@ class AddVC: UIViewController {
             textField.text = editTag.backGround
         }
         
-        alertController.addAction(cancelAction)
         alertController.addAction(saveAction)
+        alertController.addAction(deleteAction)
+        alertController.addAction(cancelAction)
         
         self.present(alertController, animated: true, completion: nil)
     }
@@ -169,6 +193,15 @@ class AddVC: UIViewController {
         viewDatePicker.isHidden = !viewDatePicker.isHidden
     }
     
+    func hexString() -> String {
+        let red: CGFloat = .random()
+        let green: CGFloat = .random()
+        let blue: CGFloat = .random()
+        let alpha: CGFloat = .random()
+        
+            return String(format: "%02X%02X%02X%02X", UInt8(red * 255), UInt8(green * 255), UInt8(blue * 255), UInt8(alpha * 255))
+    }
+    
     //MARK: - Add Task
     @IBOutlet weak var txtNameTask: UITextField!
     
@@ -196,7 +229,7 @@ class AddVC: UIViewController {
                     }
                 }
             } else {
-                let alert = UIAlertController(title: "Thông báo", message: "Cần nhập đầy đủ dữ liệu", preferredStyle: UIAlertController.Style.alert)
+                let alert = UIAlertController(title: "Thông báo", message: "Cần nhập đủ và chính xác dữ liệu", preferredStyle: UIAlertController.Style.alert)
                 alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: { (action: UIAlertAction!) in
                     self.actionCancel((Any).self)
                 }))
@@ -230,7 +263,7 @@ class AddVC: UIViewController {
                         }
                 }
             } else {
-                let alert = UIAlertController(title: "Thông báo", message: "Cần nhập đầy đủ dữ liệu", preferredStyle: UIAlertController.Style.alert)
+                let alert = UIAlertController(title: "Thông báo", message: "Cần nhập đủ và chính xác dữ liệu", preferredStyle: UIAlertController.Style.alert)
                 alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: { (action: UIAlertAction!) in
                     self.actionCancel((Any).self)
                 }))
@@ -345,7 +378,11 @@ extension AddVC : UICollectionViewDataSource, UICollectionViewDelegateFlowLayout
         switch tag.type {
         case .special:
             let cell = collectionView.dequeueReusableCell(forIndexPath: indexPath) as SpecialCell
+            
+            let createAction = UITapGestureRecognizer(target: self, action: #selector(addButtonTapped))
+            cell.viewButton.addGestureRecognizer(createAction)
             cell.btnAdd.addTarget(self, action: #selector(addButtonTapped), for: UIControl.Event.touchUpInside)
+            
             return cell
         default:
             let cell = collectionView.dequeueReusableCell(forIndexPath: indexPath) as TypeViewCell
@@ -358,7 +395,7 @@ extension AddVC : UICollectionViewDataSource, UICollectionViewDelegateFlowLayout
             if tagID == tag.firebaseKey {
                 cell.layer.borderWidth = 3.0
                 cell.layer.cornerRadius = 4
-                cell.layer.borderColor = UIColor.black.cgColor
+                cell.layer.borderColor = UIColor.init("19ff19", alpha: 1.0).cgColor
             } else {
                 cell.layer.borderWidth = 0
                 cell.layer.borderColor = UIColor.clear.cgColor
@@ -375,11 +412,15 @@ extension AddVC : UICollectionViewDataSource, UICollectionViewDelegateFlowLayout
         let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertAction.Style.default, handler: nil)
         let saveAction = UIAlertAction(title: "Save", style: UIAlertAction.Style.default, handler: { alert -> Void in
             let nameTag = alertController.textFields![0].text
-            let backgroundTag = alertController.textFields![1].text
+            var backgroundTag = alertController.textFields![1].text
             
-            let newTag = TypeTag(textTag: nameTag ?? "nil", backGround: backgroundTag ?? "")
+            if backgroundTag == "" {
+                backgroundTag = self.hexString()
+            }
+            
+            let newTag = TypeTag(textTag: nameTag ?? "nil", backGround: backgroundTag ?? self.hexString())
             let today = Date()
-            
+            print(self.hexString())
             self.ref = TAppDelegate.db.collection("Tag").addDocument(data: [
                 "textTag": newTag.textTag,
                 "backGround": newTag.backGround,
@@ -394,10 +435,9 @@ extension AddVC : UICollectionViewDataSource, UICollectionViewDelegateFlowLayout
                         self.present(alert, animated: true, completion: nil)
                     }
             }
-            TAppDelegate.fetchTagNormal()
-            TAppDelegate.arrTag.insert(TypeTag(textTag: nameTag ?? "nil", backGround: backgroundTag ?? "nil"), at: TAppDelegate.arrTag.count - 1)
-            
-            self.typeCollection.reloadData()
+            TAppDelegate.fetchTagNormal {
+                self.typeCollection.reloadData()
+            }
         })
         alertController.addTextField { (textField) in
             textField.placeholder = "Mã màu, ngẫu nhiên nếu trống"
@@ -495,5 +535,20 @@ extension UITableView {
             fatalError("Could not dequeue header with identifier: \(Cell.reuseIdentifier)")
         }
         return header
+    }
+}
+
+extension UIColor {
+    static var random: UIColor {
+        return UIColor(red: .random(in: 0...1),
+                       green: .random(in: 0...1),
+                       blue: .random(in: 0...1),
+                       alpha: 1.0)
+    }
+}
+
+extension CGFloat {
+    static func random() -> CGFloat {
+        return CGFloat(arc4random()) / CGFloat(UInt32.max)
     }
 }

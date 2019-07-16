@@ -10,11 +10,12 @@ import UIKit
 
 class SpecialCell: UICollectionViewCell {
     @IBOutlet weak var btnAdd: UIButton!
+    @IBOutlet weak var viewButton: UIView!
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
-//        btnAdd.frame.height = TypeViewCell.frame(UIView)
+        viewButton.layer.cornerRadius = 5
+        viewButton.clipsToBounds = true
     }
 
 }

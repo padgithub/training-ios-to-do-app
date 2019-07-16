@@ -10,15 +10,27 @@ import UIKit
 import Firebase
 import FirebaseFirestore
 import SwiftyJSON
+import UserNotifications
 
 let TAppDelegate = UIApplication.shared.delegate as! AppDelegate
 let TApp = UIApplication.shared
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
     var window: UIWindow?
     var db: Firestore!
     var arrTag = [TypeTag]()
+    
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        completionHandler([.alert, .sound])
+    }
+    
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+        if response.notification.request.identifier == "TestIdentifier" {
+            print("action when click")
+        }
+        completionHandler()
+    }
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         UINavigationBar.appearance().barTintColor = UIColor.white
@@ -27,6 +39,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         fetchTag()
         
+        //Notification
+        UNUserNotificationCenter.current().delegate = self
+        
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { (granted, err) in
+            print("granted: \(granted)")
+        }
         return true
     }
     
@@ -47,7 +65,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
     
-    func fetchTagNormal() {
+    func fetchTagNormal(success: @escaping () -> Void) {
         db.collection("Tag").getDocuments() { (querySnapshot, err) in
             if let err = err {
                 print("Error getting documents: \(err)")
@@ -59,6 +77,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 }
                 self.arrTag = self.arrTag.sorted(by: { $0.createTime < $1.createTime })
                 self.arrTag.append(TypeTag(textTag: "", backGround: "", type: .special))
+                success()
             }
         }
     }

@@ -9,6 +9,7 @@
 import UIKit
 import Firebase
 import SwiftyJSON
+import UserNotifications
 
 class ShowTaskVC: UIViewController {
     @IBOutlet weak var collectionTagCount: UICollectionView!
@@ -27,24 +28,36 @@ class ShowTaskVC: UIViewController {
     var listTodo = [ListTask]()
     var listSort = [ListTask]()
     var tempArray = [ListTask]()
+    var todayTask = "nil"
+    var decTodayTask = "nil"
+    let defauls = UserDefaults.standard
     
     @IBOutlet weak var countTask: UILabel!
     @IBOutlet weak var countTaskDoing: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-         // [START setup]
         let settings = FirestoreSettings()
-        
         Firestore.firestore().settings = settings
-        // [END setup]
-       // TAppDelegate.db = Firestore.firestore()
+        
         initUI()
         initData()
+        
+        let myTimer = Timer(timeInterval: 40.0, target: self, selector: #selector(reload), userInfo: nil, repeats: true)
+        RunLoop.main.add(myTimer, forMode: RunLoop.Mode.default)
+    }
+    
+    @objc func reload() {
+        fetchTask()
+        pushNoti()
+        print("reload")
     }
     
     override func viewDidAppear(_ animated: Bool) {
+       fetchTaskToday()
+        
+    }
+    override func viewWillAppear(_ animated: Bool) {
         fetchTask()
         collectionTagCount.reloadData()
     }
@@ -108,7 +121,7 @@ extension ShowTaskVC {
         lbTaskToday.text = "Today, you have \(countToday) task"
     }
     
-    func fetchTask() {
+    func  fetchTask() {
         TAppDelegate.db.collection("Task").getDocuments() { (querySnapshot, err) in
             if let err = err {
                 print("Error getting documents: \(err)")
@@ -121,15 +134,42 @@ extension ShowTaskVC {
                 if self.listTodo.count > 0 {
                     self.listSort.removeAll()
                     self.sortArray()
+                     self.listSort = self.listSort.sorted(by: { $0.timeStart < $1.timeStart })
                     self.addTempTask()
                     self.listSort = self.listSort.sorted(by: { $0.timeStart < $1.timeStart })
                     
                     self.tableTimeLine.reloadData()
+                } else {
+                    self.addTempTask()
+                    self.tableTimeLine.reloadData()
                 }
                 self.coutTask()
+                self.fetchTaskToday()
             }
         }
     }
+    
+    //MARK: - Save task today to userdefaults
+    func fetchTaskToday() {
+        var dataArr =  [[String:String]]()
+        let dateFormat = DateFormatter()
+        dateFormat.dateFormat = "dd-MM-yyyy"
+        let today = dateFormat.string(from: Date())
+        for item in listSort {
+            let date = Date(timeIntervalSince1970: item.timeStart)
+            let dayInArr = dateFormat.string(from: date)
+            if today == dayInArr && item.nameTask != "Không có" {
+                let dateFormat2 = DateFormatter()
+                dateFormat2.dateFormat = "dd-MM-yyyy HH:mm"
+                let dateAdd = dateFormat.string(from: date)
+                let dic = ["Name": item.nameTask, "Desc": item.descriptionTask, "Date": dateAdd]
+                dataArr.append(dic)
+            }
+        }
+        defauls.set(dataArr, forKey: "TaskToday")
+        print(dataArr)
+    }
+    
     
     //MARK: - Func Sort Array By Date
     func sortArray() {
@@ -138,6 +178,7 @@ extension ShowTaskVC {
 
         let currentDay = Date()
         dateFormatter.string(from: currentDay)
+        
         for item in listTodo {
             let date = Date(timeIntervalSince1970: item.timeEnd)
             if date > currentDay {
@@ -153,10 +194,10 @@ extension ShowTaskVC {
         var currentDay = Date()
         var isHave = false
         var i = 0
-        
+        let next10Day = Calendar.current.date(byAdding: .day, value: 10, to: currentDay)!
         tempArray = listSort
         
-        for _ in 1 ... 10 {
+        while currentDay < next10Day {
             if listSort.count > 0 {
                 while i < listSort.count {
                     let currentDayStr = dateFormatter.string(from: currentDay.startDate)
@@ -165,10 +206,15 @@ extension ShowTaskVC {
                     let dateStartStr = dateFormatter.string(from: dateStart)
                     let dateEndStr = dateFormatter.string(from: dateEnd)
                     
+                    if currentDayStr == "18-07-2019" {
+                        print("HERE")
+                    }
+                    
                     if currentDayStr != dateStartStr && currentDayStr != dateEndStr {
                         isHave = true
                         break
                     }
+
                     i = i + 1
                     currentDay = Calendar.current.date(byAdding: .day, value: 1, to: currentDay)!
                 }
@@ -183,6 +229,35 @@ extension ShowTaskVC {
         }
         listSort = tempArray
     }
+    
+    //MARK: - Điều kiện push notification
+    func pushNoti() {
+        let arrData = defauls.object(forKey: "TaskToday") as? [[String:String]] ?? [[String:String]]()
+        let dateFormatterNonSS = DateFormatter()
+        dateFormatterNonSS.dateFormat = "dd-MM-yyyy HH:mm"
+        for item in arrData {
+            let day1 = dateFormatterNonSS.string(from: Date())
+            if day1 == item["Date"] {
+                todayTask = item["Name"]!
+                decTodayTask = item["Desc"]!
+                notification()
+            }
+        }
+    }
+    
+    //MARK: - Notification
+    func notification() {
+        let content = UNMutableNotificationContent()
+        content.title = todayTask
+        content.body = decTodayTask
+        content.sound = UNNotificationSound.default
+        
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 5, repeats: false)
+        let request = UNNotificationRequest(identifier: "TestIdentifier", content: content, trigger: trigger)
+        UNUserNotificationCenter.current().add(request, withCompletionHandler: nil)
+    }
+    
+    
 }
 
 //MARK: - CollectionView
@@ -193,7 +268,7 @@ extension ShowTaskVC: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-//        TAppDelegate.fetchTagNormal()
+        // -1 SpecialCell - Button
         return TAppDelegate.arrTag.count - 1
     }
     
@@ -240,12 +315,10 @@ extension ShowTaskVC: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//        return listTodo.count
         return listSort.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-//        let taskCell = listTodo[indexPath.row]
         let taskCell = listSort[indexPath.row]
         let cell = tableView.dequeueReusableCell(forIndexPath: indexPath) as TimeLineCell
         cell.initData(taskData: taskCell)
