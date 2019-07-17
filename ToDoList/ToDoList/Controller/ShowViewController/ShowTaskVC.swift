@@ -43,19 +43,20 @@ class ShowTaskVC: UIViewController {
         
         initUI()
         initData()
-        
-        let myTimer = Timer(timeInterval: 40.0, target: self, selector: #selector(reload), userInfo: nil, repeats: true)
-        RunLoop.main.add(myTimer, forMode: RunLoop.Mode.default)
+        reload()
+//        let myTimer = Timer(timeInterval: 5.0, target: self, selector: #selector(reload), userInfo: nil, repeats: true)
+//        RunLoop.main.add(myTimer, forMode: RunLoop.Mode.default)
     }
     
     @objc func reload() {
         fetchTask()
         pushNoti()
+        print("dddddd")
     }
     
     override func viewDidAppear(_ animated: Bool) {
        fetchTaskToday()
-        
+        print("new")
     }
     override func viewWillAppear(_ animated: Bool) {
         fetchTask()
@@ -142,29 +143,33 @@ extension ShowTaskVC {
     
     func  fetchTask() {
         TAppDelegate.db.collection("Task").getDocuments() { (querySnapshot, err) in
+            
             if let err = err {
                 print("Error getting documents: \(err)")
             } else {
+                
                 self.listTodo.removeAll()
                 for document in querySnapshot!.documents {
                     let obj = ListTask.init(data: JSON.init(document.data()))
                     self.listTodo.append(obj)
                 }
+                
                 if self.listTodo.count == 0 {
                     self.addTempTask()
                 }
+                
                 if self.listTodo.count > 0 {
                     self.listSort.removeAll()
                     self.sortArray()
                     self.addTempTask()
                     self.listSort = self.listSort.sorted(by: { $0.timeStart < $1.timeStart })
                 }
+                
                 self.coutTask()
                 self.fetchTaskToday()
-                
                 self.listTaskCount.removeAll()
                 self.countTag()
-                 self.tableTimeLine.reloadData()
+                self.tableTimeLine.reloadData()
             }
         }
     }
@@ -172,21 +177,14 @@ extension ShowTaskVC {
     //MARK: - Save task today to userdefaults
     func fetchTaskToday() {
         var dataArr =  [[String:String]]()
-        let dateFormat = DateFormatter()
-        dateFormat.dateFormat = "dd-MM-yyyy"
-        let today = dateFormat.string(from: Date())
         for item in listSort {
-            let date = Date(timeIntervalSince1970: item.timeStart)
-            let dayInArr = dateFormat.string(from: date)
-            if today == dayInArr && item.nameTask != "Không có" {
-                let dateFormat2 = DateFormatter()
-                dateFormat2.dateFormat = "dd-MM-yyyy HH:mm"
-                let dateAdd = dateFormat2.string(from: date)
-                let dic = ["Name": item.nameTask, "Desc": item.descriptionTask, "Date": dateAdd]
+            if item.nameTask != "Không có" {
+                let dic = ["Name": item.nameTask, "Desc": item.descriptionTask, "Date": "\(item.timeStart)"]
                 dataArr.append(dic)
             }
         }
         defauls.set(dataArr, forKey: "TaskToday")
+        print("refresh")
     }
     
     
@@ -211,13 +209,12 @@ extension ShowTaskVC {
         let arrData = defauls.object(forKey: "TaskToday") as? [[String:String]] ?? [[String:String]]()
         let dateFormatterNonSS = DateFormatter()
         dateFormatterNonSS.dateFormat = "dd-MM-yyyy HH:mm"
+        UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: ["TestIdentifier"])
+        UNUserNotificationCenter.current().removeDeliveredNotifications(withIdentifiers: ["TestIdentifier"])
         for item in arrData {
-            let day1 = dateFormatterNonSS.string(from: Date())
-            if day1 == item["Date"] {
-                todayTask = item["Name"]!
-                decTodayTask = item["Desc"]!
-                notification()
-            }
+            todayTask = item["Name"] ?? ""
+            decTodayTask = item["Desc"] ?? ""
+            notification(day: Double(item["Date"] ?? "0") ?? 0)
         }
     }
     //MARK: - Add temp task
@@ -265,29 +262,36 @@ extension ShowTaskVC {
         
         tempArray = tempArray.sorted(by: { $0.timeStart < $1.timeStart })
         // Remove same temp null task
-        for i in 1 ... tempArray.count - 2 {
-            if Date.init(seconds: tempArray[i].timeStart).startDate == Date.init(seconds: tempArray[i - 1].timeStart).startDate && tempArray[i].nameTask == "Không có" {
-                tempArray.remove(at: i)
+        var x = 1
+        var y = 0
+        while x < tempArray.count - 1 {
+            if Date.init(seconds: tempArray[x].timeStart).startDate == Date.init(seconds: tempArray[x - 1].timeStart).startDate && tempArray[x].nameTask == "Không có" {
+                tempArray.remove(at: x)
             }
+            x += 1
         }
-        for i in 0 ... tempArray.count - 3 {
-            if Date.init(seconds: tempArray[i].timeStart).startDate == Date.init(seconds: tempArray[i + 1].timeStart).startDate && tempArray[i].nameTask == "Không có" {
-                tempArray.remove(at: i)
+        while y < tempArray.count - 1 {
+            if Date.init(seconds: tempArray[y].timeStart).startDate == Date.init(seconds: tempArray[y + 1].timeStart).startDate && tempArray[y].nameTask == "Không có" {
+                tempArray.remove(at: y)
             }
+            y += 1
         }
+        
         listSort = tempArray
     }
     
     //MARK: - Notification
-    func notification() {
-        let content = UNMutableNotificationContent()
-        content.title = todayTask
-        content.body = decTodayTask
-        content.sound = UNNotificationSound.default
-        
-        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 5, repeats: false)
-        let request = UNNotificationRequest(identifier: "TestIdentifier", content: content, trigger: trigger)
-        UNUserNotificationCenter.current().add(request, withCompletionHandler: nil)
+    func notification(day: Double) {
+        if (day - Date().timeIntervalSince1970) > 0 {
+            let content = UNMutableNotificationContent()
+            content.title = todayTask
+            content.body = decTodayTask
+            content.sound = UNNotificationSound.default
+            
+            let trigger = UNTimeIntervalNotificationTrigger(timeInterval: day - Date().timeIntervalSince1970, repeats: false)
+            let request = UNNotificationRequest(identifier: "TestIdentifier", content: content, trigger: trigger)
+            UNUserNotificationCenter.current().add(request, withCompletionHandler: nil)
+        }
     }
     
     

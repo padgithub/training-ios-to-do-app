@@ -52,7 +52,7 @@ class AddVC: UIViewController {
         if txtChooseDate.tag != 0 {
             viewDatePicker.isHidden = true
             
-            dateFormatter.dateFormat = "dd-MM HH:mm"
+            dateFormatter.dateFormat = "dd-MM HH:mm:ss"
             endDate = dateChoose.date
             dateTimeToShow.text = configDate(startDate: startDate, endDate: endDate)
             
@@ -63,7 +63,7 @@ class AddVC: UIViewController {
             txtChooseDate.tag = 1
             txtChooseDate.text = "Choose End Date"
             
-            dateFormatter.dateFormat = "dd-MM HH:mm"
+            dateFormatter.dateFormat = "dd-MM HH:mm:ss"
             startDate = dateChoose.date
             print(startDate)
         }
@@ -224,15 +224,15 @@ class AddVC: UIViewController {
                     } else {
                         print("Document successfully updated")
                         let alert = UIAlertController(title: "Thông báo", message: "Thay đổi thành công", preferredStyle: UIAlertController.Style.alert)
-                        alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
+                        alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: { alert -> Void in
+                            self.navigationController?.popToRootViewController(animated: true)
+                        }))
                         self.present(alert, animated: true, completion: nil)
                     }
                 }
             } else {
                 let alert = UIAlertController(title: "Thông báo", message: "Cần nhập đủ và chính xác dữ liệu", preferredStyle: UIAlertController.Style.alert)
-                alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: { (action: UIAlertAction!) in
-                    self.actionCancel((Any).self)
-                }))
+                alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
                 self.present(alert, animated: true, completion: nil)
             }
             
@@ -258,15 +258,15 @@ class AddVC: UIViewController {
                                     ])
                             }
                             let alert = UIAlertController(title: "Thông báo", message: "Thêm thành công", preferredStyle: UIAlertController.Style.alert)
-                            alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
+                            alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: { alert -> Void in
+                                self.navigationController?.popViewController(animated: true)
+                            }))
                             self.present(alert, animated: true, completion: nil)
                         }
                 }
             } else {
                 let alert = UIAlertController(title: "Thông báo", message: "Cần nhập đủ và chính xác dữ liệu", preferredStyle: UIAlertController.Style.alert)
-                alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: { (action: UIAlertAction!) in
-                    self.actionCancel((Any).self)
-                }))
+                alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
                 self.present(alert, animated: true, completion: nil)
             }
         }
@@ -373,8 +373,10 @@ extension AddVC : UICollectionViewDataSource, UICollectionViewDelegateFlowLayout
         return TAppDelegate.arrTag.count
     }
     
+    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let tag = TAppDelegate.arrTag[indexPath.row]
+
         switch tag.type {
         case .special:
             let cell = collectionView.dequeueReusableCell(forIndexPath: indexPath) as SpecialCell
@@ -400,9 +402,11 @@ extension AddVC : UICollectionViewDataSource, UICollectionViewDelegateFlowLayout
                 cell.layer.borderWidth = 0
                 cell.layer.borderColor = UIColor.clear.cgColor
             }
+            scrollToLastItem()
             return cell
         }
     }
+    
     //MARK: - Add New Tag
     @objc func addButtonTapped(sender: UIButton) {
         let alertController = UIAlertController(title: "Thêm tag mới", message: "", preferredStyle: UIAlertController.Style.alert)
@@ -431,7 +435,9 @@ extension AddVC : UICollectionViewDataSource, UICollectionViewDelegateFlowLayout
                     } else {
                         print("Document added with ID: \(self.ref!.documentID)")
                         let alert = UIAlertController(title: "Thông báo", message: "Thêm thành công", preferredStyle: UIAlertController.Style.alert)
-                        alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
+                        alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: { alert -> Void in
+                            self.scrollToLastItem()
+                        }))
                         self.present(alert, animated: true, completion: nil)
                     }
             }
@@ -450,13 +456,27 @@ extension AddVC : UICollectionViewDataSource, UICollectionViewDelegateFlowLayout
         
         typeCollection.reloadData()
     }
+    
+    func scrollToLastItem() {
+        
+        let lastSection = typeCollection.numberOfSections - 1
+        
+        let lastRow = typeCollection.numberOfItems(inSection: lastSection)
+        
+        let indexPath = IndexPath(row: lastRow - 1, section: lastSection)
+        
+        self.typeCollection.scrollToItem(at: indexPath, at: .bottom, animated: true)
+        
+    }
 }
 
 //MARK: - CollectionView Delegate
 extension AddVC : UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
         let tag = TAppDelegate.arrTag[indexPath.row]
         tagID = tag.firebaseKey
+        
         typeCollection.reloadData()
     }
 }
