@@ -18,9 +18,12 @@ class TimeLineCell: UITableViewCell {
     @IBOutlet weak var viewLineTimeLine: UIView!
     @IBOutlet weak var dateEnd: UILabel!
     @IBOutlet weak var timeEnd: UILabel!
+    @IBOutlet weak var timeOnly: UILabel!
+    @IBOutlet weak var viewTimeOnly: UIView!
     
     var taskData = ListTask(nameTask: "nil", descriptionTask: "nil", tagID: "nil")
     let dateFormatter = DateFormatter()
+    var isHide = true
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -47,6 +50,7 @@ extension TimeLineCell {
     }
     
     func initData(taskData: ListTask) {
+        viewTimeOnly.isHidden = isHide
         imgColorTask.backgroundColor = UIColor(taskData.tag.backGround, alpha: 1.0)
         lbNameTask.text = taskData.nameTask
         lbDescriptionTask.text = taskData.descriptionTask
@@ -58,6 +62,7 @@ extension TimeLineCell {
         timeStart.text = getTime(date: taskData.timeStart)
         dateEnd.text = getDate(date: taskData.timeEnd)
         timeEnd.text = getTime(date: taskData.timeEnd)
+        timeOnly.text = getTime(date: taskData.timeStart)
     }
     
     func getDate(date: Double) -> String{

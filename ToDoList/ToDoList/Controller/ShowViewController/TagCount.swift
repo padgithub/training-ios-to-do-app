@@ -12,6 +12,7 @@ class TagCount: UICollectionViewCell {
     @IBOutlet weak var imgTag: UIImageView!
     @IBOutlet weak var lbNametag: UILabel!
     @IBOutlet weak var viewTag: UIView!
+    @IBOutlet weak var lbTaskCount: UILabel!
     
     override func awakeFromNib() {
         super.awakeFromNib()

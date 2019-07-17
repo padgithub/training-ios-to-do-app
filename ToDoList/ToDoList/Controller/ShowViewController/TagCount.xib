@@ -66,7 +66,8 @@
             <connections>
                 <outlet property="imgTag" destination="6c1-dC-hyP" id="KEC-AD-MbR"/>
                 <outlet property="lbNametag" destination="bwq-zS-Yju" id="bG3-6b-g30"/>
-                <outlet property="viewTag" destination="qcs-up-uEc" id="oyg-zx-76r"/>
+                <outlet property="lbTaskCount" destination="OfR-Dn-WRB" id="wjb-Wq-QiU"/>
+                <outlet property="viewTag" destination="OfR-Dn-WRB" id="7Hl-Br-QTk"/>
             </connections>
             <point key="canvasLocation" x="113" y="61"/>
         </collectionViewCell>

@@ -28,6 +28,7 @@ class ShowTaskVC: UIViewController {
     var listTodo = [ListTask]()
     var listSort = [ListTask]()
     var tempArray = [ListTask]()
+    var listTaskCount = [Int]()
     var todayTask = "nil"
     var decTodayTask = "nil"
     let defauls = UserDefaults.standard
@@ -50,7 +51,6 @@ class ShowTaskVC: UIViewController {
     @objc func reload() {
         fetchTask()
         pushNoti()
-        print("reload")
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -92,6 +92,11 @@ extension ShowTaskVC {
     }
     
     func initData() {
+        
+        for _ in 0 ... TAppDelegate.arrTag.count - 2 {
+            listTaskCount.append(0)
+        }
+        
         collectionTagCount.dataSource = self
         collectionTagCount.delegate = self
         
@@ -103,22 +108,36 @@ extension ShowTaskVC {
         collectionTagCount.reloadData()
     }
     
+    //MARK: - Count task
     func coutTask() {
         var countDoing = 0
         var countToday = 0
         
-        let currentDay = Date().startDate.timeIntervalSince1970
+        let currentDay = Date().timeIntervalSince1970
+         let currentDay2 = Date().startDate.timeIntervalSince1970
         listTodo.forEach { (objs) in
-            if Date.init(seconds: objs.timeEnd).endDate.timeIntervalSince1970 > currentDay {
+            if Date.init(seconds: objs.timeEnd).timeIntervalSince1970 > currentDay {
                 countDoing += 1
             }
-            if (Date.init(seconds: objs.timeEnd).startDate.timeIntervalSince1970 == currentDay) || Date.init(seconds: objs.timeStart).startDate.timeIntervalSince1970 == currentDay {
+            if (Date.init(seconds: objs.timeEnd).startDate.timeIntervalSince1970 == currentDay2) || Date.init(seconds: objs.timeStart).startDate.timeIntervalSince1970 == currentDay2 {
                 countToday += 1
             }
         }
         countTask.text = "\(listTodo.count)"
         countTaskDoing.text = "\(countDoing)"
         lbTaskToday.text = "Today, you have \(countToday) task"
+    }
+    
+    func countTag() {
+        for i in 0 ... TAppDelegate.arrTag.count - 2 {
+            listTaskCount.append(0)
+            listTodo.forEach { (objs) in
+                if objs.tagID == TAppDelegate.arrTag[i].firebaseKey {
+                    listTaskCount[i] += 1
+                }
+            }
+        }
+        collectionTagCount.reloadData()
     }
     
     func  fetchTask() {
@@ -131,20 +150,21 @@ extension ShowTaskVC {
                     let obj = ListTask.init(data: JSON.init(document.data()))
                     self.listTodo.append(obj)
                 }
+                if self.listTodo.count == 0 {
+                    self.addTempTask()
+                }
                 if self.listTodo.count > 0 {
                     self.listSort.removeAll()
                     self.sortArray()
-                     self.listSort = self.listSort.sorted(by: { $0.timeStart < $1.timeStart })
                     self.addTempTask()
                     self.listSort = self.listSort.sorted(by: { $0.timeStart < $1.timeStart })
-                    
-                    self.tableTimeLine.reloadData()
-                } else {
-                    self.addTempTask()
-                    self.tableTimeLine.reloadData()
                 }
                 self.coutTask()
                 self.fetchTaskToday()
+                
+                self.listTaskCount.removeAll()
+                self.countTag()
+                 self.tableTimeLine.reloadData()
             }
         }
     }
@@ -161,13 +181,12 @@ extension ShowTaskVC {
             if today == dayInArr && item.nameTask != "Không có" {
                 let dateFormat2 = DateFormatter()
                 dateFormat2.dateFormat = "dd-MM-yyyy HH:mm"
-                let dateAdd = dateFormat.string(from: date)
+                let dateAdd = dateFormat2.string(from: date)
                 let dic = ["Name": item.nameTask, "Desc": item.descriptionTask, "Date": dateAdd]
                 dataArr.append(dic)
             }
         }
         defauls.set(dataArr, forKey: "TaskToday")
-        print(dataArr)
     }
     
     
@@ -187,49 +206,6 @@ extension ShowTaskVC {
         }
     }
     
-    func addTempTask() {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "dd-MM-yyyy"
-        
-        var currentDay = Date()
-        var isHave = false
-        var i = 0
-        let next10Day = Calendar.current.date(byAdding: .day, value: 10, to: currentDay)!
-        tempArray = listSort
-        
-        while currentDay < next10Day {
-            if listSort.count > 0 {
-                while i < listSort.count {
-                    let currentDayStr = dateFormatter.string(from: currentDay.startDate)
-                    let dateStart = Date(timeIntervalSince1970: listSort[i].timeStart)
-                    let dateEnd = Date(timeIntervalSince1970: listSort[i].timeEnd)
-                    let dateStartStr = dateFormatter.string(from: dateStart)
-                    let dateEndStr = dateFormatter.string(from: dateEnd)
-                    
-                    if currentDayStr == "18-07-2019" {
-                        print("HERE")
-                    }
-                    
-                    if currentDayStr != dateStartStr && currentDayStr != dateEndStr {
-                        isHave = true
-                        break
-                    }
-
-                    i = i + 1
-                    currentDay = Calendar.current.date(byAdding: .day, value: 1, to: currentDay)!
-                }
-            } else {
-                isHave = true
-            }
-            if (isHave) {
-                let data = ListTask(nameTask: "Không có", descriptionTask: "việc cần làm", tagID: "nil", timeStart: currentDay.timeIntervalSince1970, timeEnd: currentDay.timeIntervalSince1970, taskID: "nil")
-                tempArray.append(data)
-            }
-            currentDay = Calendar.current.date(byAdding: .day, value: 1, to: currentDay)!
-        }
-        listSort = tempArray
-    }
-    
     //MARK: - Điều kiện push notification
     func pushNoti() {
         let arrData = defauls.object(forKey: "TaskToday") as? [[String:String]] ?? [[String:String]]()
@@ -243,6 +219,63 @@ extension ShowTaskVC {
                 notification()
             }
         }
+    }
+    //MARK: - Add temp task
+    func addTempTask() {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "dd-MM-yyyy"
+        
+        var currentDay = Date()
+        var isHave = false
+        var i = 0
+        
+        tempArray = listSort
+        
+        for _ in 1 ... 10 {
+            if listSort.count > 0 {
+                while i < listSort.count {
+                    let currentDayStr = dateFormatter.string(from: currentDay.startDate)
+                    let dateStart = Date(timeIntervalSince1970: listSort[i].timeStart)
+                    let dateEnd = Date(timeIntervalSince1970: listSort[i].timeEnd)
+                    let dateStartStr = dateFormatter.string(from: dateStart)
+                    let dateEndStr = dateFormatter.string(from: dateEnd)
+                    
+                    if listSort.count == 1 && (currentDayStr == dateStartStr || currentDayStr == dateEndStr) {
+                        currentDay = Calendar.current.date(byAdding: .day, value: 1, to: currentDay)!
+                        isHave = true
+                        break
+                    }
+                    
+                    if currentDayStr != dateStartStr && currentDayStr != dateEndStr {
+                        isHave = true
+                        break
+                    }
+                    
+                    i = i + 1
+                    currentDay = Calendar.current.date(byAdding: .day, value: 1, to: currentDay)!
+                }
+            } else { isHave = true }
+            
+            if (isHave) {
+                let data = ListTask(nameTask: "Không có", descriptionTask: "việc cần làm", tagID: "nil", timeStart: currentDay.timeIntervalSince1970, timeEnd: currentDay.timeIntervalSince1970, taskID: "nil")
+                tempArray.append(data)
+            }
+            currentDay = Calendar.current.date(byAdding: .day, value: 1, to: currentDay)!
+        }
+        
+        tempArray = tempArray.sorted(by: { $0.timeStart < $1.timeStart })
+        // Remove same temp null task
+        for i in 1 ... tempArray.count - 2 {
+            if Date.init(seconds: tempArray[i].timeStart).startDate == Date.init(seconds: tempArray[i - 1].timeStart).startDate && tempArray[i].nameTask == "Không có" {
+                tempArray.remove(at: i)
+            }
+        }
+        for i in 0 ... tempArray.count - 3 {
+            if Date.init(seconds: tempArray[i].timeStart).startDate == Date.init(seconds: tempArray[i + 1].timeStart).startDate && tempArray[i].nameTask == "Không có" {
+                tempArray.remove(at: i)
+            }
+        }
+        listSort = tempArray
     }
     
     //MARK: - Notification
@@ -275,6 +308,7 @@ extension ShowTaskVC: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let tag = TAppDelegate.arrTag[indexPath.row]
         let cell = collectionView.dequeueReusableCell(forIndexPath: indexPath) as TagCount
+        cell.lbTaskCount.text = String(listTaskCount[indexPath.row])
         
         cell.contentView.layer.cornerRadius = 3
         cell.contentView.layer.borderWidth = 1.0
@@ -321,11 +355,17 @@ extension ShowTaskVC: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let taskCell = listSort[indexPath.row]
         let cell = tableView.dequeueReusableCell(forIndexPath: indexPath) as TimeLineCell
+        if indexPath.row > 0 {
+            if Date.init(seconds: listSort[indexPath.row - 1].timeStart).startDate == Date.init(seconds: taskCell.timeStart).startDate {
+                cell.isHide = false
+            }else{
+                cell.isHide = true
+            }
+        }
+        
         cell.initData(taskData: taskCell)
         return cell
     }
-    
-    
 }
 
 extension ShowTaskVC: UITableViewDelegate {
@@ -336,7 +376,6 @@ extension ShowTaskVC: UITableViewDelegate {
 
 //MARK: - Support Date Function
 extension Date {
-    
     func interval(ofComponent comp: Calendar.Component, fromDate date: Date) -> Int {
         
         let currentCalendar = Calendar.current
