@@ -51,12 +51,10 @@ class ShowTaskVC: UIViewController {
     @objc func reload() {
         fetchTask()
         pushNoti()
-        print("dddddd")
     }
     
     override func viewDidAppear(_ animated: Bool) {
        fetchTaskToday()
-        print("new")
     }
     override func viewWillAppear(_ animated: Bool) {
         fetchTask()
@@ -184,7 +182,7 @@ extension ShowTaskVC {
             }
         }
         defauls.set(dataArr, forKey: "TaskToday")
-        print("refresh")
+        print(dataArr)
     }
     
     
