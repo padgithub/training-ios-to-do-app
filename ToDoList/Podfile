@@ -9,4 +9,7 @@ target 'ToDoList' do
     pod 'Firebase/Core'
     pod 'SwiftyJSON'
     pod 'Firebase/Firestore'
+    pod 'Firebase/Analytics'
+    pod 'Firebase/Storage'
+
 end

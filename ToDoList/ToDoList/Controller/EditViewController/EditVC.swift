@@ -179,6 +179,7 @@ extension EditVC: UITableViewDelegate {
             self.deleteTask(taskRemove)
             self.listTodo.remove(at: indexPath.item)
             self.toDoListTable.deleteRows(at: [indexPath], with: .automatic)
+            self.toDoListTable.reloadData()
             completion(true)
         }
     

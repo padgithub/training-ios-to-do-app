@@ -17,9 +17,9 @@ struct ListTask{
     var timeStart: Double = 0
     var timeEnd: Double = 0
     var taskID: String = ""
-    var peopleName: String = ""
+    var peopleName: [String] = []
     
-    init(nameTask: String, descriptionTask: String, tagID: String, timeStart: Double = 0, timeEnd: Double = 0, taskID: String = "", peopleName: String = "") {
+    init(nameTask: String, descriptionTask: String, tagID: String, timeStart: Double = 0, timeEnd: Double = 0, taskID: String = "", peopleName: [String] = []) {
         self.nameTask = nameTask
         self.descriptionTask = descriptionTask
         self.timeStart = timeStart
@@ -38,7 +38,7 @@ struct ListTask{
         self.timeStart = data["timeStar"].doubleValue
         self.timeEnd = data["timeEnd"].doubleValue
         self.taskID = data["taskID"].stringValue
-        self.peopleName = data["peopleName"].stringValue
+        self.peopleName = data["peopleName"].arrayObject as? [String] ?? [""]
     }
     
     func getTagWithID(id: String) -> TypeTag{

@@ -33,6 +33,10 @@ class ShowTaskVC: UIViewController {
     var decTodayTask = "nil"
     let defauls = UserDefaults.standard
     
+    var myTimer = Timer()
+    
+    
+    
     @IBOutlet weak var countTask: UILabel!
     @IBOutlet weak var countTaskDoing: UILabel!
     
@@ -44,13 +48,23 @@ class ShowTaskVC: UIViewController {
         initUI()
         initData()
         reload()
-//        let myTimer = Timer(timeInterval: 5.0, target: self, selector: #selector(reload), userInfo: nil, repeats: true)
-//        RunLoop.main.add(myTimer, forMode: RunLoop.Mode.default)
+        
+        //
+         myTimer = Timer(timeInterval: 0.5, target: self, selector: #selector(checkTime), userInfo: nil, repeats: true)
+        RunLoop.main.add(myTimer, forMode: RunLoop.Mode.default)
     }
     
     @objc func reload() {
         fetchTask()
-        pushNoti()
+    }
+    
+    @objc func checkTime() {
+        if Date().timeIntervalSince1970.rounded() == floor(Date().timeIntervalSince1970 / 60.0) * 60.0{
+            reload()
+            myTimer.invalidate()
+            myTimer = Timer(timeInterval: 60.0, target: self, selector: #selector(reload), userInfo: nil, repeats: true)
+            RunLoop.main.add(myTimer, forMode: RunLoop.Mode.default)
+        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -59,6 +73,7 @@ class ShowTaskVC: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         fetchTask()
         collectionTagCount.reloadData()
+        tableTimeLine.reloadData()
     }
 }
 
@@ -151,12 +166,8 @@ extension ShowTaskVC {
                     let obj = ListTask.init(data: JSON.init(document.data()))
                     self.listTodo.append(obj)
                 }
-                
-                if self.listTodo.count == 0 {
-                    self.addTempTask()
-                }
-                
-                if self.listTodo.count > 0 {
+
+                if self.listTodo.count >= 0 {
                     self.listSort.removeAll()
                     self.sortArray()
                     self.addTempTask()
@@ -175,14 +186,18 @@ extension ShowTaskVC {
     //MARK: - Save task today to userdefaults
     func fetchTaskToday() {
         var dataArr =  [[String:String]]()
+        let dateFormat = DateFormatter()
+        dateFormat.dateFormat = "dd-MM-yyyy"
+        let today = Date()
         for item in listSort {
-            if item.nameTask != "Không có" {
+            let date = Date(timeIntervalSince1970: item.timeStart)
+            if today.startDate == date.startDate && item.nameTask != "Không có" {
                 let dic = ["Name": item.nameTask, "Desc": item.descriptionTask, "Date": "\(item.timeStart)"]
                 dataArr.append(dic)
             }
         }
         defauls.set(dataArr, forKey: "TaskToday")
-        print(dataArr)
+        pushNoti()
     }
     
     
@@ -207,13 +222,12 @@ extension ShowTaskVC {
         let arrData = defauls.object(forKey: "TaskToday") as? [[String:String]] ?? [[String:String]]()
         let dateFormatterNonSS = DateFormatter()
         dateFormatterNonSS.dateFormat = "dd-MM-yyyy HH:mm"
-        UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: ["TestIdentifier"])
-        UNUserNotificationCenter.current().removeDeliveredNotifications(withIdentifiers: ["TestIdentifier"])
         for item in arrData {
             todayTask = item["Name"] ?? ""
             decTodayTask = item["Desc"] ?? ""
             notification(day: Double(item["Date"] ?? "0") ?? 0)
         }
+        print("push")
     }
     //MARK: - Add temp task
     func addTempTask() {
@@ -259,6 +273,7 @@ extension ShowTaskVC {
         }
         
         tempArray = tempArray.sorted(by: { $0.timeStart < $1.timeStart })
+        
         // Remove same temp null task
         var x = 1
         var y = 0
@@ -286,9 +301,15 @@ extension ShowTaskVC {
             content.body = decTodayTask
             content.sound = UNNotificationSound.default
             
-            let trigger = UNTimeIntervalNotificationTrigger(timeInterval: day - Date().timeIntervalSince1970, repeats: false)
-            let request = UNNotificationRequest(identifier: "TestIdentifier", content: content, trigger: trigger)
-            UNUserNotificationCenter.current().add(request, withCompletionHandler: nil)
+//                let saiso = ((floor(day / 60) * 60) + 60) - day
+//
+//                let trigger = UNTimeIntervalNotificationTrigger(timeInterval: (day - Date().timeIntervalSince1970) - saiso, repeats: false)
+//                let request = UNNotificationRequest(identifier: "\(todayTask)", content: content, trigger: trigger)
+//                UNUserNotificationCenter.current().add(request, withCompletionHandler: nil)
+          
+                let trigger = UNTimeIntervalNotificationTrigger(timeInterval: day - Date().timeIntervalSince1970, repeats: false)
+                let request = UNNotificationRequest(identifier: "\(todayTask)", content: content, trigger: trigger)
+                UNUserNotificationCenter.current().add(request, withCompletionHandler: nil)
         }
     }
     

@@ -21,6 +21,10 @@
 		3419BB5122CF531000D34722 /* EditVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3419BB4F22CF531000D34722 /* EditVC.xib */; };
 		3466DF0122D49FF90030A383 /* SpecialCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3466DEFF22D49FF90030A383 /* SpecialCell.swift */; };
 		3466DF0222D49FF90030A383 /* SpecialCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3466DF0022D49FF90030A383 /* SpecialCell.xib */; };
+		346EC1B622E54C99009ABF38 /* AddPeopleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 346EC1B422E54C99009ABF38 /* AddPeopleCell.swift */; };
+		346EC1B722E54C99009ABF38 /* AddPeopleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 346EC1B522E54C99009ABF38 /* AddPeopleCell.xib */; };
+		3498DDB922E5B85F00BCBD1B /* AddImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3498DDB722E5B85F00BCBD1B /* AddImageCell.swift */; };
+		3498DDBA22E5B85F00BCBD1B /* AddImageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3498DDB822E5B85F00BCBD1B /* AddImageCell.xib */; };
 		349FA9E722CDDD5200009361 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 349FA9E622CDDD5200009361 /* AppDelegate.swift */; };
 		349FA9E922CDDD5200009361 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 349FA9E822CDDD5200009361 /* ViewController.swift */; };
 		349FA9EC22CDDD5200009361 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 349FA9EA22CDDD5200009361 /* Main.storyboard */; };
@@ -51,6 +55,10 @@
 		3419BB4F22CF531000D34722 /* EditVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EditVC.xib; sourceTree = "<group>"; };
 		3466DEFF22D49FF90030A383 /* SpecialCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpecialCell.swift; sourceTree = "<group>"; };
 		3466DF0022D49FF90030A383 /* SpecialCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SpecialCell.xib; sourceTree = "<group>"; };
+		346EC1B422E54C99009ABF38 /* AddPeopleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPeopleCell.swift; sourceTree = "<group>"; };
+		346EC1B522E54C99009ABF38 /* AddPeopleCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AddPeopleCell.xib; sourceTree = "<group>"; };
+		3498DDB722E5B85F00BCBD1B /* AddImageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddImageCell.swift; sourceTree = "<group>"; };
+		3498DDB822E5B85F00BCBD1B /* AddImageCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AddImageCell.xib; sourceTree = "<group>"; };
 		349FA9E322CDDD5200009361 /* ToDoList.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ToDoList.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		349FA9E622CDDD5200009361 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		349FA9E822CDDD5200009361 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -139,8 +147,12 @@
 			children = (
 				349FAA0422CDF38D00009361 /* AddVC.swift */,
 				349FAA0522CDF38D00009361 /* AddVC.xib */,
+				3498DDB722E5B85F00BCBD1B /* AddImageCell.swift */,
+				3498DDB822E5B85F00BCBD1B /* AddImageCell.xib */,
 				349FAA0822CE086D00009361 /* TypeViewCell.swift */,
 				349FAA0922CE086D00009361 /* TypeViewCell.xib */,
+				346EC1B422E54C99009ABF38 /* AddPeopleCell.swift */,
+				346EC1B522E54C99009ABF38 /* AddPeopleCell.xib */,
 				3466DEFF22D49FF90030A383 /* SpecialCell.swift */,
 				3466DF0022D49FF90030A383 /* SpecialCell.xib */,
 			);
@@ -258,8 +270,10 @@
 				34182D5822D58D5900808401 /* ShowTaskVC.xib in Resources */,
 				349FAA0B22CE086D00009361 /* TypeViewCell.xib in Resources */,
 				34CB95CE22D44C1300F8B480 /* CellTask.xib in Resources */,
+				346EC1B722E54C99009ABF38 /* AddPeopleCell.xib in Resources */,
 				34182D6022D5CE7500808401 /* TimeLineCell.xib in Resources */,
 				349FA9EC22CDDD5200009361 /* Main.storyboard in Resources */,
+				3498DDBA22E5B85F00BCBD1B /* AddImageCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -276,6 +290,7 @@
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-ToDoList/Pods-ToDoList-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/BoringSSL-GRPC/openssl_grpc.framework",
+				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
 				"${BUILT_PRODUCTS_DIR}/GoogleUtilities/GoogleUtilities.framework",
 				"${BUILT_PRODUCTS_DIR}/Protobuf/Protobuf.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
@@ -289,6 +304,7 @@
 			);
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/openssl_grpc.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleUtilities.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Protobuf.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyJSON.framework",
@@ -333,12 +349,14 @@
 			files = (
 				34182D5F22D5CE7500808401 /* TimeLineCell.swift in Sources */,
 				34CB95CA22D4318800F8B480 /* ListTask.swift in Sources */,
+				3498DDB922E5B85F00BCBD1B /* AddImageCell.swift in Sources */,
 				3419BB4B22CF3BA500D34722 /* TypeTag.swift in Sources */,
 				349FAA0622CDF38D00009361 /* AddVC.swift in Sources */,
 				349FA9E922CDDD5200009361 /* ViewController.swift in Sources */,
 				34CB95CD22D44C1300F8B480 /* CellTask.swift in Sources */,
 				34027ED622DC907A00157D9A /* Demo.swift in Sources */,
 				349FAA0A22CE086D00009361 /* TypeViewCell.swift in Sources */,
+				346EC1B622E54C99009ABF38 /* AddPeopleCell.swift in Sources */,
 				34182D5722D58D5900808401 /* ShowTaskVC.swift in Sources */,
 				3419BB5022CF531000D34722 /* EditVC.swift in Sources */,
 				3466DF0122D49FF90030A383 /* SpecialCell.swift in Sources */,
