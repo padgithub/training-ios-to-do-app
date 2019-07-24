@@ -19,7 +19,7 @@
                 <rect key="frame" x="0.0" y="0.0" width="83" height="70"/>
                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 <subviews>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="0x7-NU-4PS">
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="0x7-NU-4PS" customClass="CustomImageView" customModule="ToDoList" customModuleProvider="target">
                         <rect key="frame" x="0.0" y="0.0" width="83" height="70"/>
                     </imageView>
                 </subviews>

@@ -11,5 +11,5 @@ target 'ToDoList' do
     pod 'Firebase/Firestore'
     pod 'Firebase/Analytics'
     pod 'Firebase/Storage'
-
+    pod 'SDWebImage'
 end

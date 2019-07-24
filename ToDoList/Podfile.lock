@@ -102,6 +102,9 @@ PODS:
   - nanopb/decode (0.3.901)
   - nanopb/encode (0.3.901)
   - Protobuf (3.9.0)
+  - SDWebImage (5.0.6):
+    - SDWebImage/Core (= 5.0.6)
+  - SDWebImage/Core (5.0.6)
   - SwiftyJSON (5.0.0)
 
 DEPENDENCIES:
@@ -109,6 +112,7 @@ DEPENDENCIES:
   - Firebase/Core
   - Firebase/Firestore
   - Firebase/Storage
+  - SDWebImage
   - SwiftyJSON
 
 SPEC REPOS:
@@ -129,6 +133,7 @@ SPEC REPOS:
     - leveldb-library
     - nanopb
     - Protobuf
+    - SDWebImage
     - SwiftyJSON
 
 SPEC CHECKSUMS:
@@ -148,8 +153,9 @@ SPEC CHECKSUMS:
   leveldb-library: 08cba283675b7ed2d99629a4bc5fd052cd2bb6a5
   nanopb: 2901f78ea1b7b4015c860c2fdd1ea2fee1a18d48
   Protobuf: 1097ca58584c8d9be81bfbf2c5ff5975648dd87a
+  SDWebImage: 920f1a2ff1ca8296ad34f6e0510a1ef1d70ac965
   SwiftyJSON: 36413e04c44ee145039d332b4f4e2d3e8d6c4db7
 
-PODFILE CHECKSUM: 09c28a68b2b7e24c93e09b004c49f54519fb27f5
+PODFILE CHECKSUM: e97bc2303584a8763354897a1ae34c5599eb7d17
 
 COCOAPODS: 1.6.1

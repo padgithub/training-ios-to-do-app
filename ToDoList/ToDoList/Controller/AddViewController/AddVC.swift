@@ -17,38 +17,34 @@ enum TypeCell {
     case special
 }
 
-class AddVC: UIViewController {
+class AddVC: UIViewController, UINavigationControllerDelegate {
+    //MARK: - DECLERA VAR, LET
     @IBOutlet weak var viewDatePicker: UIView!
     @IBOutlet weak var txtTextView: UITextView!
     @IBOutlet weak var dateTimeToShow: UILabel!
     @IBOutlet weak var viewChooseDate: UIView!
     @IBOutlet weak var btnDelLabel: UIButton!
     @IBOutlet weak var imgAddImg: UIImageView!
-    
-    
-    @IBAction func btnDelLabelAction(_ sender: Any) {
-        arrImagePeople.removeAll()
-        collecAddPeople.reloadData()
-        checkBtnDelPeople()
-    }
-    @IBAction func btnBack(_ sender: Any) {
-        self.navigationController?.popViewController(animated: true)
-    }
+    @IBOutlet weak var viewAddImg: UIView!
+    @IBOutlet weak var viewImage: UIView!
     
     @IBOutlet weak var collecTypeTag: UICollectionView!
     @IBOutlet weak var collecAddPeople: UICollectionView!
     @IBOutlet weak var collecImage: UICollectionView!
     @IBOutlet weak var btnAddTask: UIButton!
+
+    @IBOutlet weak var widthCollecImg: NSLayoutConstraint!
     
-    //MARK: - Declaration DatePickerView
     @IBOutlet weak var dateChoose: UIDatePicker!
     @IBOutlet weak var txtChooseDate: UILabel!
     @IBOutlet weak var imgShowDate: UIImageView!
     
+    @IBOutlet weak var txtNameTask: UITextField!
+    
     let dateFormatter = DateFormatter()
     let contactPicker = CNContactPickerViewController()
     let storage = Storage.storage()
-    
+    var imagePicker: UIImagePickerController!
     var ref: DocumentReference? = nil
     var isEdit = false
     var taskEdit = ListTask(nameTask: "nil", descriptionTask: "nil", tagID: "nil")
@@ -58,12 +54,24 @@ class AddVC: UIViewController {
     var arrPeople = [String]()
     var arrImagePeople = [CNContact]()
     var arrImgDesc = [UIImage]()
+    var arrURL = [String]()
+    var arrURLs = [URL]()
+    var maxWidth = 0
+    
+    //MARK: - ACTION BUTTON, VIEW
+    @IBAction func btnDelLabelAction(_ sender: Any) {
+        arrImagePeople.removeAll()
+        collecAddPeople.reloadData()
+        checkBtnDelPeople()
+    }
+    @IBAction func btnBack(_ sender: Any) {
+        self.navigationController?.popViewController(animated: true)
+    }
     
     @IBAction func btnAddPeople(_ sender: Any) {
         self.present(contactPicker, animated: true, completion: nil)
     }
     
-    //MARK: - Action Pick Date
     @IBAction func actionDone(_ sender: Any) {
         if txtChooseDate.tag != 0 {
             viewDatePicker.isHidden = true
@@ -88,7 +96,7 @@ class AddVC: UIViewController {
         txtChooseDate.text = "Choose Start Date"
         txtChooseDate.tag = 0
     }
-    //MARK: - Func Edit Tag
+    //Func Edit Tag
     @objc func cellTap(_ sender:Demo){
         let editTag = sender.obj
         let alertController = UIAlertController(title: "Sửa tag", message: "", preferredStyle: UIAlertController.Style.alert)
@@ -186,25 +194,23 @@ class AddVC: UIViewController {
         }
     }
     
-    //MARK: - Main
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    func scrollToLastItem() {
         
-        initUI()
-        initData()
-        checkEdit(edit: isEdit)
-        checkBtnDelPeople()
+        let lastSection = collecTypeTag.numberOfSections - 1
         
-        let tap = UITapGestureRecognizer(target: self, action: #selector(AddVC.tapFunction))
-        viewChooseDate.isUserInteractionEnabled = true
-        viewChooseDate.addGestureRecognizer(tap)
+        let lastRow = collecTypeTag.numberOfItems(inSection: lastSection)
         
-        let geture = UITapGestureRecognizer(target: self, action: #selector(addImage))
-        imgAddImg.addGestureRecognizer(geture)
+        let indexPath = IndexPath(row: lastRow - 1, section: lastSection)
+        
+        self.collecTypeTag.scrollToItem(at: indexPath, at: .bottom, animated: true)
+        
     }
     
     @objc func addImage() {
-        print("<#T##items: Any...##Any#>")
+        imagePicker =  UIImagePickerController()
+        imagePicker.delegate = self
+        imagePicker.sourceType = .photoLibrary
+        present(imagePicker, animated: true, completion: nil)
     }
     
     func checkBtnDelPeople() {
@@ -213,10 +219,6 @@ class AddVC: UIViewController {
         } else {
             btnDelLabel.isHidden = true
         }
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        scrollToLastItem()
     }
     
     @objc
@@ -230,39 +232,124 @@ class AddVC: UIViewController {
         let blue: CGFloat = .random()
         let alpha: CGFloat = .random()
         
-            return String(format: "%02X%02X%02X%02X", UInt8(red * 255), UInt8(green * 255), UInt8(blue * 255), UInt8(alpha * 255))
+        return String(format: "%02X%02X%02X%02X", UInt8(red * 255), UInt8(green * 255), UInt8(blue * 255), UInt8(alpha * 255))
     }
     
-    //MARK: - Add Task
-    @IBOutlet weak var txtNameTask: UITextField!
+    //MARK: - Valtidate Func
+    func validateData() -> Bool {
+        if (txtNameTask.text == "") || (txtTextView.text == "") || (tagID == "") || (startDate.timeIntervalSince1970 > endDate.timeIntervalSince1970) {
+            return false
+        } else {
+            return true
+        }
+    }
     
+    //MARK: - Fetch contact
+    func fetchContact (arr: [String]) {
+        let contactStore = CNContactStore()
+        arr.forEach { (items) in
+            let keys = [CNContactGivenNameKey, CNContactFamilyNameKey, CNContactEmailAddressesKey, CNContactPhoneNumbersKey, CNContactImageDataKey, CNContactImageDataAvailableKey]
+            do {
+                let contact = try contactStore.unifiedContact(withIdentifier: items, keysToFetch: keys as [CNKeyDescriptor])
+                arrImagePeople.append(contact)
+            } catch {
+                print(error)
+            }
+        }
+    }
+    
+    func downloadImage(arr: [String]) {
+        arr.forEach { (items) in
+            let url = URL(string: items)
+            let data = try? Data(contentsOf: url!)
+            
+            arrImgDesc.append(UIImage(data: data!)!)
+        }
+
+    }
+    
+    func loadImageCGD(url: String){
+        let queue = DispatchQueue.global(qos: .default)
+        queue.async {
+            let u = URL(string: url)
+            do{
+                let data = try Data(contentsOf: u!)
+                let image = UIImage(data: data)
+                DispatchQueue.main.async {
+                    if image != nil {
+                        self.arrImgDesc.append(image!)
+                        if (self.arrImgDesc.count * 67) > self.maxWidth {
+                            self.widthCollecImg.constant = CGFloat(self.maxWidth)
+                        }else{
+                            self.widthCollecImg.constant = CGFloat(integerLiteral: self.arrImgDesc.count * 67)
+                        }
+                        
+                        self.collecImage.reloadData()
+                    }
+                }
+            }
+            catch{}
+        }
+    }
+    
+    func uploadImage(arr: [UIImage],taskID: String, success: @escaping (() -> Void)) {
+        var i = 0
+        arrImgDesc.forEach { (images) in
+            let storageRef = storage.reference()
+            let avatarRef = storageRef.child("images/\(taskID)-\(i).jpg")
+            i += 1
+            let _ = avatarRef.putData(images.pngData()!, metadata: nil) { (metadata, error) in
+                avatarRef.downloadURL { (url, error) in
+                    guard let downloadURL = url else {
+                        // Uh-oh, an error occurred!
+                        return
+                    }
+                    self.arrURL.append("\(downloadURL)")
+                    if self.arrURL.count == self.arrImgDesc.count {
+                        success()
+                    }
+                }
+            }
+        }
+    }
+    
+    //MARK: - ADD, EDIT TASK
     @IBAction func btnAddTask(_ sender: Any) {
         btnAddTask.isEnabled = false
         if isEdit {
             let taskAdd: ListTask = ListTask(nameTask: txtNameTask.text ?? "nil", descriptionTask: txtTextView.text ?? "nil", tagID: tagID , timeStart: startDate.timeIntervalSince1970, timeEnd: endDate.timeIntervalSince1970, peopleName: arrPeople )
             
             if validateData() {
-                let editRef = TAppDelegate.db.collection("Task").document("\(taskEdit.taskID)")
-                editRef.updateData([
-                    "nameTask": taskAdd.nameTask,
-                    "descriptionTask": taskAdd.descriptionTask,
-                    "tagID": taskAdd.tagID,
-                    "timeStar": taskAdd.timeStart,
-                    "timeEnd": taskAdd.timeEnd,
-                    "peopleName": taskAdd.peopleName,
-                ]) { err in
-                    if let err = err {
-                        print("Error updating document: \(err)")
-                    } else {
-                        print("Document successfully updated")
-                        let alert = UIAlertController(title: "Thông báo", message: "Thay đổi thành công", preferredStyle: UIAlertController.Style.alert)
-                        alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: { alert -> Void in
-                            self.btnAddTask.isEnabled = true
-                            self.navigationController?.popToRootViewController(animated: true)
-                        }))
-                        self.present(alert, animated: true, completion: nil)
+                // lay ra arr image de upload
+                //trong arrurls. file:// lay ra
+                // chuyen thanh imge
+                //add arrImgDesc
+//                goi ham duoi
+                //
+                self.uploadImage(arr: self.arrImgDesc,taskID: self.taskEdit.taskID, success: {
+                    let editRef = TAppDelegate.db.collection("Task").document("\(self.taskEdit.taskID)")
+                    editRef.updateData([
+                        "nameTask": taskAdd.nameTask,
+                        "descriptionTask": taskAdd.descriptionTask,
+                        "tagID": taskAdd.tagID,
+                        "timeStar": taskAdd.timeStart,
+                        "timeEnd": taskAdd.timeEnd,
+                        "peopleName": taskAdd.peopleName,
+                        "imageURL": self.arrURL,
+                        ]) { err in
+                            if let err = err {
+                                print("Error updating document: \(err)")
+                            } else {
+                                print("Document successfully updated")
+                                let alert = UIAlertController(title: "Thông báo", message: "Thay đổi thành công", preferredStyle: UIAlertController.Style.alert)
+                                alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: { alert -> Void in
+                                    self.btnAddTask.isEnabled = true
+                                    self.navigationController?.popToRootViewController(animated: true)
+                                }))
+                                self.present(alert, animated: true, completion: nil)
+                            }
                     }
-                }
+                })
             } else {
                 let alert = UIAlertController(title: "Thông báo", message: "Cần nhập đủ và chính xác dữ liệu", preferredStyle: UIAlertController.Style.alert)
                 alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: { alert -> Void in
@@ -291,17 +378,20 @@ class AddVC: UIViewController {
                             print("Error adding document: \(err)")
                         } else {
                             print("Document added with ID: \(self.ref!.documentID)")
-                            if let taskID = self.ref?.documentID{
-                                TAppDelegate.db.collection("Task").document("\(taskID)").updateData([
-                                    "taskID": taskID
-                                    ])
-                            }
-                            let alert = UIAlertController(title: "Thông báo", message: "Thêm thành công", preferredStyle: UIAlertController.Style.alert)
-                            alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: { alert -> Void in
-                                self.btnAddTask.isEnabled = true
-                                self.navigationController?.popViewController(animated: true)
-                            }))
-                            self.present(alert, animated: true, completion: nil)
+                            self.uploadImage(arr: self.arrImgDesc,taskID: self.ref!.documentID, success: {
+                                if let taskID = self.ref?.documentID{
+                                    TAppDelegate.db.collection("Task").document("\(taskID)").updateData([
+                                        "taskID": taskID,
+                                        "imageURL": self.arrURL,
+                                        ])
+                                    let alert = UIAlertController(title: "Thông báo", message: "Thêm thành công", preferredStyle: UIAlertController.Style.alert)
+                                    alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: { alert -> Void in
+                                        self.btnAddTask.isEnabled = true
+                                        self.navigationController?.popViewController(animated: true)
+                                    }))
+                                    self.present(alert, animated: true, completion: nil)
+                                }
+                            })
                         }
                 }
             } else {
@@ -314,195 +404,7 @@ class AddVC: UIViewController {
         }
     }
     
-    //MARK: - Valtidate Func
-    func validateData() -> Bool {
-        if (txtNameTask.text == "") || (txtTextView.text == "") || (tagID == "") || (startDate.timeIntervalSince1970 > endDate.timeIntervalSince1970) {
-            return false
-        } else {
-            return true
-        }
-    }
-    
-    //MARK: - Fetch contact
-    func fetchContact (arr: [String]) {
-        let contactStore = CNContactStore()
-        arr.forEach { (items) in
-            let keys = [CNContactGivenNameKey, CNContactFamilyNameKey, CNContactEmailAddressesKey, CNContactPhoneNumbersKey, CNContactImageDataKey, CNContactImageDataAvailableKey]
-            do {
-                let contact = try contactStore.unifiedContact(withIdentifier: items, keysToFetch: keys as [CNKeyDescriptor])
-                arrImagePeople.append(contact)
-            } catch {
-                print(error)
-            }
-        }
-    }
-}
-
-//MARK: - Set tag collection view
-extension AddVC: UITextViewDelegate,UINavigationBarDelegate {
-    func initUI() {
-        collecTypeTag.register(TypeViewCell.self)
-        collecTypeTag.register(SpecialCell.self)
-        collecAddPeople.register(AddPeopleCell.self)
-        collecImage.register(AddImageCell.self)
-        
-        //MARK: - Layout Tag collection view cell
-        let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
-        layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-        layout.itemSize = CGSize(width: collecTypeTag.frame.width/3 - 10, height: collecTypeTag.frame.height/2 - 5)
-        layout.minimumInteritemSpacing = 5
-        layout.minimumLineSpacing = 5
-        layout.scrollDirection = .vertical
-        collecTypeTag!.collectionViewLayout = layout
-        
-        //MARK: - Layout AddImage collection view cell
-        let layoutAddImage: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
-        layoutAddImage.itemSize = CGSize(width: 67, height: 67)
-        layoutAddImage.minimumInteritemSpacing = 2
-        layoutAddImage.minimumLineSpacing = 2
-        collecImage!.collectionViewLayout = layoutAddImage
-        
-        btnAddTask.layer.cornerRadius = 10
-        btnAddTask.clipsToBounds = true
-        btnAddTask.layer.borderWidth = 1
-        btnAddTask.layer.borderColor = UIColor("979797", alpha: 1.0).cgColor
-        
-        txtTextView.text = "Description..."
-        txtTextView.textColor = UIColor.lightGray
-        tagID = taskEdit.tag.firebaseKey
-        
-    }
-    
-    func initData() {
-        collecTypeTag.dataSource = self
-        collecTypeTag.delegate = self
-        collecAddPeople.dataSource = self
-        collecAddPeople.delegate = self
-        txtTextView.delegate = self
-        contactPicker.delegate = self
-        
-        if isEdit{
-            let index = TAppDelegate.arrTag.firstIndex { (objs) -> Bool in
-                return objs.firebaseKey == self.taskEdit.tagID
-            }
-            if index != nil {
-                collecTypeTag.selectItem(at: IndexPath(item: index!, section: 0), animated: true, scrollPosition: UICollectionView.ScrollPosition.left)
-                let cell = collecTypeTag.cellForItem(at: IndexPath(item: index!, section: 0))
-                
-                cell?.layer.borderWidth = 3.0
-                cell?.layer.cornerRadius = 4
-                cell?.layer.borderColor = UIColor.black.cgColor
-            }
-        }
-    }
-    
-    //MARK: - Edit Text View
-    func textViewDidBeginEditing(_ textView: UITextView) {
-        
-        if txtTextView.textColor == UIColor.lightGray {
-            txtTextView.text = ""
-            txtTextView.textColor = UIColor.black
-        }
-    }
-    
-    func textViewDidEndEditing(_ textView: UITextView) {
-        
-        if txtTextView.text == "" {
-            
-            txtTextView.text = "Description..."
-            txtTextView.textColor = UIColor.lightGray
-        }
-    }
-    
-    //MARK: - Set Data Edit View
-    func checkEdit(edit: Bool){
-        if edit{
-            arrPeople = taskEdit.peopleName
-            fetchContact(arr: arrPeople)
-            btnAddTask.setTitle("Save", for: .normal)
-            txtNameTask.text = taskEdit.nameTask
-            txtTextView.text = taskEdit.descriptionTask
-            
-            //TODO: Set Tag Choose
-            let editStartTime = Date(timeIntervalSince1970: taskEdit.timeStart)
-            let editEndTime = Date(timeIntervalSince1970: taskEdit.timeEnd)
-            startDate = editStartTime
-            endDate = editEndTime
-            dateTimeToShow.text = configDate(startDate: editStartTime, endDate: editEndTime)
-        }
-    }
-}
-
-//MARK: - Setup CollectionView
-extension AddVC : UICollectionViewDataSource {
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 1
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if collectionView == self.collecTypeTag {
-            return TAppDelegate.arrTag.count
-        } else if collectionView == self.collecAddPeople {
-            return arrImagePeople.count
-        } else {
-            return arrImagePeople.count
-        }
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        if collectionView == self.collecTypeTag {
-            let tag = TAppDelegate.arrTag[indexPath.row]
-            
-            switch tag.type {
-            case .special:
-                let cell = collectionView.dequeueReusableCell(forIndexPath: indexPath) as SpecialCell
-                let createAction = UITapGestureRecognizer(target: self, action: #selector(addButtonTapped))
-                
-                cell.viewButton.addGestureRecognizer(createAction)
-                cell.btnAdd.addTarget(self, action: #selector(addButtonTapped), for: UIControl.Event.touchUpInside)
-                
-                return cell
-            default:
-                let cell = collectionView.dequeueReusableCell(forIndexPath: indexPath) as TypeViewCell
-                let gestureCreated = Demo(target: self, action: #selector(cellTap(_:)))
-                gestureCreated.obj = tag
-                
-                cell.addGestureRecognizer(gestureCreated)
-                cell.cofig(typeTag: tag)
-                if tagID == tag.firebaseKey {
-                    cell.layer.borderWidth = 3.0
-                    cell.layer.cornerRadius = 4
-                    cell.layer.borderColor = UIColor.init("19ff19", alpha: 1.0).cgColor
-                } else {
-                    cell.layer.borderWidth = 0
-                    cell.layer.borderColor = UIColor.clear.cgColor
-                }
-                return cell
-            }
-        } else if collectionView == self.collecAddPeople {
-            let cell = collectionView.dequeueReusableCell(forIndexPath: indexPath) as AddPeopleCell
-            let data = arrImagePeople[indexPath.row]
-            
-            if data.imageDataAvailable {
-                cell.isHide = true
-                cell.imgAvatar.image = UIImage(data: data.imageData!)
-            } else {
-                cell.isHide = false
-                cell.dataLabel = (String(describing: data.familyName.first!)) + (String(describing: data.givenName.first!))
-            }
-            cell.config()
-            return cell
-        } else {
-            let cell = collectionView.dequeueReusableCell(forIndexPath: indexPath) as AddImageCell
-            
-            return cell
-        }
-        
-        
-    }
-    
-    
-    //MARK: - Add New Tag
+    //MARK: - ADD, EDIT TAG
     @objc func addButtonTapped(sender: UIButton) {
         let alertController = UIAlertController(title: "Thêm tag mới", message: "", preferredStyle: UIAlertController.Style.alert)
         alertController.addTextField { (textField) in
@@ -551,20 +453,207 @@ extension AddVC : UICollectionViewDataSource {
         collecTypeTag.reloadData()
     }
     
-    func scrollToLastItem() {
+    
+    //MARK: - MAIN
+    override func viewDidLoad() {
+        super.viewDidLoad()
         
-        let lastSection = collecTypeTag.numberOfSections - 1
+        initUI()
+        initData()
+        checkEdit(edit: isEdit)
+        checkBtnDelPeople()
         
-        let lastRow = collecTypeTag.numberOfItems(inSection: lastSection)
+        let tap = UITapGestureRecognizer(target: self, action: #selector(AddVC.tapFunction))
+        viewChooseDate.isUserInteractionEnabled = true
+        viewChooseDate.addGestureRecognizer(tap)
         
-        let indexPath = IndexPath(row: lastRow - 1, section: lastSection)
-        
-        self.collecTypeTag.scrollToItem(at: indexPath, at: .bottom, animated: true)
-        
+        let geture = UITapGestureRecognizer(target: self, action: #selector(addImage))
+        viewAddImg.addGestureRecognizer(geture)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        scrollToLastItem()
     }
 }
 
-//MARK: - CollectionView Delegate
+//MARK: - INITUI, INITDATA
+extension AddVC: UITextViewDelegate,UINavigationBarDelegate {
+    func initUI() {
+        collecTypeTag.register(TypeViewCell.self)
+        collecTypeTag.register(SpecialCell.self)
+        collecAddPeople.register(AddPeopleCell.self)
+        collecImage.register(AddImageCell.self)
+        
+        //Layout Tag collection view cell
+        let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
+        layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        layout.itemSize = CGSize(width: collecTypeTag.frame.width/3 - 10, height: collecTypeTag.frame.height/2 - 5)
+        layout.minimumInteritemSpacing = 5
+        layout.minimumLineSpacing = 5
+        layout.scrollDirection = .vertical
+        collecTypeTag!.collectionViewLayout = layout
+        
+        //Layout AddImage collection view cell
+        let layoutAddImage: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
+        layoutAddImage.itemSize = CGSize(width: 67, height: 67)
+        layoutAddImage.minimumInteritemSpacing = 2
+        layoutAddImage.minimumLineSpacing = 2
+        layoutAddImage.scrollDirection = .horizontal
+        collecImage!.collectionViewLayout = layoutAddImage
+        
+        btnAddTask.layer.cornerRadius = 10
+        btnAddTask.clipsToBounds = true
+        btnAddTask.layer.borderWidth = 1
+        btnAddTask.layer.borderColor = UIColor("979797", alpha: 1.0).cgColor
+        
+        txtTextView.text = "Description..."
+        txtTextView.textColor = UIColor.lightGray
+        tagID = taskEdit.tag.firebaseKey
+        widthCollecImg.constant = 0
+        maxWidth = Int(viewImage.frame.width - 67)
+    }
+    
+    func initData() {
+        collecTypeTag.dataSource = self
+        collecTypeTag.delegate = self
+        collecAddPeople.dataSource = self
+        collecAddPeople.delegate = self
+        collecImage.dataSource = self
+        collecImage.delegate = self
+        txtTextView.delegate = self
+        contactPicker.delegate = self
+        
+        if isEdit{
+            let index = TAppDelegate.arrTag.firstIndex { (objs) -> Bool in
+                return objs.firebaseKey == self.taskEdit.tagID
+            }
+            if index != nil {
+                collecTypeTag.selectItem(at: IndexPath(item: index!, section: 0), animated: true, scrollPosition: UICollectionView.ScrollPosition.left)
+                let cell = collecTypeTag.cellForItem(at: IndexPath(item: index!, section: 0))
+                
+                cell?.layer.borderWidth = 3.0
+                cell?.layer.cornerRadius = 4
+                cell?.layer.borderColor = UIColor.black.cgColor
+            }
+        }
+    }
+    
+    //MARK: - Edit Text View
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        if txtTextView.textColor == UIColor.lightGray {
+            txtTextView.text = ""
+            txtTextView.textColor = UIColor.black
+        }
+    }
+    
+    func textViewDidEndEditing(_ textView: UITextView) {
+        if txtTextView.text == "" {
+            txtTextView.text = "Description..."
+            txtTextView.textColor = UIColor.lightGray
+        }
+    }
+    
+    //MARK: - Set Data Edit View
+    func checkEdit(edit: Bool){
+        if edit{
+            arrPeople = taskEdit.peopleName
+            fetchContact(arr: arrPeople)
+            btnAddTask.setTitle("Save", for: .normal)
+            txtNameTask.text = taskEdit.nameTask
+            txtTextView.text = taskEdit.descriptionTask
+            
+            let editStartTime = Date(timeIntervalSince1970: taskEdit.timeStart)
+            let editEndTime = Date(timeIntervalSince1970: taskEdit.timeEnd)
+            startDate = editStartTime
+            endDate = editEndTime
+            dateTimeToShow.text = configDate(startDate: editStartTime, endDate: editEndTime)
+            arrURL = taskEdit.imageURL
+        }
+        arrURL.forEach { (items) in
+//            loadImageCGD(url: items)
+            if let url = URL.init(string: items){
+                arrURLs.append(url)
+                if (self.arrURLs.count * 67) > self.maxWidth {
+                    self.widthCollecImg.constant = CGFloat(self.maxWidth)
+                }else{
+                    self.widthCollecImg.constant = CGFloat(integerLiteral: self.arrURLs.count * 67)
+                }
+                
+                self.collecImage.reloadData()
+            }
+        }
+    }
+}
+
+//MARK: - COLLECTIONVIEW DATA SOURCE
+extension AddVC : UICollectionViewDataSource {
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return 1
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        if collectionView == self.collecTypeTag {
+            return TAppDelegate.arrTag.count
+        } else if collectionView == self.collecAddPeople {
+            return arrImagePeople.count
+        } else {
+            return arrURLs.count
+        }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        if collectionView == self.collecTypeTag {
+            let tag = TAppDelegate.arrTag[indexPath.row]
+            
+            switch tag.type {
+            case .special:
+                let cell = collectionView.dequeueReusableCell(forIndexPath: indexPath) as SpecialCell
+                let createAction = UITapGestureRecognizer(target: self, action: #selector(addButtonTapped))
+                
+                cell.viewButton.addGestureRecognizer(createAction)
+                cell.btnAdd.addTarget(self, action: #selector(addButtonTapped), for: UIControl.Event.touchUpInside)
+                
+                return cell
+            default:
+                let cell = collectionView.dequeueReusableCell(forIndexPath: indexPath) as TypeViewCell
+                let gestureCreated = Demo(target: self, action: #selector(cellTap(_:)))
+                gestureCreated.obj = tag
+                
+                cell.addGestureRecognizer(gestureCreated)
+                cell.cofig(typeTag: tag)
+                if tagID == tag.firebaseKey {
+                    cell.layer.borderWidth = 3.0
+                    cell.layer.cornerRadius = 4
+                    cell.layer.borderColor = UIColor.init("19ff19", alpha: 1.0).cgColor
+                } else {
+                    cell.layer.borderWidth = 0
+                    cell.layer.borderColor = UIColor.clear.cgColor
+                }
+                return cell
+            }
+        } else if collectionView == self.collecAddPeople {
+            let cell = collectionView.dequeueReusableCell(forIndexPath: indexPath) as AddPeopleCell
+            let data = arrImagePeople[indexPath.row]
+            
+            if data.imageDataAvailable {
+                cell.isHide = true
+                cell.imgAvatar.image = UIImage(data: data.imageData!)
+            } else {
+                cell.isHide = false
+                cell.dataLabel = (String(describing: data.familyName.first!)) + (String(describing: data.givenName.first!))
+            }
+            cell.config()
+            return cell
+        } else {
+            let cell = collectionView.dequeueReusableCell(forIndexPath: indexPath) as AddImageCell
+//            cell.imgDesc.image = arrImgDesc[indexPath.row]
+                cell.config(path: arrURLs[indexPath.row])
+            return cell
+        }
+    }
+}
+
+//MARK: - COLLECTIONVIEW DELEGATE
 extension AddVC : UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
@@ -574,29 +663,10 @@ extension AddVC : UICollectionViewDelegate {
     }
 }
 
-//extension AddVC : UICollectionViewDelegateFlowLayout {
-//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-//        return UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-//    }
-//
-//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-//        return CGSize(width: collecTypeTag.frame.width/3 - 10, height: collecTypeTag.frame.height/2 - 5)
-//    }
-//
-//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-//        return 5
-//    }
-//
-//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-//        return 5
-//    }
-//}
-
 extension AddVC: CNContactPickerDelegate {
     
     func contactPicker(_ picker: CNContactPickerViewController,
                        didSelect contactProperty: CNContactProperty) {
-        
     }
     
     func contactPicker(_ picker: CNContactPickerViewController, didSelect contact: CNContact) {
@@ -613,102 +683,52 @@ extension AddVC: CNContactPickerDelegate {
             arrImagePeople.append(contact)
             collecAddPeople.reloadData()
         }
-        
-//        let storageRef = storage.reference()
-//        let avatarRef = storageRef.child("images/\(firstName).jpg")
-//        let uploadTask = avatarRef.putData(contact.imageData!, metadata: nil) { (metadata, error) in
-//            guard let metadata = metadata else {
-//                // Uh-oh, an error occurred!
-//                return
-//            }
-//            let size = metadata.size
-//            // You can also access to download URL after upload.
-//            avatarRef.downloadURL { (url, error) in
-//                guard let downloadURL = url else {
-//                    // Uh-oh, an error occurred!
-//                    return
-//                }
-//            }
-//        }
         checkBtnDelPeople()
     }
     
     func contactPickerDidCancel(_ picker: CNContactPickerViewController) {
+    }
+}
+
+//MARK: - IMAGE PICKER
+extension AddVC: UIImagePickerControllerDelegate {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]){
+
+//        guard let selectedImage = info[.originalImage] as? UIImage else {
+//            print("Image not found!")
+//            return
+//        }
+//        arrImgDesc.append(selectedImage)
+//        print(arrImgDesc.count)
+//        if (arrImgDesc.count * 67) > maxWidth {
+//            widthCollecImg.constant = CGFloat(maxWidth)
+//        }else{
+//            widthCollecImg.constant = CGFloat(integerLiteral: arrImgDesc.count * 67)
+//        }
+//
+//
         
-    }
-}
-
-//MARK: - Support func
-protocol NibReusable: class {
-    static var reuseIdentifier: String { get }
-    static var nibName: String { get }
-}
-
-extension NibReusable where Self: UIView {
-    static var nibName: String {
-        return String(describing: self)
-    }
-    static var reuseIdentifier: String {
-        return nibName
-    }
-}
-
-extension UITableViewCell: NibReusable { }
-
-extension UICollectionViewCell: NibReusable { }
-
-extension UITableViewHeaderFooterView: NibReusable { }
-
-extension UICollectionView {
-    func register<Cell: NibReusable>(_ cell: Cell.Type) {
-        let nib = UINib(nibName: cell.nibName, bundle: Bundle(for: cell))
-        register(nib, forCellWithReuseIdentifier: cell.reuseIdentifier)
-    }
-    func dequeueReusableCell<Cell: NibReusable>(forIndexPath indexPath: IndexPath) -> Cell {
-        guard let cell = dequeueReusableCell(withReuseIdentifier: Cell.reuseIdentifier, for: indexPath) as? Cell else {
-            fatalError("Could not dequeue cell with identifier: \(Cell.reuseIdentifier)")
+        
+        
+        if let imgUrl = info[UIImagePickerController.InfoKey.imageURL] as? URL{
+            let imgName = imgUrl.lastPathComponent
+            let documentDirectory = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first
+            let localPath = documentDirectory?.appending(imgName)
+            
+            let image = info[UIImagePickerController.InfoKey.originalImage] as! UIImage
+            let data = image.pngData()! as NSData
+            data.write(toFile: localPath!, atomically: true)
+//            //let imageData = NSData(contentsOfFile: localPath!)!
+            let photoURL = URL.init(fileURLWithPath: localPath!)//NSURL(fileURLWithPath: localPath!)
+            print(photoURL)
+            arrURLs.append(photoURL)
+            collecImage.reloadData()
         }
-        return cell
-    }
-}
-
-extension UITableView {
-    func register<Cell: NibReusable>(_ cell: Cell.Type) {
-        let nib = UINib(nibName: Cell.nibName, bundle: Bundle(for: cell))
-        register(nib, forCellReuseIdentifier: Cell.reuseIdentifier)
-    }
-    
-    func dequeueReusableCell<Cell: NibReusable>(forIndexPath indexPath: IndexPath) -> Cell {
-        guard let cell = dequeueReusableCell(withIdentifier: Cell.reuseIdentifier, for: indexPath) as? Cell else {
-            fatalError("Could not dequeue cell with identifier: \(Cell.reuseIdentifier)")
-        }
-        return cell
-    }
-    
-    func registerHeaderFooterView<Cell: NibReusable>(_ cell: Cell.Type) {
-        let nib = UINib(nibName: Cell.nibName, bundle: nil)
-        register(nib, forHeaderFooterViewReuseIdentifier: Cell.reuseIdentifier)
-    }
-    
-    func dequeueReusableHeaderFooterView<Cell: NibReusable>() -> Cell {
-        guard let header = dequeueReusableHeaderFooterView(withIdentifier: Cell.reuseIdentifier) as? Cell else {
-            fatalError("Could not dequeue header with identifier: \(Cell.reuseIdentifier)")
-        }
-        return header
-    }
-}
-
-extension UIColor {
-    static var random: UIColor {
-        return UIColor(red: .random(in: 0...1),
-                       green: .random(in: 0...1),
-                       blue: .random(in: 0...1),
-                       alpha: 1.0)
-    }
-}
-
-extension CGFloat {
-    static func random() -> CGFloat {
-        return CGFloat(arc4random()) / CGFloat(UInt32.max)
+        if (arrURLs.count * 67) > maxWidth {
+                        widthCollecImg.constant = CGFloat(maxWidth)
+                    }else{
+                        widthCollecImg.constant = CGFloat(integerLiteral: arrURLs.count * 67)
+                    }
+        imagePicker.dismiss(animated: true, completion: nil)
     }
 }
