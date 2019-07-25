@@ -8,6 +8,7 @@
 
 import UIKit
 import SwiftyJSON
+import FirebaseStorage
 
 class EditVC: UIViewController {
     
@@ -17,6 +18,7 @@ class EditVC: UIViewController {
     var listTodo: [ListTask] = []
     var filteredList = [ListTask]()
     var isSearch = false
+    let storage = Storage.storage()
     
     @IBOutlet weak var toDoListTable: UITableView!
     @IBOutlet weak var searchBar: UISearchBar!
@@ -189,6 +191,20 @@ extension EditVC: UITableViewDelegate {
         return action
     }
     
+    func deleteImg(taskID: String,i: Int) {
+        let storageRef = storage.reference()
+        let desertRef = storageRef.child("images/\(taskID)-\(i).jpg")
+        
+        // Delete the file
+        desertRef.delete { error in
+            if let error = error {
+                print(error)
+            } else {
+                print("Delete image complete!")
+            }
+        }
+    }
+    
     func deleteTask(_ taskRemove : ListTask) {
         TAppDelegate.db.collection("Task").document("\(taskRemove.taskID)").delete() { err in
             if let err = err {
@@ -196,6 +212,15 @@ extension EditVC: UITableViewDelegate {
             } else {
                 print("Document successfully removed!")
             }
+        }
+        
+        if taskRemove.imageURL.count > 0 {
+            var i = 0
+            taskRemove.imageURL.forEach { (urls) in
+                deleteImg(taskID: taskRemove.taskID, i: i)
+                i += 1
+            }
+           
         }
     }
     

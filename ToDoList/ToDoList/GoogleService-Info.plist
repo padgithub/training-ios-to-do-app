@@ -3,21 +3,21 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>211588896166-mgh09bbcs32n2atot3gn5r56qj9a4ka5.apps.googleusercontent.com</string>
+	<string>962402409880-38sqk526hfkep03f92lskl1nnmji798k.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.211588896166-mgh09bbcs32n2atot3gn5r56qj9a4ka5</string>
+	<string>com.googleusercontent.apps.962402409880-38sqk526hfkep03f92lskl1nnmji798k</string>
 	<key>API_KEY</key>
-	<string>AIzaSyCdIN3CP020EfVUHo52Cpg52AfQCELw9lg</string>
+	<string>AIzaSyBPrKgnvo2k3XFR5vfN2ry43W7fFRL8HD8</string>
 	<key>GCM_SENDER_ID</key>
-	<string>211588896166</string>
+	<string>962402409880</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>com.dellap.ToDoList</string>
 	<key>PROJECT_ID</key>
-	<string>todolist-49d99</string>
+	<string>todolist-1b628</string>
 	<key>STORAGE_BUCKET</key>
-	<string>todolist-49d99.appspot.com</string>
+	<string>todolist-1b628.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -29,8 +29,8 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:211588896166:ios:eeae9a1cd37cc0e5</string>
+	<string>1:962402409880:ios:eeae9a1cd37cc0e5</string>
 	<key>DATABASE_URL</key>
-	<string>https://todolist-49d99.firebaseio.com</string>
+	<string>https://todolist-1b628.firebaseio.com</string>
 </dict>
 </plist>

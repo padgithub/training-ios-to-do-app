@@ -106,10 +106,12 @@ extension ShowTaskVC {
     }
     
     func initData() {
-        
-        for _ in 0 ... TAppDelegate.arrTag.count - 2 {
+        TAppDelegate.arrTag.forEach({ (objs) in
             listTaskCount.append(0)
-        }
+        })
+            
+            
+
         
         collectionTagCount.dataSource = self
         collectionTagCount.delegate = self
@@ -143,14 +145,17 @@ extension ShowTaskVC {
     }
     
     func countTag() {
-        for i in 0 ... TAppDelegate.arrTag.count - 2 {
-            listTaskCount.append(0)
-            listTodo.forEach { (objs) in
-                if objs.tagID == TAppDelegate.arrTag[i].firebaseKey {
-                    listTaskCount[i] += 1
+     
+            for i in TAppDelegate.arrTag.indices {
+                listTaskCount.append(0)
+                listTodo.forEach { (objs) in
+                    if objs.tagID == TAppDelegate.arrTag[i].firebaseKey {
+                        listTaskCount[i] += 1
+                    }
                 }
             }
-        }
+        
+        
         collectionTagCount.reloadData()
     }
     

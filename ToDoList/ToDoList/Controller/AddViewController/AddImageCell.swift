@@ -18,12 +18,8 @@ class AddImageCell: UICollectionViewCell {
     
     func config(path: URL) {
 //        let url = URL(fileURLWithPath: path)
-        imgDesc.sd_setImage(with: path, completed: nil)
+//        imgDesc.sd_setImage(with: path, completed: nil)
+        imgDesc.loadImageUsingCache(withUrl: "\(path)", frame: self.imgDesc.frame)
         
-//        imgDesc.loadImageUsingCache(withUrl: path, frame: self.imgDesc.frame)
-        
-////        if FileManager.default.fileExists(atPath: path) {
-//
-////        }
     }
 }

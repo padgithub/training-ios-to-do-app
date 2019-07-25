@@ -14,9 +14,9 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "4459CB7449689CDCF9D97546B6EFC150"
-               BuildableName = "SwiftyJSON.framework"
-               BlueprintName = "SwiftyJSON"
+               BlueprintIdentifier = "E504C65ECB58B195473AAEF37341192D"
+               BuildableName = "KRActivityIndicatorView.framework"
+               BlueprintName = "KRActivityIndicatorView"
                ReferencedContainer = "container:Pods.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>

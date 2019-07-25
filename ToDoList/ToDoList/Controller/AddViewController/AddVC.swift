@@ -11,6 +11,8 @@ import FirebaseFirestore
 import SwiftyJSON
 import ContactsUI
 import FirebaseStorage
+import SDWebImage
+import KRProgressHUD
 
 enum TypeCell {
     case nomal
@@ -32,7 +34,7 @@ class AddVC: UIViewController, UINavigationControllerDelegate {
     @IBOutlet weak var collecAddPeople: UICollectionView!
     @IBOutlet weak var collecImage: UICollectionView!
     @IBOutlet weak var btnAddTask: UIButton!
-
+    
     @IBOutlet weak var widthCollecImg: NSLayoutConstraint!
     
     @IBOutlet weak var dateChoose: UIDatePicker!
@@ -48,15 +50,16 @@ class AddVC: UIViewController, UINavigationControllerDelegate {
     var ref: DocumentReference? = nil
     var isEdit = false
     var taskEdit = ListTask(nameTask: "nil", descriptionTask: "nil", tagID: "nil")
-    var tagID = String()
+    var tagID: String = ""
     var startDate = Date()
     var endDate = Date()
-    var arrPeople = [String]()
+    var arrPeople: [String] = []
     var arrImagePeople = [CNContact]()
     var arrImgDesc = [UIImage]()
     var arrURL = [String]()
     var arrURLs = [URL]()
     var maxWidth = 0
+    var urlTaskDel: String = ""
     
     //MARK: - ACTION BUTTON, VIEW
     @IBAction func btnDelLabelAction(_ sender: Any) {
@@ -106,7 +109,7 @@ class AddVC: UIViewController, UINavigationControllerDelegate {
         let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertAction.Style.default, handler: nil)
         let saveAction = UIAlertAction(title: "Save", style: UIAlertAction.Style.default, handler: { alert -> Void in
             
-           let txtTag = alertController.textFields![0].text
+            let txtTag = alertController.textFields![0].text
             var backGround = alertController.textFields![1].text
             
             if backGround == "" {
@@ -136,17 +139,17 @@ class AddVC: UIViewController, UINavigationControllerDelegate {
             
             let refEdit = TAppDelegate.db.collection("Tag").document("\(editTag.firebaseKey)")
             refEdit.delete() { err in
-                    if let err = err {
-                        print("Error adding document: \(err)")
-                    } else {
-                        TAppDelegate.fetchTagNormal(success: {
-                            self.collecTypeTag.reloadData()
-                        })
-                        let alert = UIAlertController(title: "Thông báo", message: "Xoá thành công", preferredStyle: UIAlertController.Style.alert)
-                        alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.destructive, handler: nil))
+                if let err = err {
+                    print("Error adding document: \(err)")
+                } else {
+                    TAppDelegate.fetchTagNormal(success: {
                         self.collecTypeTag.reloadData()
-                        self.present(alert, animated: true, completion: nil)
-                    }
+                    })
+                    let alert = UIAlertController(title: "Thông báo", message: "Xoá thành công", preferredStyle: UIAlertController.Style.alert)
+                    alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.destructive, handler: nil))
+                    self.collecTypeTag.reloadData()
+                    self.present(alert, animated: true, completion: nil)
+                }
             }
         })
         alertController.addTextField { (textField) in
@@ -179,7 +182,7 @@ class AddVC: UIViewController, UINavigationControllerDelegate {
             let endTimeString = timeFormatter.string(from: endDate)
             if startDateString == currentDayString{
                 return "Today, \(startTimeString) - \(endTimeString)"
-            }else{
+            } else {
                 dateFormatter.dateFormat = "dd-MM"
                 startDateString = dateFormatter.string(from: startDate)
                 return "\(startDateString), \(startTimeString) - \(endTimeString)"
@@ -235,6 +238,50 @@ class AddVC: UIViewController, UINavigationControllerDelegate {
         return String(format: "%02X%02X%02X%02X", UInt8(red * 255), UInt8(green * 255), UInt8(blue * 255), UInt8(alpha * 255))
     }
     
+    func deleteImg(task: String) {
+        let storageRef = storage.reference()
+        let desertRef = storageRef.child("images/\(task)")
+        
+        // Delete the file
+        desertRef.delete { error in
+            if let error = error {
+                print(error)
+            } else {
+                print("Delete image complete!")
+            }
+        }
+    }
+    
+    func deleteImgLocal(url: URL) {
+        let fileManager = FileManager.default
+        
+        do {
+            try fileManager.removeItem(atPath: "\(url)")
+        }
+        catch let error as NSError {
+            print("Ooops! Something went wrong: \(error)")
+        }
+    }
+    
+    func reloadCollecImage() {
+        collecImage.reloadData()
+        if (arrURLs.count * 67) > maxWidth {
+            widthCollecImg.constant = CGFloat(maxWidth)
+        } else {
+            widthCollecImg.constant = CGFloat(integerLiteral: arrURLs.count * 67)
+        }
+    }
+    
+    func getStringURLDelete(str: String) -> String {
+        var index = str.index(of: "%")!
+        var newStr = String(str.suffix(from: index))
+        index = newStr.index(of: "?")!
+        newStr = String(newStr.prefix(upTo: index))
+        newStr.removeFirst(3)
+        
+        return newStr
+    }
+    
     //MARK: - Valtidate Func
     func validateData() -> Bool {
         if (txtNameTask.text == "") || (txtTextView.text == "") || (tagID == "") || (startDate.timeIntervalSince1970 > endDate.timeIntervalSince1970) {
@@ -265,48 +312,27 @@ class AddVC: UIViewController, UINavigationControllerDelegate {
             
             arrImgDesc.append(UIImage(data: data!)!)
         }
-
-    }
-    
-    func loadImageCGD(url: String){
-        let queue = DispatchQueue.global(qos: .default)
-        queue.async {
-            let u = URL(string: url)
-            do{
-                let data = try Data(contentsOf: u!)
-                let image = UIImage(data: data)
-                DispatchQueue.main.async {
-                    if image != nil {
-                        self.arrImgDesc.append(image!)
-                        if (self.arrImgDesc.count * 67) > self.maxWidth {
-                            self.widthCollecImg.constant = CGFloat(self.maxWidth)
-                        }else{
-                            self.widthCollecImg.constant = CGFloat(integerLiteral: self.arrImgDesc.count * 67)
-                        }
-                        
-                        self.collecImage.reloadData()
-                    }
-                }
-            }
-            catch{}
-        }
     }
     
     func uploadImage(arr: [UIImage],taskID: String, success: @escaping (() -> Void)) {
-        var i = 0
-        arrImgDesc.forEach { (images) in
-            let storageRef = storage.reference()
-            let avatarRef = storageRef.child("images/\(taskID)-\(i).jpg")
-            i += 1
-            let _ = avatarRef.putData(images.pngData()!, metadata: nil) { (metadata, error) in
-                avatarRef.downloadURL { (url, error) in
-                    guard let downloadURL = url else {
-                        // Uh-oh, an error occurred!
-                        return
-                    }
-                    self.arrURL.append("\(downloadURL)")
-                    if self.arrURL.count == self.arrImgDesc.count {
-                        success()
+        if (arrURL.count == 0 && arrURLs.count == 0) || urlTaskDel != "" {
+            success()
+        } else {
+            var i = arrURL.count
+            arrImgDesc.forEach { (images) in
+                let storageRef = storage.reference()
+                let avatarRef = storageRef.child("images/\(taskID)-\(i).jpg")
+                i += 1
+                let _ = avatarRef.putData(images.pngData()!, metadata: nil) { (metadata, error) in
+                    avatarRef.downloadURL { (url, error) in
+                        guard let downloadURL = url else {
+                            // Uh-oh, an error occurred!
+                            return
+                        }
+                        self.arrURL.append("\(downloadURL)")
+                        if self.arrURL.count == i {
+                            success()
+                        }
                     }
                 }
             }
@@ -317,16 +343,30 @@ class AddVC: UIViewController, UINavigationControllerDelegate {
     @IBAction func btnAddTask(_ sender: Any) {
         btnAddTask.isEnabled = false
         if isEdit {
-            let taskAdd: ListTask = ListTask(nameTask: txtNameTask.text ?? "nil", descriptionTask: txtTextView.text ?? "nil", tagID: tagID , timeStart: startDate.timeIntervalSince1970, timeEnd: endDate.timeIntervalSince1970, peopleName: arrPeople )
+            let taskAdd: ListTask = ListTask(
+                nameTask: txtNameTask.text ?? "nil",
+                descriptionTask: txtTextView.text ?? "nil",
+                tagID: tagID,
+                timeStart: startDate.timeIntervalSince1970,
+                timeEnd: endDate.timeIntervalSince1970,
+                peopleName: arrPeople
+            )
             
             if validateData() {
-                // lay ra arr image de upload
-                //trong arrurls. file:// lay ra
-                // chuyen thanh imge
-                //add arrImgDesc
-//                goi ham duoi
-                //
+                KRProgressHUD.show()
+                arrURLs.forEach { (items) in
+                    if items.isFileURL {
+                        let data = try? Data(contentsOf: items)
+                        if let image = UIImage(data: data!) {
+                            arrImgDesc.append(image)
+                        }
+                    }
+                }
+                
                 self.uploadImage(arr: self.arrImgDesc,taskID: self.taskEdit.taskID, success: {
+                    if self.urlTaskDel != "" {
+                        self.deleteImg(task: self.urlTaskDel)
+                    }
                     let editRef = TAppDelegate.db.collection("Task").document("\(self.taskEdit.taskID)")
                     editRef.updateData([
                         "nameTask": taskAdd.nameTask,
@@ -341,12 +381,11 @@ class AddVC: UIViewController, UINavigationControllerDelegate {
                                 print("Error updating document: \(err)")
                             } else {
                                 print("Document successfully updated")
-                                let alert = UIAlertController(title: "Thông báo", message: "Thay đổi thành công", preferredStyle: UIAlertController.Style.alert)
-                                alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: { alert -> Void in
-                                    self.btnAddTask.isEnabled = true
+                                
+                                KRProgressHUD.showSuccess()
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
                                     self.navigationController?.popToRootViewController(animated: true)
-                                }))
-                                self.present(alert, animated: true, completion: nil)
+                                }
                             }
                     }
                 })
@@ -359,13 +398,22 @@ class AddVC: UIViewController, UINavigationControllerDelegate {
             }
             
         } else {
-            let taskAdd: ListTask = ListTask(nameTask: txtNameTask.text ?? "nil", descriptionTask: txtTextView.text ?? "nil", tagID: tagID , timeStart: startDate.timeIntervalSince1970, timeEnd: endDate.timeIntervalSince1970, peopleName: arrPeople)
+            let taskAdd: ListTask = ListTask(
+                nameTask: txtNameTask.text ?? "nil",
+                descriptionTask: txtTextView.text ?? "nil",
+                tagID: tagID,
+                timeStart: startDate.timeIntervalSince1970,
+                timeEnd: endDate.timeIntervalSince1970,
+                peopleName: arrPeople
+            )
             
             arrImagePeople.forEach { (objs) in
                 arrPeople.append(objs.identifier)
             }
             
             if validateData() {
+                KRProgressHUD.show(withMessage: "Updating pictures", completion: nil)
+                
                 ref = TAppDelegate.db.collection("Task").addDocument(data: [
                     "nameTask": taskAdd.nameTask,
                     "descriptionTask": taskAdd.descriptionTask,
@@ -377,6 +425,16 @@ class AddVC: UIViewController, UINavigationControllerDelegate {
                         if let err = err {
                             print("Error adding document: \(err)")
                         } else {
+                            
+                            self.arrURLs.forEach { (items) in
+                                if items.isFileURL {
+                                    let data = try? Data(contentsOf: items)
+                                    if let image = UIImage(data: data!) {
+                                        self.arrImgDesc.append(image)
+                                    }
+                                }
+                            }
+                            
                             print("Document added with ID: \(self.ref!.documentID)")
                             self.uploadImage(arr: self.arrImgDesc,taskID: self.ref!.documentID, success: {
                                 if let taskID = self.ref?.documentID{
@@ -384,12 +442,13 @@ class AddVC: UIViewController, UINavigationControllerDelegate {
                                         "taskID": taskID,
                                         "imageURL": self.arrURL,
                                         ])
-                                    let alert = UIAlertController(title: "Thông báo", message: "Thêm thành công", preferredStyle: UIAlertController.Style.alert)
-                                    alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: { alert -> Void in
-                                        self.btnAddTask.isEnabled = true
-                                        self.navigationController?.popViewController(animated: true)
-                                    }))
-                                    self.present(alert, animated: true, completion: nil)
+//                                    KRProgressHUD.showSuccess()
+//                                    DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+//                                        self.navigationController?.popViewController(animated: true)
+                                    }
+                                KRProgressHUD.showSuccess()
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                                    self.navigationController?.popViewController(animated: true)
                                 }
                             })
                         }
@@ -474,11 +533,16 @@ class AddVC: UIViewController, UINavigationControllerDelegate {
     override func viewDidAppear(_ animated: Bool) {
         scrollToLastItem()
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        navigationController?.setNavigationBarHidden(true, animated: false)
+    }
 }
 
 //MARK: - INITUI, INITDATA
 extension AddVC: UITextViewDelegate,UINavigationBarDelegate {
     func initUI() {
+        
         collecTypeTag.register(TypeViewCell.self)
         collecTypeTag.register(SpecialCell.self)
         collecAddPeople.register(AddPeopleCell.self)
@@ -506,11 +570,14 @@ extension AddVC: UITextViewDelegate,UINavigationBarDelegate {
         btnAddTask.layer.borderWidth = 1
         btnAddTask.layer.borderColor = UIColor("979797", alpha: 1.0).cgColor
         
-        txtTextView.text = "Description..."
-        txtTextView.textColor = UIColor.lightGray
-        tagID = taskEdit.tag.firebaseKey
-        widthCollecImg.constant = 0
-        maxWidth = Int(viewImage.frame.width - 67)
+        if !isEdit {
+            txtTextView.text = "Description..."
+            txtTextView.textColor = UIColor.lightGray
+            tagID = taskEdit.tag.firebaseKey
+            widthCollecImg.constant = 0
+            maxWidth = Int(viewImage.frame.width - 67)
+        }
+        
     }
     
     func initData() {
@@ -570,14 +637,10 @@ extension AddVC: UITextViewDelegate,UINavigationBarDelegate {
             arrURL = taskEdit.imageURL
         }
         arrURL.forEach { (items) in
-//            loadImageCGD(url: items)
+            //            loadImageCGD(url: items)
             if let url = URL.init(string: items){
                 arrURLs.append(url)
-                if (self.arrURLs.count * 67) > self.maxWidth {
-                    self.widthCollecImg.constant = CGFloat(self.maxWidth)
-                }else{
-                    self.widthCollecImg.constant = CGFloat(integerLiteral: self.arrURLs.count * 67)
-                }
+                reloadCollecImage()
                 
                 self.collecImage.reloadData()
             }
@@ -646,20 +709,47 @@ extension AddVC : UICollectionViewDataSource {
             return cell
         } else {
             let cell = collectionView.dequeueReusableCell(forIndexPath: indexPath) as AddImageCell
-//            cell.imgDesc.image = arrImgDesc[indexPath.row]
-                cell.config(path: arrURLs[indexPath.row])
+            //            cell.imgDesc.image = arrImgDesc[indexPath.row]
+            cell.config(path: arrURLs[indexPath.row])
             return cell
         }
     }
 }
 
+
 //MARK: - COLLECTIONVIEW DELEGATE
 extension AddVC : UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        
-        let tag = TAppDelegate.arrTag[indexPath.row]
-        tagID = tag.firebaseKey
-        collecTypeTag.reloadData()
+        if collectionView == self.collecTypeTag {
+            let tag = TAppDelegate.arrTag[indexPath.row]
+            tagID = tag.firebaseKey
+            collecTypeTag.reloadData()
+        } else {
+            _ = UIAlertController.present(style: .actionSheet, title: "Select action", message: nil, attributedActionTitles: [("Delete Image", .default), ("View Image", .default), ("Cancel", .cancel)], handler: { (action) in
+                if action.title == "Delete Image" {
+                    if self.isEdit{
+                        self.urlTaskDel = self.getStringURLDelete(str: "\(self.arrURLs[indexPath.row])")
+//                        let urlDel = self.getStringURLDelete(str: "\(self.arrURLs[indexPath.row])")
+//                        print(urlDel)
+//                        self.deleteImg(task: urlDel)
+                        self.arrURLs.remove(at: indexPath.row)
+                        self.arrURL.remove(at: indexPath.row)
+                        self.reloadCollecImage()
+                    } else {
+                        self.deleteImgLocal(url: self.arrURLs[indexPath.row])
+                        self.arrURLs.remove(at: indexPath.row)
+                        self.reloadCollecImage()
+                    }
+                } else if action.title == "View Image" {
+                    let detailVC = DetailImageController.init(nibName: "DetailImageController", bundle: nil)
+                    detailVC.arrURLs = self.arrURLs
+                    detailVC.imgChoiced = self.arrURLs[indexPath.row]
+                    
+                    self.navigationController?.pushViewController(detailVC, animated: true)
+
+                }
+            })
+        }
     }
 }
 
@@ -693,20 +783,20 @@ extension AddVC: CNContactPickerDelegate {
 //MARK: - IMAGE PICKER
 extension AddVC: UIImagePickerControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]){
-
-//        guard let selectedImage = info[.originalImage] as? UIImage else {
-//            print("Image not found!")
-//            return
-//        }
-//        arrImgDesc.append(selectedImage)
-//        print(arrImgDesc.count)
-//        if (arrImgDesc.count * 67) > maxWidth {
-//            widthCollecImg.constant = CGFloat(maxWidth)
-//        }else{
-//            widthCollecImg.constant = CGFloat(integerLiteral: arrImgDesc.count * 67)
-//        }
-//
-//
+        
+        //        guard let selectedImage = info[.originalImage] as? UIImage else {
+        //            print("Image not found!")
+        //            return
+        //        }
+        //        arrImgDesc.append(selectedImage)
+        //        print(arrImgDesc.count)
+        //        if (arrImgDesc.count * 67) > maxWidth {
+        //            widthCollecImg.constant = CGFloat(maxWidth)
+        //        }else{
+        //            widthCollecImg.constant = CGFloat(integerLiteral: arrImgDesc.count * 67)
+        //        }
+        //
+        //
         
         
         
@@ -718,17 +808,13 @@ extension AddVC: UIImagePickerControllerDelegate {
             let image = info[UIImagePickerController.InfoKey.originalImage] as! UIImage
             let data = image.pngData()! as NSData
             data.write(toFile: localPath!, atomically: true)
-//            //let imageData = NSData(contentsOfFile: localPath!)!
+            //            //let imageData = NSData(contentsOfFile: localPath!)!
             let photoURL = URL.init(fileURLWithPath: localPath!)//NSURL(fileURLWithPath: localPath!)
             print(photoURL)
             arrURLs.append(photoURL)
             collecImage.reloadData()
         }
-        if (arrURLs.count * 67) > maxWidth {
-                        widthCollecImg.constant = CGFloat(maxWidth)
-                    }else{
-                        widthCollecImg.constant = CGFloat(integerLiteral: arrURLs.count * 67)
-                    }
+        reloadCollecImage()
         imagePicker.dismiss(animated: true, completion: nil)
     }
 }

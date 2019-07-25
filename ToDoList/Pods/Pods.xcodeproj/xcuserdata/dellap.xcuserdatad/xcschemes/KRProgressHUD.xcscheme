@@ -14,9 +14,9 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "4459CB7449689CDCF9D97546B6EFC150"
-               BuildableName = "SwiftyJSON.framework"
-               BlueprintName = "SwiftyJSON"
+               BlueprintIdentifier = "2D6F34302DD51A37FD2BFDC5C9CE5E6B"
+               BuildableName = "KRProgressHUD.framework"
+               BlueprintName = "KRProgressHUD"
                ReferencedContainer = "container:Pods.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
