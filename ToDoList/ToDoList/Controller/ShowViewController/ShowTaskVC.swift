@@ -300,19 +300,19 @@ extension ShowTaskVC {
     
     //MARK: - Notification
     func notification(day: Double) {
-        if (day - Date().timeIntervalSince1970) > 0 {
+        let saiso = day - ((floor(day / 60) * 60))
+        if (day - Date().timeIntervalSince1970) - saiso > 0 {
+            
+            UNUserNotificationCenter.current().removeAllDeliveredNotifications()
+            UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
+            
             let content = UNMutableNotificationContent()
             content.title = todayTask
             content.body = decTodayTask
             content.sound = UNNotificationSound.default
             
-//                let saiso = ((floor(day / 60) * 60) + 60) - day
-//
-//                let trigger = UNTimeIntervalNotificationTrigger(timeInterval: (day - Date().timeIntervalSince1970) - saiso, repeats: false)
-//                let request = UNNotificationRequest(identifier: "\(todayTask)", content: content, trigger: trigger)
-//                UNUserNotificationCenter.current().add(request, withCompletionHandler: nil)
-          
-                let trigger = UNTimeIntervalNotificationTrigger(timeInterval: day - Date().timeIntervalSince1970, repeats: false)
+                let trigger = UNTimeIntervalNotificationTrigger(timeInterval: (day - saiso) - Date().timeIntervalSince1970, repeats: false)
+            print((day - Date().timeIntervalSince1970) - saiso)
                 let request = UNNotificationRequest(identifier: "\(todayTask)", content: content, trigger: trigger)
                 UNUserNotificationCenter.current().add(request, withCompletionHandler: nil)
         }

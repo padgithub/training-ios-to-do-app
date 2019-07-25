@@ -13,30 +13,30 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="gTV-IL-0wX" customClass="TagCount" customModule="ToDoList" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="199" height="152"/>
+            <rect key="frame" x="0.0" y="0.0" width="124" height="71"/>
             <autoresizingMask key="autoresizingMask"/>
             <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                <rect key="frame" x="0.0" y="0.0" width="199" height="152"/>
+                <rect key="frame" x="0.0" y="0.0" width="124" height="71"/>
                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qcs-up-uEc">
-                        <rect key="frame" x="0.0" y="0.0" width="199" height="152"/>
+                        <rect key="frame" x="0.0" y="0.0" width="124" height="71"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Task count" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OfR-Dn-WRB">
-                                <rect key="frame" x="20" y="69" width="57.5" height="14"/>
+                                <rect key="frame" x="20" y="38.5" width="57.5" height="14"/>
                                 <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="12"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="6c1-dC-hyP">
-                                <rect key="frame" x="175.5" y="10" width="13.5" height="13.5"/>
+                                <rect key="frame" x="106.5" y="10" width="7.5" height="7.5"/>
                                 <color key="backgroundColor" red="0.0" green="0.58980089430000004" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="6c1-dC-hyP" secondAttribute="height" id="37K-Zl-da3"/>
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name Tag" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bwq-zS-Yju">
-                                <rect key="frame" x="20" y="55" width="54.5" height="14"/>
+                                <rect key="frame" x="20" y="19.5" width="54.5" height="14"/>
                                 <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="12"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -44,12 +44,12 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="OfR-Dn-WRB" firstAttribute="centerY" secondItem="qcs-up-uEc" secondAttribute="centerY" id="5WQ-hA-UGa"/>
-                            <constraint firstItem="6c1-dC-hyP" firstAttribute="width" secondItem="qcs-up-uEc" secondAttribute="width" multiplier="1:15" id="BFd-yY-5lm"/>
+                            <constraint firstItem="OfR-Dn-WRB" firstAttribute="centerY" secondItem="qcs-up-uEc" secondAttribute="centerY" constant="10" id="5WQ-hA-UGa"/>
+                            <constraint firstItem="OfR-Dn-WRB" firstAttribute="top" secondItem="bwq-zS-Yju" secondAttribute="bottom" constant="5" id="7jr-JD-46w"/>
+                            <constraint firstItem="6c1-dC-hyP" firstAttribute="width" secondItem="qcs-up-uEc" secondAttribute="width" multiplier="1:17" id="BFd-yY-5lm"/>
                             <constraint firstItem="OfR-Dn-WRB" firstAttribute="leading" secondItem="qcs-up-uEc" secondAttribute="leading" constant="20" id="J7W-qD-e2O"/>
                             <constraint firstAttribute="trailing" secondItem="6c1-dC-hyP" secondAttribute="trailing" constant="10" id="Rgj-dq-SPh"/>
                             <constraint firstItem="6c1-dC-hyP" firstAttribute="top" secondItem="qcs-up-uEc" secondAttribute="top" constant="10" id="qMS-Jc-PWc"/>
-                            <constraint firstItem="OfR-Dn-WRB" firstAttribute="top" secondItem="bwq-zS-Yju" secondAttribute="bottom" id="thG-nJ-Kby"/>
                             <constraint firstItem="bwq-zS-Yju" firstAttribute="leading" secondItem="qcs-up-uEc" secondAttribute="leading" constant="20" id="zYI-i5-uC9"/>
                         </constraints>
                     </view>
@@ -62,14 +62,14 @@
                 <constraint firstAttribute="bottom" secondItem="qcs-up-uEc" secondAttribute="bottom" id="gqq-MZ-TWX"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
-            <size key="customSize" width="199" height="152"/>
+            <size key="customSize" width="124" height="71"/>
             <connections>
                 <outlet property="imgTag" destination="6c1-dC-hyP" id="KEC-AD-MbR"/>
                 <outlet property="lbNametag" destination="bwq-zS-Yju" id="bG3-6b-g30"/>
                 <outlet property="lbTaskCount" destination="OfR-Dn-WRB" id="wjb-Wq-QiU"/>
                 <outlet property="viewTag" destination="OfR-Dn-WRB" id="7Hl-Br-QTk"/>
             </connections>
-            <point key="canvasLocation" x="113" y="61"/>
+            <point key="canvasLocation" x="52.799999999999997" y="23.838080959520241"/>
         </collectionViewCell>
     </objects>
 </document>

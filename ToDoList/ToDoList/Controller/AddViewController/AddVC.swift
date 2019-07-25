@@ -68,6 +68,7 @@ class AddVC: UIViewController, UINavigationControllerDelegate {
         checkBtnDelPeople()
     }
     @IBAction func btnBack(_ sender: Any) {
+        
         self.navigationController?.popViewController(animated: true)
     }
     
@@ -256,7 +257,7 @@ class AddVC: UIViewController, UINavigationControllerDelegate {
         let fileManager = FileManager.default
         
         do {
-            try fileManager.removeItem(atPath: "\(url)")
+            try fileManager.removeItem(atPath: url.path)
         }
         catch let error as NSError {
             print("Ooops! Something went wrong: \(error)")
@@ -537,6 +538,19 @@ class AddVC: UIViewController, UINavigationControllerDelegate {
     override func viewWillAppear(_ animated: Bool) {
         navigationController?.setNavigationBarHidden(true, animated: false)
     }
+    
+    override func willMove(toParent parent: UIViewController?)
+    {
+        super.willMove(toParent: parent)
+        if parent == nil
+        {
+            arrURLs.forEach { (urls) in
+                if urls.isFileURL {
+                    deleteImgLocal(url: urls)
+                }
+            }
+        }
+    }
 }
 
 //MARK: - INITUI, INITDATA
@@ -569,15 +583,14 @@ extension AddVC: UITextViewDelegate,UINavigationBarDelegate {
         btnAddTask.clipsToBounds = true
         btnAddTask.layer.borderWidth = 1
         btnAddTask.layer.borderColor = UIColor("979797", alpha: 1.0).cgColor
+        tagID = taskEdit.tag.firebaseKey
+        widthCollecImg.constant = 0
+        maxWidth = Int(viewImage.frame.width - 67)
         
         if !isEdit {
             txtTextView.text = "Description..."
             txtTextView.textColor = UIColor.lightGray
-            tagID = taskEdit.tag.firebaseKey
-            widthCollecImg.constant = 0
-            maxWidth = Int(viewImage.frame.width - 67)
         }
-        
     }
     
     func initData() {
@@ -589,6 +602,8 @@ extension AddVC: UITextViewDelegate,UINavigationBarDelegate {
         collecImage.delegate = self
         txtTextView.delegate = self
         contactPicker.delegate = self
+        
+        dateTimeToShow.text = configDate(startDate: Date(), endDate: Date())
         
         if isEdit{
             let index = TAppDelegate.arrTag.firstIndex { (objs) -> Bool in
@@ -728,12 +743,14 @@ extension AddVC : UICollectionViewDelegate {
             _ = UIAlertController.present(style: .actionSheet, title: "Select action", message: nil, attributedActionTitles: [("Delete Image", .default), ("View Image", .default), ("Cancel", .cancel)], handler: { (action) in
                 if action.title == "Delete Image" {
                     if self.isEdit{
-                        self.urlTaskDel = self.getStringURLDelete(str: "\(self.arrURLs[indexPath.row])")
-//                        let urlDel = self.getStringURLDelete(str: "\(self.arrURLs[indexPath.row])")
-//                        print(urlDel)
-//                        self.deleteImg(task: urlDel)
+                        if self.arrURLs[indexPath.row].isFileURL {
+                            self.deleteImgLocal(url: self.arrURLs[indexPath.row])
+                        } else {
+                            self.urlTaskDel = self.getStringURLDelete(str: "\(self.arrURLs[indexPath.row])")
+                            self.arrURL.remove(at: indexPath.row)
+                        }
+                        
                         self.arrURLs.remove(at: indexPath.row)
-                        self.arrURL.remove(at: indexPath.row)
                         self.reloadCollecImage()
                     } else {
                         self.deleteImgLocal(url: self.arrURLs[indexPath.row])
@@ -783,23 +800,7 @@ extension AddVC: CNContactPickerDelegate {
 //MARK: - IMAGE PICKER
 extension AddVC: UIImagePickerControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]){
-        
-        //        guard let selectedImage = info[.originalImage] as? UIImage else {
-        //            print("Image not found!")
-        //            return
-        //        }
-        //        arrImgDesc.append(selectedImage)
-        //        print(arrImgDesc.count)
-        //        if (arrImgDesc.count * 67) > maxWidth {
-        //            widthCollecImg.constant = CGFloat(maxWidth)
-        //        }else{
-        //            widthCollecImg.constant = CGFloat(integerLiteral: arrImgDesc.count * 67)
-        //        }
-        //
-        //
-        
-        
-        
+     
         if let imgUrl = info[UIImagePickerController.InfoKey.imageURL] as? URL{
             let imgName = imgUrl.lastPathComponent
             let documentDirectory = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first
