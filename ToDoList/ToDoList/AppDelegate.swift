@@ -85,7 +85,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     func initHome() {
 //        let vc = AddVC.init(nibName: "AddVC", bundle: nil)
 //        let Editvc = EditVC.init(nibName: "EditVC", bundle: nil)
-        let vc = ShowTaskVC.init(nibName: "ShowTaskVC", bundle: nil)
+//        let vc = ShowTaskVC.init(nibName: "ShowTaskVC", bundle: nil)
+        let vc = LoginVC.init(nibName: "LoginVC", bundle: nil)
         let nav = UINavigationController(rootViewController: vc)
         nav.isNavigationBarHidden = true
         window?.rootViewController = nav

@@ -26,6 +26,10 @@
 		3481FB2122E7111D009424A9 /* Common.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3481FB2022E7111D009424A9 /* Common.swift */; };
 		3498DDB922E5B85F00BCBD1B /* AddImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3498DDB722E5B85F00BCBD1B /* AddImageCell.swift */; };
 		3498DDBA22E5B85F00BCBD1B /* AddImageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3498DDB822E5B85F00BCBD1B /* AddImageCell.xib */; };
+		349F58CA22EAA7AF00BCA262 /* LoginVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 349F58C822EAA7AF00BCA262 /* LoginVC.swift */; };
+		349F58CB22EAA7AF00BCA262 /* LoginVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 349F58C922EAA7AF00BCA262 /* LoginVC.xib */; };
+		349F58CE22EAE25D00BCA262 /* RegisterVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 349F58CC22EAE25D00BCA262 /* RegisterVC.swift */; };
+		349F58CF22EAE25D00BCA262 /* RegisterVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 349F58CD22EAE25D00BCA262 /* RegisterVC.xib */; };
 		349FA9E722CDDD5200009361 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 349FA9E622CDDD5200009361 /* AppDelegate.swift */; };
 		349FA9E922CDDD5200009361 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 349FA9E822CDDD5200009361 /* ViewController.swift */; };
 		349FA9EC22CDDD5200009361 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 349FA9EA22CDDD5200009361 /* Main.storyboard */; };
@@ -65,6 +69,10 @@
 		3481FB2022E7111D009424A9 /* Common.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Common.swift; sourceTree = "<group>"; };
 		3498DDB722E5B85F00BCBD1B /* AddImageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddImageCell.swift; sourceTree = "<group>"; };
 		3498DDB822E5B85F00BCBD1B /* AddImageCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AddImageCell.xib; sourceTree = "<group>"; };
+		349F58C822EAA7AF00BCA262 /* LoginVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginVC.swift; sourceTree = "<group>"; };
+		349F58C922EAA7AF00BCA262 /* LoginVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LoginVC.xib; sourceTree = "<group>"; };
+		349F58CC22EAE25D00BCA262 /* RegisterVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterVC.swift; sourceTree = "<group>"; };
+		349F58CD22EAE25D00BCA262 /* RegisterVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RegisterVC.xib; sourceTree = "<group>"; };
 		349FA9E322CDDD5200009361 /* ToDoList.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ToDoList.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		349FA9E622CDDD5200009361 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		349FA9E822CDDD5200009361 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -108,6 +116,17 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
+		349F58C722EAA78500BCA262 /* LoginViewController */ = {
+			isa = PBXGroup;
+			children = (
+				349F58C822EAA7AF00BCA262 /* LoginVC.swift */,
+				349F58C922EAA7AF00BCA262 /* LoginVC.xib */,
+				349F58CC22EAE25D00BCA262 /* RegisterVC.swift */,
+				349F58CD22EAE25D00BCA262 /* RegisterVC.xib */,
+			);
+			path = LoginViewController;
+			sourceTree = "<group>";
+		};
 		349FA9DA22CDDD5200009361 = {
 			isa = PBXGroup;
 			children = (
@@ -146,6 +165,7 @@
 		349FA9F822CDE06600009361 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				349F58C722EAA78500BCA262 /* LoginViewController */,
 				34C0D55522E83EC40013F743 /* DetailImageController */,
 				349FA9FB22CDE0BA00009361 /* ShowViewController */,
 				349FA9F922CDE06F00009361 /* AddViewController */,
@@ -286,9 +306,11 @@
 				34C0D55922E83F110013F743 /* DetailImageController.xib in Resources */,
 				349FA9F122CDDD5300009361 /* LaunchScreen.storyboard in Resources */,
 				3466DF0222D49FF90030A383 /* SpecialCell.xib in Resources */,
+				349F58CF22EAE25D00BCA262 /* RegisterVC.xib in Resources */,
 				34182D6622D6C9AA00808401 /* Assets.xcassets in Resources */,
 				34182D5C22D5A0DD00808401 /* TagCount.xib in Resources */,
 				349FAA0722CDF38D00009361 /* AddVC.xib in Resources */,
+				349F58CB22EAA7AF00BCA262 /* LoginVC.xib in Resources */,
 				3419BB5122CF531000D34722 /* EditVC.xib in Resources */,
 				34182D5822D58D5900808401 /* ShowTaskVC.xib in Resources */,
 				349FAA0B22CE086D00009361 /* TypeViewCell.xib in Resources */,
@@ -381,11 +403,13 @@
 				34C0D55822E83F110013F743 /* DetailImageController.swift in Sources */,
 				3481FB2122E7111D009424A9 /* Common.swift in Sources */,
 				34182D5F22D5CE7500808401 /* TimeLineCell.swift in Sources */,
+				349F58CA22EAA7AF00BCA262 /* LoginVC.swift in Sources */,
 				34CB95CA22D4318800F8B480 /* ListTask.swift in Sources */,
 				3498DDB922E5B85F00BCBD1B /* AddImageCell.swift in Sources */,
 				3419BB4B22CF3BA500D34722 /* TypeTag.swift in Sources */,
 				349FAA0622CDF38D00009361 /* AddVC.swift in Sources */,
 				349FA9E922CDDD5200009361 /* ViewController.swift in Sources */,
+				349F58CE22EAE25D00BCA262 /* RegisterVC.swift in Sources */,
 				34CB95CD22D44C1300F8B480 /* CellTask.swift in Sources */,
 				34027ED622DC907A00157D9A /* Demo.swift in Sources */,
 				349FAA0A22CE086D00009361 /* TypeViewCell.swift in Sources */,
