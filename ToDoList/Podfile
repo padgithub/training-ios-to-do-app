@@ -13,4 +13,6 @@ target 'ToDoList' do
     pod 'Firebase/Storage'
     pod 'SDWebImage'
     pod 'KRProgressHUD'
+    pod 'FirebaseUI/Auth'
+    pod 'FirebaseUI'
 end

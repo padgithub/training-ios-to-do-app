@@ -20,6 +20,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     var window: UIWindow?
     var db: Firestore!
     var arrTag = [TypeTag]()
+    var userUID: String = ""
     
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
         completionHandler([.alert, .sound])
@@ -49,7 +50,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     }
     
     func fetchTag() {
-        db.collection("Tag").getDocuments() { (querySnapshot, err) in
+        let user = Auth.auth().currentUser
+        if let user = user {
+            userUID = user.uid
+        }
+        db.collection("Tag").document(userUID).collection("UserTag").getDocuments() { (querySnapshot, err) in
             if let err = err {
                 print("Error getting documents: \(err)")
             } else {
@@ -66,7 +71,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     }
     
     func fetchTagNormal(success: @escaping () -> Void) {
-        db.collection("Tag").getDocuments() { (querySnapshot, err) in
+        let user = Auth.auth().currentUser
+        if let user = user {
+            userUID = user.uid
+        }
+        db.collection("Tag").document(userUID).collection("UserTag").getDocuments() { (querySnapshot, err) in
             if let err = err {
                 print("Error getting documents: \(err)")
             } else {
@@ -86,10 +95,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 //        let vc = AddVC.init(nibName: "AddVC", bundle: nil)
 //        let Editvc = EditVC.init(nibName: "EditVC", bundle: nil)
 //        let vc = ShowTaskVC.init(nibName: "ShowTaskVC", bundle: nil)
-        let vc = LoginVC.init(nibName: "LoginVC", bundle: nil)
-        let nav = UINavigationController(rootViewController: vc)
-        nav.isNavigationBarHidden = true
-        window?.rootViewController = nav
+        if Auth.auth().currentUser != nil {
+            let showVC = ShowTaskVC.init(nibName: "ShowTaskVC", bundle: nil)
+            let nav = UINavigationController(rootViewController: showVC)
+            window?.rootViewController = nav
+        } else {
+            let vc = LoginVC.init(nibName: "LoginVC", bundle: nil)
+            let nav = UINavigationController(rootViewController: vc)
+            nav.isNavigationBarHidden = true
+            window?.rootViewController = nav
+        }
+        
         window?.makeKeyAndVisible()
     }
 

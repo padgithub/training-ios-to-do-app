@@ -149,21 +149,21 @@ class AlertController: UIAlertController {
 
 public extension UIAlertController {
     
-    public class func present(style: UIAlertController.Style = .alert, title: String?, message: String?, actionTitles: [String]?, handler: ActionHandler? = nil) -> UIAlertController {
+    class func present(style: UIAlertController.Style = .alert, title: String?, message: String?, actionTitles: [String]?, handler: ActionHandler? = nil) -> UIAlertController {
         let rootViewController = UIApplication.shared.delegate!.window!!.rootViewController!
         return self.presentFromViewController(viewController: rootViewController, style: style, title: title, message: message, actionTitles: actionTitles, handler: handler)
     }
     
-    public class func present(style: UIAlertController.Style = .alert, title: String?, message: String?, attributedActionTitles: [AttributedActionTitle]?, handler: ActionHandler? = nil) -> UIAlertController {
+    class func present(style: UIAlertController.Style = .alert, title: String?, message: String?, attributedActionTitles: [AttributedActionTitle]?, handler: ActionHandler? = nil) -> UIAlertController {
         let rootViewController = UIApplication.shared.delegate!.window!!.rootViewController!
         return self.presentFromViewController(viewController: rootViewController, style: style, title: title, message: message, attributedActionTitles: attributedActionTitles, handler: handler)
     }
     
-    public class func presentFromViewController(viewController: UIViewController, style: UIAlertController.Style = .alert, title: String?, message: String?, actionTitles: [String]?, handler: ActionHandler? = nil) -> UIAlertController {
+    class func presentFromViewController(viewController: UIViewController, style: UIAlertController.Style = .alert, title: String?, message: String?, actionTitles: [String]?, handler: ActionHandler? = nil) -> UIAlertController {
         return self.presentFromViewController(viewController: viewController, style: style, title: title, message: message, attributedActionTitles: actionTitles?.map({ (title) -> AttributedActionTitle in return (title: title, style: .default) }), handler: handler)
     }
     
-    public class func presentFromViewController(viewController: UIViewController, style: UIAlertController.Style = .alert, title: String?, message: String?, attributedActionTitles: [AttributedActionTitle]?, handler: ActionHandler? = nil) -> UIAlertController {
+    class func presentFromViewController(viewController: UIViewController, style: UIAlertController.Style = .alert, title: String?, message: String?, attributedActionTitles: [AttributedActionTitle]?, handler: ActionHandler? = nil) -> UIAlertController {
         let alertController = AlertController(title: title, message: message, preferredStyle: style)
         if let _attributedActionTitles = attributedActionTitles {
             for attributedActionTitle in _attributedActionTitles {
@@ -196,11 +196,11 @@ public extension UIAlertController {
 
 // MARK:
 public extension UIViewController {
-    public func presentAlert(style: UIAlertController.Style = .alert, title: String?, message: String?, actionTitles: [String]?, handler: ActionHandler? = nil) -> UIAlertController {
+    func presentAlert(style: UIAlertController.Style = .alert, title: String?, message: String?, actionTitles: [String]?, handler: ActionHandler? = nil) -> UIAlertController {
         return UIAlertController.presentFromViewController(viewController: self, style: style, title: title, message: message, actionTitles: actionTitles, handler: handler)
     }
     
-    public func presentAlert(style: UIAlertController.Style = .alert, title: String?, message: String?, attributedActionTitles: [AttributedActionTitle]?, handler: ActionHandler? = nil) -> UIAlertController {
+    func presentAlert(style: UIAlertController.Style = .alert, title: String?, message: String?, attributedActionTitles: [AttributedActionTitle]?, handler: ActionHandler? = nil) -> UIAlertController {
         return UIAlertController.presentFromViewController(viewController: self, style: style, title: title, message: message, attributedActionTitles: attributedActionTitles, handler: handler)
     }
     

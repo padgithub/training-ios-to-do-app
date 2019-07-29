@@ -9,6 +9,7 @@
 import UIKit
 import SwiftyJSON
 import FirebaseStorage
+import Firebase
 
 class EditVC: UIViewController {
     
@@ -18,6 +19,7 @@ class EditVC: UIViewController {
     var listTodo: [ListTask] = []
     var filteredList = [ListTask]()
     var isSearch = false
+    var userUID: String = ""
     let storage = Storage.storage()
     
     @IBOutlet weak var toDoListTable: UITableView!
@@ -33,6 +35,10 @@ class EditVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        let user = Auth.auth().currentUser
+        if let user = user {
+            userUID = user.uid
+        }
         initUI()
         initData()
     }
@@ -67,7 +73,7 @@ extension EditVC{
     }
     
     func fetchTaskWithTag(tag: TypeTag) {
-        TAppDelegate.db.collection("Task").whereField("tagID", isEqualTo: tag.firebaseKey).getDocuments() { (querySnapshot, err) in
+        TAppDelegate.db.collection("Task").document(userUID).collection("UserTask").whereField("tagID", isEqualTo: tag.firebaseKey).getDocuments() { (querySnapshot, err) in
             if let err = err {
                 print("Error getting documents: \(err)")
             } else {
@@ -87,7 +93,7 @@ extension EditVC{
     }
     
     func fetchDataNormal() {
-        TAppDelegate.db.collection("Task").getDocuments() { (querySnapshot, err) in
+        TAppDelegate.db.collection("Task").document(userUID).collection("UserTask").getDocuments() { (querySnapshot, err) in
             if let err = err {
                 print("Error getting documents: \(err)")
             } else {
@@ -108,7 +114,7 @@ extension EditVC{
     func fetchDataDoing() {
          let currentDay = Date().timeIntervalSince1970
         
-        TAppDelegate.db.collection("Task").whereField("timeEnd", isGreaterThanOrEqualTo: currentDay).getDocuments() { (querySnapshot, err) in
+        TAppDelegate.db.collection("Task").document(userUID).collection("UserTask").whereField("timeEnd", isGreaterThanOrEqualTo: currentDay).getDocuments() { (querySnapshot, err) in
             if let err = err {
                 print("Error getting documents: \(err)")
             } else {
@@ -206,7 +212,7 @@ extension EditVC: UITableViewDelegate {
     }
     
     func deleteTask(_ taskRemove : ListTask) {
-        TAppDelegate.db.collection("Task").document("\(taskRemove.taskID)").delete() { err in
+        TAppDelegate.db.document("\(taskRemove.taskID)").delete() { err in
             if let err = err {
                 print("Error removing document: \(err)")
             } else {

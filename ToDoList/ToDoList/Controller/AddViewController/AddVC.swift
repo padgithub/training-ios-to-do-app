@@ -13,6 +13,7 @@ import ContactsUI
 import FirebaseStorage
 import SDWebImage
 import KRProgressHUD
+import Firebase
 
 enum TypeCell {
     case nomal
@@ -60,6 +61,7 @@ class AddVC: UIViewController, UINavigationControllerDelegate {
     var arrURLs = [URL]()
     var maxWidth = 0
     var urlTaskDel: String = ""
+    var userUID: String = ""
     
     //MARK: - ACTION BUTTON, VIEW
     @IBAction func btnDelLabelAction(_ sender: Any) {
@@ -117,7 +119,7 @@ class AddVC: UIViewController, UINavigationControllerDelegate {
                 backGround = self.hexString()
             }
             
-            let refEdit = TAppDelegate.db.collection("Tag").document("\(editTag.firebaseKey)")
+            let refEdit = TAppDelegate.db.collection("Tag").document(self.userUID).collection("UserTag").document("\(editTag.firebaseKey)")
             refEdit.updateData([
                 "textTag": txtTag as Any,
                 "backGround": backGround as Any,
@@ -138,7 +140,7 @@ class AddVC: UIViewController, UINavigationControllerDelegate {
         
         let deleteAction = UIAlertAction(title: "Delete", style: UIAlertAction.Style.default, handler: { alert -> Void in
             
-            let refEdit = TAppDelegate.db.collection("Tag").document("\(editTag.firebaseKey)")
+            let refEdit = TAppDelegate.db.collection("Tag").document(self.userUID).collection("UserTag").document("\(editTag.firebaseKey)")
             refEdit.delete() { err in
                 if let err = err {
                     print("Error adding document: \(err)")
@@ -368,7 +370,7 @@ class AddVC: UIViewController, UINavigationControllerDelegate {
                     if self.urlTaskDel != "" {
                         self.deleteImg(task: self.urlTaskDel)
                     }
-                    let editRef = TAppDelegate.db.collection("Task").document("\(self.taskEdit.taskID)")
+                    let editRef = TAppDelegate.db.collection("Task").document(self.userUID).collection("UserTask").document("\(self.taskEdit.taskID)")
                     editRef.updateData([
                         "nameTask": taskAdd.nameTask,
                         "descriptionTask": taskAdd.descriptionTask,
@@ -415,7 +417,7 @@ class AddVC: UIViewController, UINavigationControllerDelegate {
             if validateData() {
                 KRProgressHUD.show(withMessage: "Updating pictures", completion: nil)
                 
-                ref = TAppDelegate.db.collection("Task").addDocument(data: [
+                ref = TAppDelegate.db.collection("Task").document(userUID).collection("UserTask").addDocument(data: [
                     "nameTask": taskAdd.nameTask,
                     "descriptionTask": taskAdd.descriptionTask,
                     "tagID": taskAdd.tagID,
@@ -439,7 +441,7 @@ class AddVC: UIViewController, UINavigationControllerDelegate {
                             print("Document added with ID: \(self.ref!.documentID)")
                             self.uploadImage(arr: self.arrImgDesc,taskID: self.ref!.documentID, success: {
                                 if let taskID = self.ref?.documentID{
-                                    TAppDelegate.db.collection("Task").document("\(taskID)").updateData([
+                                    TAppDelegate.db.collection("Task").document(self.userUID).collection("UserTask").document("\(taskID)").updateData([
                                         "taskID": taskID,
                                         "imageURL": self.arrURL,
                                         ])
@@ -481,7 +483,7 @@ class AddVC: UIViewController, UINavigationControllerDelegate {
             
             let newTag = TypeTag(textTag: nameTag ?? "nil", backGround: backgroundTag ?? self.hexString())
             let today = Date()
-            self.ref = TAppDelegate.db.collection("Tag").addDocument(data: [
+            self.ref = TAppDelegate.db.collection("Tag").document(self.userUID).collection("UserTag").addDocument(data: [
                 "textTag": newTag.textTag,
                 "backGround": newTag.backGround,
                 "createTime":today.timeIntervalSince1970,
@@ -492,7 +494,6 @@ class AddVC: UIViewController, UINavigationControllerDelegate {
                         print("Document added with ID: \(self.ref!.documentID)")
                         let alert = UIAlertController(title: "Thông báo", message: "Thêm thành công", preferredStyle: UIAlertController.Style.alert)
                         alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: { alert -> Void in
-                            //Scroll
                         }))
                         self.present(alert, animated: true, completion: nil)
                     }
@@ -604,6 +605,12 @@ extension AddVC: UITextViewDelegate,UINavigationBarDelegate {
         contactPicker.delegate = self
         
         dateTimeToShow.text = configDate(startDate: Date(), endDate: Date())
+        
+        //Get User UID
+        let user = Auth.auth().currentUser
+        if let user = user {
+            userUID = user.uid
+        }
         
         if isEdit{
             let index = TAppDelegate.arrTag.firstIndex { (objs) -> Bool in

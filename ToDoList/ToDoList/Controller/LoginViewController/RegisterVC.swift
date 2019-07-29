@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Firebase
 
 class RegisterVC: UIViewController {
     //MARK: - DECLARE VAR, LET
@@ -17,7 +18,13 @@ class RegisterVC: UIViewController {
     
     //MARK: - ACCTION BUTTON
     @IBAction func actionButtonRegister(_ sender: Any) {
-        
+        Auth.auth().createUser(withEmail: txtEmail.text ?? "", password: txtPassword.text ?? "") { (user, err) in
+            if err != nil {
+                print(err as Any)
+            } else {
+                print("Register successful!")
+            }
+        }
     }
     @IBAction func btnBack(_ sender: Any) {
         self.navigationController?.popViewController(animated: true)

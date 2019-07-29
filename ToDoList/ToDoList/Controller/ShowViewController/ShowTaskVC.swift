@@ -24,13 +24,15 @@ class ShowTaskVC: UIViewController {
     @IBOutlet weak var taskCreated: UIView!
     @IBOutlet weak var taskLeft: UIView!
     @IBOutlet weak var lbTaskToday: UILabel!
+    @IBOutlet weak var lbUserName: UILabel!
     
     var listTodo = [ListTask]()
     var listSort = [ListTask]()
     var tempArray = [ListTask]()
     var listTaskCount = [Int]()
-    var todayTask = "nil"
-    var decTodayTask = "nil"
+    var todayTask: String = "nil"
+    var decTodayTask: String = "nil"
+    var userUID: String = ""
     let defauls = UserDefaults.standard
     
     var myTimer = Timer()
@@ -92,6 +94,14 @@ extension ShowTaskVC {
         let gestureLeft = UITapGestureRecognizer(target: self, action: #selector(showLeft(_:)))
         taskCreated.addGestureRecognizer(gestureCreated)
         taskLeft.addGestureRecognizer(gestureLeft)
+        
+        let user = Auth.auth().currentUser
+        if let user = user {
+            let displayName = user.displayName
+            lbUserName.text = "Hey \(displayName ?? "")"
+        }
+        
+        
     }
     
     @objc func showCreated(_ sender:UITapGestureRecognizer){
@@ -110,8 +120,10 @@ extension ShowTaskVC {
             listTaskCount.append(0)
         })
             
-            
-
+        let user = Auth.auth().currentUser
+        if let user = user {
+            userUID = user.uid
+        }
         
         collectionTagCount.dataSource = self
         collectionTagCount.delegate = self
@@ -160,7 +172,7 @@ extension ShowTaskVC {
     }
     
     func  fetchTask() {
-        TAppDelegate.db.collection("Task").getDocuments() { (querySnapshot, err) in
+        TAppDelegate.db.collection("Task").document(userUID).collection("UserTask").getDocuments() { (querySnapshot, err) in
             
             if let err = err {
                 print("Error getting documents: \(err)")
