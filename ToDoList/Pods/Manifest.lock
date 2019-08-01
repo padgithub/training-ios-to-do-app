@@ -5,6 +5,8 @@ PODS:
   - BoringSSL-GRPC/Implementation (0.0.3):
     - BoringSSL-GRPC/Interface (= 0.0.3)
   - BoringSSL-GRPC/Interface (0.0.3)
+  - FanMenu (0.7.3):
+    - Macaw
   - FBSDKCoreKit (5.2.2):
     - FBSDKCoreKit/Basics (= 5.2.2)
     - FBSDKCoreKit/Core (= 5.2.2)
@@ -170,18 +172,23 @@ PODS:
   - KRProgressHUD (3.4.1):
     - KRActivityIndicatorView (= 3.0.2)
   - leveldb-library (1.20)
+  - Macaw (0.9.5):
+    - SWXMLHash
   - nanopb (0.3.901):
     - nanopb/decode (= 0.3.901)
     - nanopb/encode (= 0.3.901)
   - nanopb/decode (0.3.901)
   - nanopb/encode (0.3.901)
+  - NewPopMenu (2.1.2)
   - Protobuf (3.9.0)
   - SDWebImage (5.0.6):
     - SDWebImage/Core (= 5.0.6)
   - SDWebImage/Core (5.0.6)
   - SwiftyJSON (5.0.0)
+  - SWXMLHash (4.9.0)
 
 DEPENDENCIES:
+  - FanMenu
   - Firebase/Analytics
   - Firebase/Core
   - Firebase/Firestore
@@ -189,12 +196,14 @@ DEPENDENCIES:
   - FirebaseUI
   - FirebaseUI/Auth
   - KRProgressHUD
+  - NewPopMenu
   - SDWebImage
   - SwiftyJSON
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - BoringSSL-GRPC
+    - FanMenu
     - FBSDKCoreKit
     - FBSDKLoginKit
     - Firebase
@@ -217,13 +226,17 @@ SPEC REPOS:
     - KRActivityIndicatorView
     - KRProgressHUD
     - leveldb-library
+    - Macaw
     - nanopb
+    - NewPopMenu
     - Protobuf
     - SDWebImage
     - SwiftyJSON
+    - SWXMLHash
 
 SPEC CHECKSUMS:
   BoringSSL-GRPC: db8764df3204ccea016e1c8dd15d9a9ad63ff318
+  FanMenu: 44d06d35b0382daf6b6aaf78b57a7b9693fbb6e7
   FBSDKCoreKit: e56801ebceaee1eaa4019e53bfaa04dc6ad2a60d
   FBSDKLoginKit: 32af638b7e00b6bb2b22698bbeb72113bdacfd3a
   Firebase: 9445469655a98e9010737f4bc4720e5bda465873
@@ -246,11 +259,14 @@ SPEC CHECKSUMS:
   KRActivityIndicatorView: a2022d5d3e366207d2690f6bcc550f83aa91241b
   KRProgressHUD: 115363b48feb530ab1f36c4146ed22e779e0f5aa
   leveldb-library: 08cba283675b7ed2d99629a4bc5fd052cd2bb6a5
+  Macaw: 10bf9e327cb75f24e3225d5229a80ed544df85f0
   nanopb: 2901f78ea1b7b4015c860c2fdd1ea2fee1a18d48
+  NewPopMenu: c6129e08e8192f6257ceb5f9a4357e1b59c6e2e7
   Protobuf: 1097ca58584c8d9be81bfbf2c5ff5975648dd87a
   SDWebImage: 920f1a2ff1ca8296ad34f6e0510a1ef1d70ac965
   SwiftyJSON: 36413e04c44ee145039d332b4f4e2d3e8d6c4db7
+  SWXMLHash: 87b0006848a548b7f9485b40bc71721b3ae39add
 
-PODFILE CHECKSUM: 8741270fada07f0214ecb0a4e9c5a8a2f890cdfb
+PODFILE CHECKSUM: 9ea130366ff3729e50e37c1041295baf1b88e6a8
 
 COCOAPODS: 1.6.1

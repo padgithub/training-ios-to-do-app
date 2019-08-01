@@ -35,10 +35,6 @@ class EditVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        let user = Auth.auth().currentUser
-        if let user = user {
-            userUID = user.uid
-        }
         initUI()
         initData()
     }
@@ -46,6 +42,7 @@ class EditVC: UIViewController {
 
 extension EditVC{
     func initUI(){
+        self.navigationController?.setNavigationBarHidden(true, animated: false)
         toDoListTable.register(CellTask.self)
         toDoListTable.estimatedRowHeight = 80.0
         toDoListTable.rowHeight = UITableView.automaticDimension
@@ -59,6 +56,10 @@ extension EditVC{
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        let user = Auth.auth().currentUser
+        if let user = user {
+            userUID = user.uid
+        }
         fetchData()
     }
     
@@ -73,6 +74,10 @@ extension EditVC{
     }
     
     func fetchTaskWithTag(tag: TypeTag) {
+        let user = Auth.auth().currentUser
+        if let user = user {
+            userUID = user.uid
+        }
         TAppDelegate.db.collection("Task").document(userUID).collection("UserTask").whereField("tagID", isEqualTo: tag.firebaseKey).getDocuments() { (querySnapshot, err) in
             if let err = err {
                 print("Error getting documents: \(err)")
@@ -212,7 +217,7 @@ extension EditVC: UITableViewDelegate {
     }
     
     func deleteTask(_ taskRemove : ListTask) {
-        TAppDelegate.db.document("\(taskRemove.taskID)").delete() { err in
+        TAppDelegate.db.collection("Task").document(userUID).collection("UserTask").document("\(taskRemove.taskID)").delete() { err in
             if let err = err {
                 print("Error removing document: \(err)")
             } else {

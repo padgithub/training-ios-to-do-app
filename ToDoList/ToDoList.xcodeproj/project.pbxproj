@@ -14,11 +14,11 @@
 		34182D5C22D5A0DD00808401 /* TagCount.xib in Resources */ = {isa = PBXBuildFile; fileRef = 34182D5A22D5A0DD00808401 /* TagCount.xib */; };
 		34182D5F22D5CE7500808401 /* TimeLineCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34182D5D22D5CE7500808401 /* TimeLineCell.swift */; };
 		34182D6022D5CE7500808401 /* TimeLineCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 34182D5E22D5CE7500808401 /* TimeLineCell.xib */; };
-		34182D6622D6C9AA00808401 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 34182D6522D6C9AA00808401 /* Assets.xcassets */; };
 		3418A42522E943110022460F /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3418A42422E943110022460F /* GoogleService-Info.plist */; };
 		3419BB4B22CF3BA500D34722 /* TypeTag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3419BB4A22CF3BA500D34722 /* TypeTag.swift */; };
 		3419BB5022CF531000D34722 /* EditVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3419BB4E22CF531000D34722 /* EditVC.swift */; };
 		3419BB5122CF531000D34722 /* EditVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3419BB4F22CF531000D34722 /* EditVC.xib */; };
+		3465BEAB22F1735500B0E20E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3465BEAA22F1735400B0E20E /* Assets.xcassets */; };
 		3466DF0122D49FF90030A383 /* SpecialCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3466DEFF22D49FF90030A383 /* SpecialCell.swift */; };
 		3466DF0222D49FF90030A383 /* SpecialCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3466DF0022D49FF90030A383 /* SpecialCell.xib */; };
 		346EC1B622E54C99009ABF38 /* AddPeopleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 346EC1B422E54C99009ABF38 /* AddPeopleCell.swift */; };
@@ -57,11 +57,11 @@
 		34182D5A22D5A0DD00808401 /* TagCount.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TagCount.xib; sourceTree = "<group>"; };
 		34182D5D22D5CE7500808401 /* TimeLineCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeLineCell.swift; sourceTree = "<group>"; };
 		34182D5E22D5CE7500808401 /* TimeLineCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TimeLineCell.xib; sourceTree = "<group>"; };
-		34182D6522D6C9AA00808401 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		3418A42422E943110022460F /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		3419BB4A22CF3BA500D34722 /* TypeTag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeTag.swift; sourceTree = "<group>"; };
 		3419BB4E22CF531000D34722 /* EditVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditVC.swift; sourceTree = "<group>"; };
 		3419BB4F22CF531000D34722 /* EditVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EditVC.xib; sourceTree = "<group>"; };
+		3465BEAA22F1735400B0E20E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = ToDoList/Assets.xcassets; sourceTree = SOURCE_ROOT; };
 		3466DEFF22D49FF90030A383 /* SpecialCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpecialCell.swift; sourceTree = "<group>"; };
 		3466DF0022D49FF90030A383 /* SpecialCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SpecialCell.xib; sourceTree = "<group>"; };
 		346EC1B422E54C99009ABF38 /* AddPeopleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPeopleCell.swift; sourceTree = "<group>"; };
@@ -150,7 +150,6 @@
 			children = (
 				3419BB4922CF3B7200D34722 /* Model */,
 				349FA9F822CDE06600009361 /* Controller */,
-				34182D6522D6C9AA00808401 /* Assets.xcassets */,
 				349FA9E622CDDD5200009361 /* AppDelegate.swift */,
 				349FA9E822CDDD5200009361 /* ViewController.swift */,
 				349FA9EA22CDDD5200009361 /* Main.storyboard */,
@@ -211,6 +210,7 @@
 				34182D5A22D5A0DD00808401 /* TagCount.xib */,
 				34182D5D22D5CE7500808401 /* TimeLineCell.swift */,
 				34182D5E22D5CE7500808401 /* TimeLineCell.xib */,
+				3465BEAA22F1735400B0E20E /* Assets.xcassets */,
 			);
 			path = ShowViewController;
 			sourceTree = "<group>";
@@ -308,7 +308,6 @@
 				349FA9F122CDDD5300009361 /* LaunchScreen.storyboard in Resources */,
 				3466DF0222D49FF90030A383 /* SpecialCell.xib in Resources */,
 				349F58CF22EAE25D00BCA262 /* RegisterVC.xib in Resources */,
-				34182D6622D6C9AA00808401 /* Assets.xcassets in Resources */,
 				34182D5C22D5A0DD00808401 /* TagCount.xib in Resources */,
 				349FAA0722CDF38D00009361 /* AddVC.xib in Resources */,
 				349F58CB22EAA7AF00BCA262 /* LoginVC.xib in Resources */,
@@ -321,6 +320,7 @@
 				346EC1B722E54C99009ABF38 /* AddPeopleCell.xib in Resources */,
 				34182D6022D5CE7500808401 /* TimeLineCell.xib in Resources */,
 				349FA9EC22CDDD5200009361 /* Main.storyboard in Resources */,
+				3465BEAB22F1735500B0E20E /* Assets.xcassets in Resources */,
 				3498DDBA22E5B85F00BCBD1B /* AddImageCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -340,13 +340,17 @@
 				"${BUILT_PRODUCTS_DIR}/BoringSSL-GRPC/openssl_grpc.framework",
 				"${BUILT_PRODUCTS_DIR}/FBSDKCoreKit/FBSDKCoreKit.framework",
 				"${BUILT_PRODUCTS_DIR}/FBSDKLoginKit/FBSDKLoginKit.framework",
+				"${BUILT_PRODUCTS_DIR}/FanMenu/FanMenu.framework",
 				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
 				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
 				"${BUILT_PRODUCTS_DIR}/GoogleUtilities/GoogleUtilities.framework",
 				"${BUILT_PRODUCTS_DIR}/KRActivityIndicatorView/KRActivityIndicatorView.framework",
 				"${BUILT_PRODUCTS_DIR}/KRProgressHUD/KRProgressHUD.framework",
+				"${BUILT_PRODUCTS_DIR}/Macaw/Macaw.framework",
+				"${BUILT_PRODUCTS_DIR}/NewPopMenu/PopMenu.framework",
 				"${BUILT_PRODUCTS_DIR}/Protobuf/Protobuf.framework",
 				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
+				"${BUILT_PRODUCTS_DIR}/SWXMLHash/SWXMLHash.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
 				"${BUILT_PRODUCTS_DIR}/gRPC-C++/grpcpp.framework",
 				"${BUILT_PRODUCTS_DIR}/gRPC-Core/grpc.framework",
@@ -360,13 +364,17 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/openssl_grpc.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBSDKCoreKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBSDKLoginKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FanMenu.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleUtilities.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/KRActivityIndicatorView.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/KRProgressHUD.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Macaw.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PopMenu.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Protobuf.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SWXMLHash.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyJSON.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/grpcpp.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/grpc.framework",

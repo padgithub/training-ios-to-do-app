@@ -12,11 +12,15 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="RegisterVC" customModule="ToDoList" customModuleProvider="target">
             <connections>
+                <outlet property="botConstraintRegister" destination="uVn-Al-dwl" id="o9m-DN-nJk"/>
+                <outlet property="topConstrainRegister" destination="wbd-7o-Shl" id="ctF-d7-5ZL"/>
+                <outlet property="topConstrainTextRegister" destination="yID-HN-0Oj" id="8sF-vY-MXF"/>
                 <outlet property="txtConfirmPass" destination="Rrd-PF-vU0" id="XmJ-yT-JMy"/>
                 <outlet property="txtEmail" destination="Ene-bo-rNY" id="XIa-qx-hpf"/>
                 <outlet property="txtPassword" destination="NFD-Pz-Egc" id="Xba-kd-ZYZ"/>
                 <outlet property="txtUserName" destination="22q-X9-Vmn" id="QJ4-v1-ovC"/>
                 <outlet property="view" destination="qLL-H4-Zdw" id="NOl-Gb-mDS"/>
+                <outlet property="viewMain" destination="qLL-H4-Zdw" id="ZtX-pq-nTC"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -33,12 +37,6 @@
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Register" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xqv-MF-hcs">
                             <rect key="frame" x="86.666666666666686" y="172.66666666666666" width="202" height="63"/>
                             <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="54"/>
-                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            <nil key="highlightedColor"/>
-                        </label>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-----------------" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FQ5-SB-46d">
-                            <rect key="frame" x="119.66666666666669" y="250.66666666666669" width="136" height="28"/>
-                            <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="24"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
                         </label>
@@ -68,10 +66,8 @@
                         <constraint firstItem="Xqv-MF-hcs" firstAttribute="centerY" secondItem="Uiq-ue-AZc" secondAttribute="centerY" constant="21.5" id="AFx-uY-kTk"/>
                         <constraint firstItem="JHB-F1-jzV" firstAttribute="width" secondItem="Uiq-ue-AZc" secondAttribute="width" id="FY5-hG-oIz"/>
                         <constraint firstItem="JHB-F1-jzV" firstAttribute="leading" secondItem="Uiq-ue-AZc" secondAttribute="leading" id="FbB-4k-PAS"/>
-                        <constraint firstItem="FQ5-SB-46d" firstAttribute="centerX" secondItem="Uiq-ue-AZc" secondAttribute="centerX" id="M65-6g-Vic"/>
                         <constraint firstItem="JHB-F1-jzV" firstAttribute="height" secondItem="Uiq-ue-AZc" secondAttribute="height" multiplier="1:8" id="MXB-HL-YV8"/>
                         <constraint firstItem="JHB-F1-jzV" firstAttribute="top" secondItem="Uiq-ue-AZc" secondAttribute="top" id="XV4-yO-GQo"/>
-                        <constraint firstItem="FQ5-SB-46d" firstAttribute="top" secondItem="Xqv-MF-hcs" secondAttribute="bottom" constant="15" id="p70-gY-8vY"/>
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HFs-hZ-inG" userLabel="BottomView">

@@ -15,4 +15,6 @@ target 'ToDoList' do
     pod 'KRProgressHUD'
     pod 'FirebaseUI/Auth'
     pod 'FirebaseUI'
+    pod 'FanMenu'
+    pod 'NewPopMenu'
 end

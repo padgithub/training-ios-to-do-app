@@ -10,8 +10,15 @@ import UIKit
 import Firebase
 import SwiftyJSON
 import UserNotifications
+import FanMenu
+import Macaw
+import PopMenu
+import KRProgressHUD
 
 class ShowTaskVC: UIViewController {
+    @IBOutlet var viewMain: UIView!
+    
+    @IBOutlet weak var sideButtonMenu: FanMenu!
     @IBOutlet weak var collectionTagCount: UICollectionView!
     @IBOutlet weak var tableTimeLine: UITableView!
     
@@ -34,27 +41,32 @@ class ShowTaskVC: UIViewController {
     var decTodayTask: String = "nil"
     var userUID: String = ""
     let defauls = UserDefaults.standard
-    
+    let items = [
+        ("Logout", 0xFF703B),
+        ("About", 0x9F85FF),
+        ("Report", 0x85B1FF),
+    ]
     var myTimer = Timer()
-    
-    
+    var menuViewController = PopMenuViewController()
+    var handle: ((Int) -> Void)?
     
     @IBOutlet weak var countTask: UILabel!
     @IBOutlet weak var countTaskDoing: UILabel!
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         let settings = FirestoreSettings()
         Firestore.firestore().settings = settings
         
+        self.navigationController?.setNavigationBarHidden(true, animated: false)
         initUI()
         initData()
         reload()
         
-        //
          myTimer = Timer(timeInterval: 0.5, target: self, selector: #selector(checkTime), userInfo: nil, repeats: true)
         RunLoop.main.add(myTimer, forMode: RunLoop.Mode.default)
     }
+    
+    
     
     @objc func reload() {
         fetchTask()
@@ -77,30 +89,192 @@ class ShowTaskVC: UIViewController {
         collectionTagCount.reloadData()
         tableTimeLine.reloadData()
     }
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        sideButtonMenu.updateNode()
+    }
+    
+    func presentMenu() {
+        menuViewController = PopMenuViewController(actions: [
+            
+            PopMenuDefaultAction(title: "Setting", image: nil, color: .white, didSelect: nil),
+            PopMenuDefaultAction(title: "Đổi tên", image: UIImage(named: "edit_user"), color: .green, didSelect: { action in
+                self.handle?(1)
+            }),
+            PopMenuDefaultAction(title: "Đổi mật khẩu", image: UIImage(named: "edit_password"), color: .red, didSelect: { action in
+                self.handle?(2)
+            })])
+        present(menuViewController, animated: true, completion: nil)
+        
+        handle = { (value) in
+            self.menuViewController.dismiss(animated: false, completion: {
+                if value == 1 {
+                    self.changeUserName()
+                } else if value == 2 {
+                    self.changePass()
+                }
+            })
+        }
+    }
+    
+    func changePass() {
+        let alertController = UIAlertController(title: "Đổi mật khẩu", message: "", preferredStyle: UIAlertController.Style.alert)
+        alertController.addTextField { (textField) in
+            textField.placeholder = "Mật khẩu cũ"
+            textField.isSecureTextEntry = true
+        }
+        let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertAction.Style.default, handler: nil)
+        let saveAction = UIAlertAction(title: "Save", style: UIAlertAction.Style.default, handler: { alert -> Void in
+            let passOld = alertController.textFields![0].text
+            let passNew = alertController.textFields![1].text
+            let confPass = alertController.textFields![2].text
+
+            if passNew == confPass {
+                let user = Auth.auth().currentUser
+                
+                let credential = EmailAuthProvider.credential(withEmail: (user?.email)!, password: passOld!)
+                KRProgressHUD.show()
+                user?.reauthenticate(with: credential, completion: { (result, err) in
+                    if err != nil{
+                        KRProgressHUD.showError(withMessage: "Sai mật khẩu cũ")
+                    }else{
+                        Auth.auth().currentUser?.updatePassword(to: confPass!) { (error) in
+                            if error != nil {
+                                return
+                            }
+                            if Auth.auth().currentUser != nil {
+                                KRProgressHUD.showSuccess()
+                                print("Successful!")
+                            }
+                        }
+                    }
+                })
+            } else {
+                KRProgressHUD.showError(withMessage: "Vui lòng xác nhận đúng mật khẩu mới")
+            }
+        })
+        alertController.addTextField { (textField) in
+            textField.placeholder = "Nhập mật khẩu mới"
+            textField.isSecureTextEntry = true
+        }
+        alertController.addTextField { (textField) in
+            textField.placeholder = "Nhập lại mật khẩu mới"
+            textField.isSecureTextEntry = true
+        }
+        
+        alertController.addAction(cancelAction)
+        alertController.addAction(saveAction)
+        
+        self.present(alertController, animated: true, completion: nil)
+    }
+    
+    func changeUserName() {
+        let alertController = UIAlertController(title: "Đổi tên", message: "", preferredStyle: UIAlertController.Style.alert)
+        alertController.addTextField { (textField) in
+            textField.placeholder = "Nhập tên mới"
+        }
+        let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertAction.Style.default, handler: nil)
+        let saveAction = UIAlertAction(title: "Save", style: UIAlertAction.Style.default, handler: { alert -> Void in
+            let newName = alertController.textFields![0].text
+            
+                    let changeRequest = Auth.auth().currentUser?.createProfileChangeRequest()
+                    changeRequest?.displayName = newName
+                    KRProgressHUD.show()
+                    changeRequest?.commitChanges { (error) in
+                        if error != nil {
+                            return
+                        }
+                        if Auth.auth().currentUser != nil {
+                            KRProgressHUD.showSuccess()
+                            self.initUI()
+                        }
+                    }
+                    print("Register successful!")
+            }
+        )
+        alertController.addAction(cancelAction)
+        alertController.addAction(saveAction)
+        
+        self.present(alertController, animated: true, completion: nil)
+    }
+        
+    
+    
+    func sideButtonSetup() {
+        sideButtonMenu.button = FanMenuButton(
+            id: "main",
+            image: UIImage(named: "menu_plus"),
+            color: Color(val: 0x7C93FE)
+        )
+        
+
+        sideButtonMenu.items = items.map { button in
+            FanMenuButton(
+                id: button.0,
+                image: UIImage(named: "menu_\(button.0)"),
+                color: Color(val: button.1)
+            )
+        }
+        
+        sideButtonMenu.menuRadius = 90.0
+        sideButtonMenu.duration = 0.2
+        sideButtonMenu.interval = (Double.pi, 0.3 * Double.pi)
+        sideButtonMenu.radius = 25.0
+        
+        sideButtonMenu.onItemDidClick = { button in
+            if button.id == "Logout" {
+                do{
+                    try Auth.auth().signOut()
+                    
+                    let vc = LoginVC.init(nibName: "LoginVC", bundle: nil)
+                    self.navigationController?.pushViewController(vc, animated: true)
+                } catch let logoutError {
+                    print(logoutError)
+                }
+            }
+            if button.id == "About" {
+                _ = UIAlertController.present(title: "About me", message: "Hallo?.", actionTitles: ["OK"])
+            }
+            if button.id == "Report" {
+                self.presentMenu()
+            }
+            print("ItemDidClick: \(button.id)")
+        }
+        
+        sideButtonMenu.onItemWillClick = { button in
+            print("ItemWillClick: \(button.id)")
+        }
+        
+        sideButtonMenu.transform = CGAffineTransform(rotationAngle: CGFloat(Double.pi))
+        sideButtonMenu.backgroundColor = .clear
+    }
 }
 
 extension ShowTaskVC {
     func initUI() {
+        sideButtonSetup()
+        
         //MARK: - Layout collection view cell
+        collectionTagCount.delegate = self
+        collectionTagCount.dataSource = self
+        
         let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
-        layout.sectionInset = UIEdgeInsets(top: 0, left: 5, bottom: 10, right: 10)
-        layout.itemSize = CGSize(width: collectionTagCount.frame.width/2 - 10, height: collectionTagCount.frame.height/2 - 10)
-        layout.minimumInteritemSpacing = 5
+        layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 10, right: 10)
+        layout.minimumInteritemSpacing = 0
         layout.minimumLineSpacing = 10
         layout.scrollDirection = .vertical
-        collectionTagCount!.collectionViewLayout = layout
+        self.collectionTagCount.collectionViewLayout = layout
         
         let gestureCreated = UITapGestureRecognizer(target: self, action: #selector(showCreated(_:)))
         let gestureLeft = UITapGestureRecognizer(target: self, action: #selector(showLeft(_:)))
         taskCreated.addGestureRecognizer(gestureCreated)
         taskLeft.addGestureRecognizer(gestureLeft)
         
-        let user = Auth.auth().currentUser
-        if let user = user {
-            let displayName = user.displayName
-            lbUserName.text = "Hey \(displayName ?? "")"
+            let user = Auth.auth().currentUser
+            if let user = user {
+                let displayName = user.displayName
+                lbUserName.text = "Hey \(displayName ?? "")"
         }
-        
         
     }
     
@@ -124,9 +298,6 @@ extension ShowTaskVC {
         if let user = user {
             userUID = user.uid
         }
-        
-        collectionTagCount.dataSource = self
-        collectionTagCount.delegate = self
         
         tableTimeLine.dataSource = self
         tableTimeLine.delegate = self
@@ -382,6 +553,12 @@ extension ShowTaskVC: UICollectionViewDelegate {
     }
 }
 
+extension ShowTaskVC: UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: (collectionTagCount.frame.width/2) - 10, height: collectionTagCount.frame.height/2 - 10)
+    }
+}
+
 //MARK: - TableView
 extension ShowTaskVC: UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -411,91 +588,5 @@ extension ShowTaskVC: UITableViewDataSource {
 extension ShowTaskVC: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 61
-    }
-}
-
-//MARK: - Support Date Function
-extension Date {
-    func interval(ofComponent comp: Calendar.Component, fromDate date: Date) -> Int {
-        
-        let currentCalendar = Calendar.current
-        
-        guard let start = currentCalendar.ordinality(of: comp, in: .era, for: date) else { return 0 }
-        guard let end = currentCalendar.ordinality(of: comp, in: .era, for: self) else { return 0 }
-        
-        return end - start
-    }
-    
-    func string(_ format: String) -> String {
-        let dateFormatter = DateFormatter()
-        dateFormatter.timeZone = NSTimeZone.local
-        dateFormatter.locale = Locale(identifier: "en")
-        dateFormatter.dateFormat = format
-        return dateFormatter.string(from: self as Date)
-    }
-    
-    func stringWithTimeZone( timeZone: String, format: String) -> String {
-        let dateFormatter = DateFormatter()
-        dateFormatter.timeZone = TimeZone(identifier: timeZone)
-        dateFormatter.locale = Locale(identifier: "en")
-        dateFormatter.dateFormat = format
-        return dateFormatter.string(from: self as Date)
-    }
-    
-    var millisecondsSince1970: Int {
-        return Int((self.timeIntervalSince1970 * 1000.0).rounded())
-    }
-    
-    var secondsSince1970: Int {
-        return Int((self.timeIntervalSince1970).rounded())
-    }
-    
-    init(milliseconds: Double) {
-        self = Date(timeIntervalSince1970: TimeInterval(milliseconds / 1000))
-    }
-    
-    init(seconds: Double) {
-        self = Date(timeIntervalSince1970: TimeInterval(seconds))
-    }
-    
-    init(string: String) {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "dd/MM/yyyy"
-        self = dateFormatter.date(from: string)!
-    }
-    
-    func getElapsedInterval() -> String {
-        let unitFlags = Set<Calendar.Component>([.day, .weekOfMonth, .month, .year, .hour , .minute, .second])
-        var interval = Calendar.current.dateComponents(unitFlags, from: self,  to: Date())
-        if interval.year! > 0 {
-            return "\(interval.year!)" + " " + "năm trước"
-        }
-        if interval.month! > 0 {
-            return "\(interval.month!)" + " " + "tháng trước"
-        }
-        if interval.weekOfMonth! > 0 {
-            return "\(interval.weekOfMonth!)" + " " + "tuần trước"
-        }
-        if interval.day! > 0 {
-            return "\(interval.day!)" + " " + "ngày trước"
-        }
-        if interval.hour! > 0 {
-            return "\(interval.hour!)" + " " + "giờ trước"
-        }
-        if interval.minute! > 0 {
-            return "\(interval.minute!)" + " " + "phút trước"
-        }
-        
-        if interval.second! > 0 {
-            return "Vừa xong"
-        }
-        return "Vừa xong"
-    }
-    
-    var startDate: Date {
-        return Calendar.current.date(bySettingHour: 0, minute: 0, second: 0, of: self) ?? self
-    }
-    var endDate: Date {
-        return Calendar.current.date(bySettingHour: 23, minute: 59, second: 59, of: self) ?? self
     }
 }

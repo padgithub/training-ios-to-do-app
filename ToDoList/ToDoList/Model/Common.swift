@@ -237,3 +237,88 @@ class NotificationCenterKey {
     static let SelectedMenu = "SelectedMenu"
     static let DismissAllAlert = "DismissAllAlert"
 }
+
+extension Date {
+    func interval(ofComponent comp: Calendar.Component, fromDate date: Date) -> Int {
+        
+        let currentCalendar = Calendar.current
+        
+        guard let start = currentCalendar.ordinality(of: comp, in: .era, for: date) else { return 0 }
+        guard let end = currentCalendar.ordinality(of: comp, in: .era, for: self) else { return 0 }
+        
+        return end - start
+    }
+    
+    func string(_ format: String) -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.timeZone = NSTimeZone.local
+        dateFormatter.locale = Locale(identifier: "en")
+        dateFormatter.dateFormat = format
+        return dateFormatter.string(from: self as Date)
+    }
+    
+    func stringWithTimeZone( timeZone: String, format: String) -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.timeZone = TimeZone(identifier: timeZone)
+        dateFormatter.locale = Locale(identifier: "en")
+        dateFormatter.dateFormat = format
+        return dateFormatter.string(from: self as Date)
+    }
+    
+    var millisecondsSince1970: Int {
+        return Int((self.timeIntervalSince1970 * 1000.0).rounded())
+    }
+    
+    var secondsSince1970: Int {
+        return Int((self.timeIntervalSince1970).rounded())
+    }
+    
+    init(milliseconds: Double) {
+        self = Date(timeIntervalSince1970: TimeInterval(milliseconds / 1000))
+    }
+    
+    init(seconds: Double) {
+        self = Date(timeIntervalSince1970: TimeInterval(seconds))
+    }
+    
+    init(string: String) {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "dd/MM/yyyy"
+        self = dateFormatter.date(from: string)!
+    }
+    
+    func getElapsedInterval() -> String {
+        let unitFlags = Set<Calendar.Component>([.day, .weekOfMonth, .month, .year, .hour , .minute, .second])
+        var interval = Calendar.current.dateComponents(unitFlags, from: self,  to: Date())
+        if interval.year! > 0 {
+            return "\(interval.year!)" + " " + "năm trước"
+        }
+        if interval.month! > 0 {
+            return "\(interval.month!)" + " " + "tháng trước"
+        }
+        if interval.weekOfMonth! > 0 {
+            return "\(interval.weekOfMonth!)" + " " + "tuần trước"
+        }
+        if interval.day! > 0 {
+            return "\(interval.day!)" + " " + "ngày trước"
+        }
+        if interval.hour! > 0 {
+            return "\(interval.hour!)" + " " + "giờ trước"
+        }
+        if interval.minute! > 0 {
+            return "\(interval.minute!)" + " " + "phút trước"
+        }
+        
+        if interval.second! > 0 {
+            return "Vừa xong"
+        }
+        return "Vừa xong"
+    }
+    
+    var startDate: Date {
+        return Calendar.current.date(bySettingHour: 0, minute: 0, second: 0, of: self) ?? self
+    }
+    var endDate: Date {
+        return Calendar.current.date(bySettingHour: 23, minute: 59, second: 59, of: self) ?? self
+    }
+}

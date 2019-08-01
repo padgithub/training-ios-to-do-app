@@ -38,7 +38,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         FirebaseApp.configure()
         db = Firestore.firestore()
         
-        fetchTag()
+        if Auth.auth().currentUser != nil {
+//            try! Auth.auth().signOut()
+            fetchTag()
+        } else {
+            let vc = LoginVC.init(nibName: "LoginVC", bundle: nil)
+            let nav = UINavigationController(rootViewController: vc)
+            nav.isNavigationBarHidden = true
+            window?.rootViewController = nav
+        }
         
         //Notification
         UNUserNotificationCenter.current().delegate = self
@@ -62,10 +70,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                 for document in querySnapshot!.documents {
                     let obj = TypeTag.init(data: JSON.init(document.data()), firebaseKey: document.documentID)
                     self.arrTag.append(obj)
+                    self.initHome()
                 }
                 self.arrTag = self.arrTag.sorted(by: { $0.createTime < $1.createTime })
                 self.arrTag.append(TypeTag(textTag: "", backGround: "", type: .special))
-                self.initHome()
             }
         }
     }
@@ -92,21 +100,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     }
     
     func initHome() {
-//        let vc = AddVC.init(nibName: "AddVC", bundle: nil)
-//        let Editvc = EditVC.init(nibName: "EditVC", bundle: nil)
-//        let vc = ShowTaskVC.init(nibName: "ShowTaskVC", bundle: nil)
-        if Auth.auth().currentUser != nil {
+ 
             let showVC = ShowTaskVC.init(nibName: "ShowTaskVC", bundle: nil)
             let nav = UINavigationController(rootViewController: showVC)
             window?.rootViewController = nav
-        } else {
-            let vc = LoginVC.init(nibName: "LoginVC", bundle: nil)
-            let nav = UINavigationController(rootViewController: vc)
-            nav.isNavigationBarHidden = true
-            window?.rootViewController = nav
-        }
-        
-        window?.makeKeyAndVisible()
     }
 
     func applicationWillResignActive(_ application: UIApplication) {
