@@ -8,6 +8,7 @@
 
 import UIKit
 import SDWebImage
+import Kingfisher
 
 class AddImageCell: UICollectionViewCell {
     @IBOutlet weak var imgDesc: CustomImageView!
@@ -20,6 +21,6 @@ class AddImageCell: UICollectionViewCell {
 //        let url = URL(fileURLWithPath: path)
 //        imgDesc.sd_setImage(with: path, completed: nil)
         imgDesc.loadImageUsingCache(withUrl: "\(path)", frame: self.imgDesc.frame)
-        
+//        imgDesc.kf.setImage(with: path)
     }
 }

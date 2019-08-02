@@ -2,6 +2,10 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>UIStatusBarHidden</key>
+	<true/>
+	<key>UIViewControllerBasedStatusBarAppearance</key>
+	<false/>
 	<key>NSContactsUsageDescription</key>
 	<string></string>
 	<key>FirebaseScreenReportingEnabled</key>
@@ -47,5 +51,17 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+    <key>NSCameraUsageDescription</key>
+    <string>This app allows access to the camera. Users take pictures and add them to the app.</string>
+    <key>NSContactsUsageDescription</key>
+    <string>This app allows access to the contacts. Users choose contact and add them to the app.</string>
+    <key>NSLocationUsageDescription</key>
+    <string>This app allows access to location access for updating nearby friends.</string>
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string>This app allows access to location access for updating nearby cinemas.</string>
+    <key>NSMicrophoneUsageDescription</key>
+    <string>This app allows access to the microphone. Users voice recording and add them to the app.</string>
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>We would like to access your camera and photos in order to create and upload pictures.</string>
 </dict>
 </plist>

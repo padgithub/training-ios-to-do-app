@@ -603,6 +603,7 @@ extension AddVC: UITextViewDelegate,UINavigationBarDelegate {
         collecImage.delegate = self
         txtTextView.delegate = self
         contactPicker.delegate = self
+        txtNameTask.delegate = self
         
         dateTimeToShow.text = configDate(startDate: Date(), endDate: Date())
         
@@ -640,6 +641,14 @@ extension AddVC: UITextViewDelegate,UINavigationBarDelegate {
             txtTextView.text = "Description..."
             txtTextView.textColor = UIColor.lightGray
         }
+    }
+    
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        if text == "\n" {
+            textView.resignFirstResponder()
+            return false
+        }
+        return true
     }
     
     //MARK: - Set Data Edit View
@@ -725,7 +734,15 @@ extension AddVC : UICollectionViewDataSource {
                 cell.imgAvatar.image = UIImage(data: data.imageData!)
             } else {
                 cell.isHide = false
-                cell.dataLabel = (String(describing: data.familyName.first!)) + (String(describing: data.givenName.first!))
+                var familyNameUse = ""
+                var giveNameUse = ""
+                if let familyName = data.familyName.first {
+                    familyNameUse = String(familyName)
+                }
+                if let givenName = data.givenName.first {
+                    giveNameUse = String(givenName)
+                }
+                cell.dataLabel = (familyNameUse + giveNameUse)
             }
             cell.config()
             return cell
@@ -809,20 +826,27 @@ extension AddVC: UIImagePickerControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]){
      
         if let imgUrl = info[UIImagePickerController.InfoKey.imageURL] as? URL{
-            let imgName = imgUrl.lastPathComponent
-            let documentDirectory = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first
-            let localPath = documentDirectory?.appending(imgName)
-            
-            let image = info[UIImagePickerController.InfoKey.originalImage] as! UIImage
-            let data = image.pngData()! as NSData
-            data.write(toFile: localPath!, atomically: true)
-            //            //let imageData = NSData(contentsOfFile: localPath!)!
-            let photoURL = URL.init(fileURLWithPath: localPath!)//NSURL(fileURLWithPath: localPath!)
-            print(photoURL)
-            arrURLs.append(photoURL)
+//            let imgName = imgUrl.lastPathComponent
+//            let documentDirectory = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first
+//            let localPath = documentDirectory?.appending(imgName)
+//
+//            let image = info[UIImagePickerController.InfoKey.originalImage] as! UIImage
+//            let data = image.pngData()! as NSData
+//            data.write(toFile: localPath!, atomically: true)
+//            //            //let imageData = NSData(contentsOfFile: localPath!)!
+//            let photoURL = URL.init(fileURLWithPath: localPath!)//NSURL(fileURLWithPath: localPath!)
+//            print(photoURL)
+            arrURLs.append(imgUrl)
             collecImage.reloadData()
         }
         reloadCollecImage()
         imagePicker.dismiss(animated: true, completion: nil)
+    }
+}
+
+extension AddVC: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        txtNameTask.resignFirstResponder()
+        return true
     }
 }

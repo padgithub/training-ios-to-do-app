@@ -17,4 +17,5 @@ target 'ToDoList' do
     pod 'FirebaseUI'
     pod 'FanMenu'
     pod 'NewPopMenu'
+    pod 'Kingfisher'
 end

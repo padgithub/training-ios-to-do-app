@@ -99,12 +99,12 @@ extension RegisterVC: UITextFieldDelegate {
         let constrain = viewMain.frame.height / 3
         
         if textField == txtUserName {
-            textField.resignFirstResponder()
-            txtEmail.becomeFirstResponder()
-        } else if textField == txtEmail {
             topConstrainRegister.constant = (0 - constrain) / 2
             botConstraintRegister.constant = constrain
             topConstrainTextRegister.constant = (0 - constrain) / 2
+            textField.resignFirstResponder()
+            txtEmail.becomeFirstResponder()
+        } else if textField == txtEmail {
             textField.resignFirstResponder()
             txtPassword.becomeFirstResponder()
         } else if textField == txtPassword {
@@ -112,9 +112,11 @@ extension RegisterVC: UITextFieldDelegate {
             textField.resignFirstResponder()
             txtConfirmPass.becomeFirstResponder()
         } else if textField == txtConfirmPass {
-            topConstrainRegister.constant -= (0 - constrain) / 2
-            botConstraintRegister.constant -= constrain
-            topConstrainTextRegister.constant -= (0 - constrain) / 2
+            if topConstrainTextRegister.constant == (0 - constrain) / 2 {
+                topConstrainRegister.constant -= (0 - constrain) / 2
+                botConstraintRegister.constant -= constrain
+                topConstrainTextRegister.constant -= (0 - constrain) / 2
+            }
             textField.resignFirstResponder()
         }
         return true
