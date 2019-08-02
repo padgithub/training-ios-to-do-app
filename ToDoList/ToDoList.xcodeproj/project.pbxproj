@@ -21,6 +21,25 @@
 		3465BEAB22F1735500B0E20E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3465BEAA22F1735400B0E20E /* Assets.xcassets */; };
 		3466DF0122D49FF90030A383 /* SpecialCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3466DEFF22D49FF90030A383 /* SpecialCell.swift */; };
 		3466DF0222D49FF90030A383 /* SpecialCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3466DF0022D49FF90030A383 /* SpecialCell.xib */; };
+		34670E4422F4251800527B3C /* Degree.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34670E4122F4251800527B3C /* Degree.swift */; };
+		34670E4522F4251800527B3C /* UIColors+ColorPallete.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34670E4222F4251800527B3C /* UIColors+ColorPallete.swift */; };
+		34670E4622F4251800527B3C /* CATransform3D+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34670E4322F4251800527B3C /* CATransform3D+Helper.swift */; };
+		34670E4C22F4255300527B3C /* CritterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34670E4822F4255300527B3C /* CritterView.swift */; };
+		34670E4D22F4255300527B3C /* CritterAssets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34670E4922F4255300527B3C /* CritterAssets.swift */; };
+		34670E4F22F4255300527B3C /* CritterAnimatable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34670E4B22F4255300527B3C /* CritterAnimatable.swift */; };
+		34670E5E22F4258B00527B3C /* RightEar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34670E5122F4258A00527B3C /* RightEar.swift */; };
+		34670E5F22F4258B00527B3C /* Muzzle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34670E5222F4258A00527B3C /* Muzzle.swift */; };
+		34670E6022F4258B00527B3C /* Nose.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34670E5322F4258A00527B3C /* Nose.swift */; };
+		34670E6122F4258B00527B3C /* Head.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34670E5422F4258A00527B3C /* Head.swift */; };
+		34670E6222F4258B00527B3C /* LeftEye.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34670E5522F4258A00527B3C /* LeftEye.swift */; };
+		34670E6322F4258B00527B3C /* Body.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34670E5622F4258A00527B3C /* Body.swift */; };
+		34670E6422F4258B00527B3C /* LeftArm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34670E5722F4258A00527B3C /* LeftArm.swift */; };
+		34670E6522F4258B00527B3C /* Mouth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34670E5822F4258A00527B3C /* Mouth.swift */; };
+		34670E6622F4258B00527B3C /* RightEarMask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34670E5922F4258A00527B3C /* RightEarMask.swift */; };
+		34670E6722F4258B00527B3C /* LeftEar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34670E5A22F4258A00527B3C /* LeftEar.swift */; };
+		34670E6822F4258B00527B3C /* RightEye.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34670E5B22F4258A00527B3C /* RightEye.swift */; };
+		34670E6922F4258B00527B3C /* RightArm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34670E5C22F4258A00527B3C /* RightArm.swift */; };
+		34670E6A22F4258B00527B3C /* LeftEarMask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34670E5D22F4258B00527B3C /* LeftEarMask.swift */; };
 		346EC1B622E54C99009ABF38 /* AddPeopleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 346EC1B422E54C99009ABF38 /* AddPeopleCell.swift */; };
 		346EC1B722E54C99009ABF38 /* AddPeopleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 346EC1B522E54C99009ABF38 /* AddPeopleCell.xib */; };
 		3481FB2122E7111D009424A9 /* Common.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3481FB2022E7111D009424A9 /* Common.swift */; };
@@ -64,6 +83,25 @@
 		3465BEAA22F1735400B0E20E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = ToDoList/Assets.xcassets; sourceTree = SOURCE_ROOT; };
 		3466DEFF22D49FF90030A383 /* SpecialCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpecialCell.swift; sourceTree = "<group>"; };
 		3466DF0022D49FF90030A383 /* SpecialCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SpecialCell.xib; sourceTree = "<group>"; };
+		34670E4122F4251800527B3C /* Degree.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Degree.swift; path = ToDoList/12/Helpers/Degree.swift; sourceTree = SOURCE_ROOT; };
+		34670E4222F4251800527B3C /* UIColors+ColorPallete.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "UIColors+ColorPallete.swift"; path = "ToDoList/12/Helpers/UIColors+ColorPallete.swift"; sourceTree = SOURCE_ROOT; };
+		34670E4322F4251800527B3C /* CATransform3D+Helper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "CATransform3D+Helper.swift"; path = "ToDoList/12/Helpers/CATransform3D+Helper.swift"; sourceTree = SOURCE_ROOT; };
+		34670E4822F4255300527B3C /* CritterView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CritterView.swift; path = ToDoList/12/Critter/CritterView.swift; sourceTree = SOURCE_ROOT; };
+		34670E4922F4255300527B3C /* CritterAssets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CritterAssets.swift; path = ToDoList/12/Critter/CritterAssets.swift; sourceTree = SOURCE_ROOT; };
+		34670E4B22F4255300527B3C /* CritterAnimatable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CritterAnimatable.swift; path = ToDoList/12/Critter/CritterAnimatable.swift; sourceTree = SOURCE_ROOT; };
+		34670E5122F4258A00527B3C /* RightEar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RightEar.swift; path = ToDoList/12/Critter/Parts/RightEar.swift; sourceTree = SOURCE_ROOT; };
+		34670E5222F4258A00527B3C /* Muzzle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Muzzle.swift; path = ToDoList/12/Critter/Parts/Muzzle.swift; sourceTree = SOURCE_ROOT; };
+		34670E5322F4258A00527B3C /* Nose.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Nose.swift; path = ToDoList/12/Critter/Parts/Nose.swift; sourceTree = SOURCE_ROOT; };
+		34670E5422F4258A00527B3C /* Head.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Head.swift; path = ToDoList/12/Critter/Parts/Head.swift; sourceTree = SOURCE_ROOT; };
+		34670E5522F4258A00527B3C /* LeftEye.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LeftEye.swift; path = ToDoList/12/Critter/Parts/LeftEye.swift; sourceTree = SOURCE_ROOT; };
+		34670E5622F4258A00527B3C /* Body.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Body.swift; path = ToDoList/12/Critter/Parts/Body.swift; sourceTree = SOURCE_ROOT; };
+		34670E5722F4258A00527B3C /* LeftArm.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LeftArm.swift; path = ToDoList/12/Critter/Parts/LeftArm.swift; sourceTree = SOURCE_ROOT; };
+		34670E5822F4258A00527B3C /* Mouth.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Mouth.swift; path = ToDoList/12/Critter/Parts/Mouth.swift; sourceTree = SOURCE_ROOT; };
+		34670E5922F4258A00527B3C /* RightEarMask.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RightEarMask.swift; path = ToDoList/12/Critter/Parts/RightEarMask.swift; sourceTree = SOURCE_ROOT; };
+		34670E5A22F4258A00527B3C /* LeftEar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LeftEar.swift; path = ToDoList/12/Critter/Parts/LeftEar.swift; sourceTree = SOURCE_ROOT; };
+		34670E5B22F4258A00527B3C /* RightEye.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RightEye.swift; path = ToDoList/12/Critter/Parts/RightEye.swift; sourceTree = SOURCE_ROOT; };
+		34670E5C22F4258A00527B3C /* RightArm.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RightArm.swift; path = ToDoList/12/Critter/Parts/RightArm.swift; sourceTree = SOURCE_ROOT; };
+		34670E5D22F4258B00527B3C /* LeftEarMask.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LeftEarMask.swift; path = ToDoList/12/Critter/Parts/LeftEarMask.swift; sourceTree = SOURCE_ROOT; };
 		346EC1B422E54C99009ABF38 /* AddPeopleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPeopleCell.swift; sourceTree = "<group>"; };
 		346EC1B522E54C99009ABF38 /* AddPeopleCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AddPeopleCell.xib; sourceTree = "<group>"; };
 		3481FB2022E7111D009424A9 /* Common.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Common.swift; sourceTree = "<group>"; };
@@ -116,9 +154,51 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
+		34670E4022F424B700527B3C /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				34670E4322F4251800527B3C /* CATransform3D+Helper.swift */,
+				34670E4122F4251800527B3C /* Degree.swift */,
+				34670E4222F4251800527B3C /* UIColors+ColorPallete.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
+		34670E4722F4252B00527B3C /* Critter */ = {
+			isa = PBXGroup;
+			children = (
+				34670E5022F4256400527B3C /* Parts */,
+				34670E4B22F4255300527B3C /* CritterAnimatable.swift */,
+				34670E4922F4255300527B3C /* CritterAssets.swift */,
+				34670E4822F4255300527B3C /* CritterView.swift */,
+			);
+			path = Critter;
+			sourceTree = "<group>";
+		};
+		34670E5022F4256400527B3C /* Parts */ = {
+			isa = PBXGroup;
+			children = (
+				34670E5622F4258A00527B3C /* Body.swift */,
+				34670E5422F4258A00527B3C /* Head.swift */,
+				34670E5722F4258A00527B3C /* LeftArm.swift */,
+				34670E5A22F4258A00527B3C /* LeftEar.swift */,
+				34670E5D22F4258B00527B3C /* LeftEarMask.swift */,
+				34670E5522F4258A00527B3C /* LeftEye.swift */,
+				34670E5822F4258A00527B3C /* Mouth.swift */,
+				34670E5222F4258A00527B3C /* Muzzle.swift */,
+				34670E5322F4258A00527B3C /* Nose.swift */,
+				34670E5C22F4258A00527B3C /* RightArm.swift */,
+				34670E5122F4258A00527B3C /* RightEar.swift */,
+				34670E5922F4258A00527B3C /* RightEarMask.swift */,
+				34670E5B22F4258A00527B3C /* RightEye.swift */,
+			);
+			path = Parts;
+			sourceTree = "<group>";
+		};
 		349F58C722EAA78500BCA262 /* LoginViewController */ = {
 			isa = PBXGroup;
 			children = (
+				34670E4722F4252B00527B3C /* Critter */,
 				349F58C822EAA7AF00BCA262 /* LoginVC.swift */,
 				349F58C922EAA7AF00BCA262 /* LoginVC.xib */,
 				349F58CC22EAE25D00BCA262 /* RegisterVC.swift */,
@@ -148,8 +228,10 @@
 		349FA9E522CDDD5200009361 /* ToDoList */ = {
 			isa = PBXGroup;
 			children = (
+				34670E4022F424B700527B3C /* Helpers */,
 				3419BB4922CF3B7200D34722 /* Model */,
 				349FA9F822CDE06600009361 /* Controller */,
+				3465BEAA22F1735400B0E20E /* Assets.xcassets */,
 				349FA9E622CDDD5200009361 /* AppDelegate.swift */,
 				349FA9E822CDDD5200009361 /* ViewController.swift */,
 				349FA9EA22CDDD5200009361 /* Main.storyboard */,
@@ -210,7 +292,6 @@
 				34182D5A22D5A0DD00808401 /* TagCount.xib */,
 				34182D5D22D5CE7500808401 /* TimeLineCell.swift */,
 				34182D5E22D5CE7500808401 /* TimeLineCell.xib */,
-				3465BEAA22F1735400B0E20E /* Assets.xcassets */,
 			);
 			path = ShowViewController;
 			sourceTree = "<group>";
@@ -456,21 +537,40 @@
 				34182D5F22D5CE7500808401 /* TimeLineCell.swift in Sources */,
 				349F58CA22EAA7AF00BCA262 /* LoginVC.swift in Sources */,
 				34CB95CA22D4318800F8B480 /* ListTask.swift in Sources */,
+				34670E6022F4258B00527B3C /* Nose.swift in Sources */,
+				34670E4F22F4255300527B3C /* CritterAnimatable.swift in Sources */,
 				3498DDB922E5B85F00BCBD1B /* AddImageCell.swift in Sources */,
 				3419BB4B22CF3BA500D34722 /* TypeTag.swift in Sources */,
 				349FAA0622CDF38D00009361 /* AddVC.swift in Sources */,
 				349FA9E922CDDD5200009361 /* ViewController.swift in Sources */,
+				34670E4D22F4255300527B3C /* CritterAssets.swift in Sources */,
+				34670E6622F4258B00527B3C /* RightEarMask.swift in Sources */,
 				349F58CE22EAE25D00BCA262 /* RegisterVC.swift in Sources */,
+				34670E4422F4251800527B3C /* Degree.swift in Sources */,
+				34670E6922F4258B00527B3C /* RightArm.swift in Sources */,
+				34670E6822F4258B00527B3C /* RightEye.swift in Sources */,
 				34CB95CD22D44C1300F8B480 /* CellTask.swift in Sources */,
+				34670E5F22F4258B00527B3C /* Muzzle.swift in Sources */,
 				34027ED622DC907A00157D9A /* Demo.swift in Sources */,
+				34670E4522F4251800527B3C /* UIColors+ColorPallete.swift in Sources */,
+				34670E6422F4258B00527B3C /* LeftArm.swift in Sources */,
 				349FAA0A22CE086D00009361 /* TypeViewCell.swift in Sources */,
+				34670E6322F4258B00527B3C /* Body.swift in Sources */,
+				34670E6522F4258B00527B3C /* Mouth.swift in Sources */,
 				346EC1B622E54C99009ABF38 /* AddPeopleCell.swift in Sources */,
 				34182D5722D58D5900808401 /* ShowTaskVC.swift in Sources */,
+				34670E6122F4258B00527B3C /* Head.swift in Sources */,
 				3419BB5022CF531000D34722 /* EditVC.swift in Sources */,
 				34C0D55C22E83F820013F743 /* DetailImageCell.swift in Sources */,
+				34670E4622F4251800527B3C /* CATransform3D+Helper.swift in Sources */,
+				34670E6A22F4258B00527B3C /* LeftEarMask.swift in Sources */,
+				34670E4C22F4255300527B3C /* CritterView.swift in Sources */,
 				3466DF0122D49FF90030A383 /* SpecialCell.swift in Sources */,
+				34670E5E22F4258B00527B3C /* RightEar.swift in Sources */,
+				34670E6222F4258B00527B3C /* LeftEye.swift in Sources */,
 				349FA9E722CDDD5200009361 /* AppDelegate.swift in Sources */,
 				34182D5B22D5A0DD00808401 /* TagCount.swift in Sources */,
+				34670E6722F4258B00527B3C /* LeftEar.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

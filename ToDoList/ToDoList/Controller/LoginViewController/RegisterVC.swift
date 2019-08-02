@@ -99,9 +99,6 @@ extension RegisterVC: UITextFieldDelegate {
         let constrain = viewMain.frame.height / 3
         
         if textField == txtUserName {
-            topConstrainRegister.constant = (0 - constrain) / 2
-            botConstraintRegister.constant = constrain
-            topConstrainTextRegister.constant = (0 - constrain) / 2
             textField.resignFirstResponder()
             txtEmail.becomeFirstResponder()
         } else if textField == txtEmail {
@@ -120,5 +117,15 @@ extension RegisterVC: UITextFieldDelegate {
             textField.resignFirstResponder()
         }
         return true
+    }
+    
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        let constrain = viewMain.frame.height / 3
+        
+        if topConstrainRegister.constant != (0 - constrain) / 2 {
+            topConstrainRegister.constant = (0 - constrain) / 2
+            botConstraintRegister.constant = constrain
+            topConstrainTextRegister.constant = (0 - constrain) / 2
+        }
     }
 }

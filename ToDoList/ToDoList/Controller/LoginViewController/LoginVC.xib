@@ -12,6 +12,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="LoginVC" customModule="ToDoList" customModuleProvider="target">
             <connections>
+                <outlet property="button" destination="yBA-IH-OD7" id="ZyU-Py-gXm"/>
                 <outlet property="txtPassword" destination="H84-4P-8gu" id="iuW-3l-HnZ"/>
                 <outlet property="txtUserName" destination="keU-K0-79r" id="5rL-eC-AVQ"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
@@ -27,27 +28,7 @@
                 </imageView>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rvI-XR-amo" userLabel="HeaderView">
                     <rect key="frame" x="0.0" y="44" width="375" height="365.33333333333331"/>
-                    <subviews>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Hello" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cJi-dC-F7W">
-                            <rect key="frame" x="125.66666666666669" y="172.66666666666666" width="124" height="63"/>
-                            <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="54"/>
-                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            <nil key="highlightedColor"/>
-                        </label>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Wellcome Back!" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HhM-u3-lV7">
-                            <rect key="frame" x="101.66666666666669" y="250.66666666666669" width="172" height="28"/>
-                            <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="24"/>
-                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            <nil key="highlightedColor"/>
-                        </label>
-                    </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                    <constraints>
-                        <constraint firstItem="HhM-u3-lV7" firstAttribute="centerX" secondItem="rvI-XR-amo" secondAttribute="centerX" id="7Rd-Vm-thx"/>
-                        <constraint firstItem="HhM-u3-lV7" firstAttribute="top" secondItem="cJi-dC-F7W" secondAttribute="bottom" constant="15" id="b5v-Br-hdQ"/>
-                        <constraint firstItem="cJi-dC-F7W" firstAttribute="centerX" secondItem="rvI-XR-amo" secondAttribute="centerX" id="pan-XP-Dwx"/>
-                        <constraint firstItem="cJi-dC-F7W" firstAttribute="centerY" secondItem="rvI-XR-amo" secondAttribute="centerY" constant="21.5" id="wQx-Vb-hVP"/>
-                    </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dBI-tJ-9ik" userLabel="BottomView">
                     <rect key="frame" x="0.0" y="409.33333333333326" width="375" height="368.66666666666674"/>
@@ -92,7 +73,7 @@
                                     <rect key="frame" x="23.333333333333343" y="0.0" width="328.33333333333326" height="45.333333333333336"/>
                                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="15"/>
-                                    <textInputTraits key="textInputTraits" secureTextEntry="YES" textContentType="password"/>
+                                    <textInputTraits key="textInputTraits" textContentType="password"/>
                                     <userDefinedRuntimeAttributes>
                                         <userDefinedRuntimeAttribute type="color" keyPath="placeholderLabel.textColor">
                                             <color key="value" cocoaTouchSystemColor="lightTextColor"/>
@@ -106,15 +87,25 @@
                                         <constraint firstAttribute="height" constant="1" id="Ql7-1z-dui"/>
                                     </constraints>
                                 </view>
+                                <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yBA-IH-OD7">
+                                    <rect key="frame" x="327.66666666666669" y="0.0" width="24" height="45.333333333333336"/>
+                                    <state key="normal" image="Password-show"/>
+                                    <connections>
+                                        <action selector="showHidePasswordButton:" destination="-1" eventType="touchUpInside" id="dPf-re-9eh"/>
+                                    </connections>
+                                </button>
                             </subviews>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
                                 <constraint firstAttribute="bottom" secondItem="RpD-de-Xgb" secondAttribute="bottom" id="7VY-XA-jT8"/>
                                 <constraint firstItem="H84-4P-8gu" firstAttribute="top" secondItem="H4M-fg-qci" secondAttribute="top" id="EXW-o1-Nh9"/>
                                 <constraint firstItem="H84-4P-8gu" firstAttribute="height" secondItem="H4M-fg-qci" secondAttribute="height" constant="-1" id="FfR-nd-I2Q"/>
+                                <constraint firstItem="yBA-IH-OD7" firstAttribute="trailing" secondItem="RpD-de-Xgb" secondAttribute="trailing" id="PwN-Jj-IPG"/>
                                 <constraint firstItem="H84-4P-8gu" firstAttribute="width" secondItem="H4M-fg-qci" secondAttribute="width" multiplier="7:8" id="Qgo-C8-9Xc"/>
+                                <constraint firstItem="RpD-de-Xgb" firstAttribute="top" secondItem="yBA-IH-OD7" secondAttribute="bottom" id="lac-Zg-iTq"/>
                                 <constraint firstItem="RpD-de-Xgb" firstAttribute="width" secondItem="H4M-fg-qci" secondAttribute="width" multiplier="7:8" id="n4e-Wq-Xr0"/>
                                 <constraint firstItem="H84-4P-8gu" firstAttribute="centerX" secondItem="H4M-fg-qci" secondAttribute="centerX" id="rbg-cm-YKI"/>
+                                <constraint firstItem="yBA-IH-OD7" firstAttribute="top" secondItem="H4M-fg-qci" secondAttribute="top" id="tbD-L8-JgR"/>
                                 <constraint firstItem="RpD-de-Xgb" firstAttribute="centerX" secondItem="H4M-fg-qci" secondAttribute="centerX" id="y4v-nh-WuD"/>
                             </constraints>
                         </view>
@@ -147,7 +138,7 @@
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="c4r-o9-4gG" userLabel="Fotgotpassword">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="121.66666666666667"/>
                                     <subviews>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ccl-wo-IWE">
+                                        <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ccl-wo-IWE">
                                             <rect key="frame" x="110.66666666666669" y="45.666666666666742" width="154" height="30"/>
                                             <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="15"/>
                                             <state key="normal" title="Forgot your password?">
@@ -233,10 +224,11 @@
                 <constraint firstItem="QO1-fY-99D" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="ynx-79-wyz"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
-            <point key="canvasLocation" x="53.600000000000001" y="80.50974512743629"/>
+            <point key="canvasLocation" x="53.600000000000001" y="79.802955665024641"/>
         </view>
     </objects>
     <resources>
+        <image name="Password-show" width="24" height="24"/>
         <image name="background" width="375" height="667"/>
     </resources>
 </document>
