@@ -566,19 +566,26 @@ extension AddVC: UITextViewDelegate,UINavigationBarDelegate {
         //Layout Tag collection view cell
         let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
         layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-        layout.itemSize = CGSize(width: collecTypeTag.frame.width/3 - 10, height: collecTypeTag.frame.height/2 - 5)
-        layout.minimumInteritemSpacing = 5
-        layout.minimumLineSpacing = 5
+        layout.itemSize = CGSize(width: collecTypeTag.frame.width/3, height: collecTypeTag.frame.height/2)
+        layout.minimumInteritemSpacing = 0
+        layout.minimumLineSpacing = 0
         layout.scrollDirection = .vertical
         collecTypeTag!.collectionViewLayout = layout
         
         //Layout AddImage collection view cell
         let layoutAddImage: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
-        layoutAddImage.itemSize = CGSize(width: 67, height: 67)
-        layoutAddImage.minimumInteritemSpacing = 2
-        layoutAddImage.minimumLineSpacing = 2
+        layoutAddImage.itemSize = CGSize(width: collecImage.frame.height, height: collecImage.frame.height)
+        layoutAddImage.minimumInteritemSpacing = 5
+        layoutAddImage.minimumLineSpacing = 0
         layoutAddImage.scrollDirection = .horizontal
         collecImage!.collectionViewLayout = layoutAddImage
+        
+        let layoutAddPeople: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
+        layoutAddPeople.itemSize = CGSize(width: collecAddPeople.frame.height, height: collecImage.frame.height)
+        layoutAddPeople.minimumInteritemSpacing = 0
+        layoutAddPeople.minimumLineSpacing = 0
+        layoutAddPeople.scrollDirection = .horizontal
+        collecAddPeople!.collectionViewLayout = layoutAddPeople
         
         btnAddTask.layer.cornerRadius = 10
         btnAddTask.clipsToBounds = true

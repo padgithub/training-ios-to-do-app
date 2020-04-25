@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina4_7" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14868" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14824"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -20,10 +18,10 @@
                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 <subviews>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="NXt-FK-H3j">
-                        <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                        <rect key="frame" x="2.5" y="2.5" width="45" height="45"/>
                     </imageView>
                     <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="LA" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Q8q-Aa-FEk">
-                        <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                        <rect key="frame" x="2.5" y="2.5" width="45" height="45"/>
                         <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -32,14 +30,14 @@
                 </subviews>
             </view>
             <constraints>
-                <constraint firstAttribute="bottom" secondItem="Q8q-Aa-FEk" secondAttribute="bottom" id="3He-1Y-qi6"/>
-                <constraint firstAttribute="trailing" secondItem="Q8q-Aa-FEk" secondAttribute="trailing" id="JSM-ez-bRL"/>
-                <constraint firstAttribute="bottom" secondItem="NXt-FK-H3j" secondAttribute="bottom" id="PNS-38-vOu"/>
-                <constraint firstItem="NXt-FK-H3j" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="SHo-aW-jhS"/>
-                <constraint firstItem="Q8q-Aa-FEk" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="Vlu-Eq-44h"/>
-                <constraint firstItem="Q8q-Aa-FEk" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="l1y-af-TKb"/>
-                <constraint firstAttribute="trailing" secondItem="NXt-FK-H3j" secondAttribute="trailing" id="pE2-k1-VOv"/>
-                <constraint firstItem="NXt-FK-H3j" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="vpW-Lq-3gM"/>
+                <constraint firstAttribute="bottom" secondItem="NXt-FK-H3j" secondAttribute="bottom" constant="2.5" id="0UQ-5T-u2F"/>
+                <constraint firstItem="Q8q-Aa-FEk" firstAttribute="leading" secondItem="NXt-FK-H3j" secondAttribute="leading" id="5oG-xM-Stb"/>
+                <constraint firstAttribute="trailing" secondItem="NXt-FK-H3j" secondAttribute="trailing" constant="2.5" id="AUK-gQ-dtn"/>
+                <constraint firstItem="Q8q-Aa-FEk" firstAttribute="trailing" secondItem="NXt-FK-H3j" secondAttribute="trailing" id="Cyh-6G-Jd5"/>
+                <constraint firstItem="Q8q-Aa-FEk" firstAttribute="top" secondItem="NXt-FK-H3j" secondAttribute="top" id="Nnz-f5-MEZ"/>
+                <constraint firstItem="NXt-FK-H3j" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="2.5" id="dfm-eW-rdb"/>
+                <constraint firstItem="Q8q-Aa-FEk" firstAttribute="bottom" secondItem="NXt-FK-H3j" secondAttribute="bottom" id="lPO-2e-gPU"/>
+                <constraint firstItem="NXt-FK-H3j" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="2.5" id="qV6-TP-aJG"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
             <size key="customSize" width="56" height="41"/>

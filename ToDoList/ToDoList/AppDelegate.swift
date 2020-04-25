@@ -100,7 +100,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     }
     
     func initHome() {
- 
             let showVC = ShowTaskVC.init(nibName: "ShowTaskVC", bundle: nil)
             let nav = UINavigationController(rootViewController: showVC)
             window?.rootViewController = nav

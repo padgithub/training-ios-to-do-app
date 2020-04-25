@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina4_7" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14868" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14824"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -19,8 +17,8 @@
                 <rect key="frame" x="0.0" y="0.0" width="120" height="50"/>
                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 <subviews>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tag Type" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OPc-b4-szQ">
-                        <rect key="frame" x="0.0" y="0.0" width="120" height="50"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tag Type" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="OPc-b4-szQ">
+                        <rect key="frame" x="2.5" y="2.5" width="115" height="45"/>
                         <color key="backgroundColor" red="0.0" green="0.99143940210000003" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="17"/>
                         <nil key="textColor"/>
@@ -29,10 +27,10 @@
                 </subviews>
             </view>
             <constraints>
-                <constraint firstItem="OPc-b4-szQ" firstAttribute="centerX" secondItem="ZTg-uK-7eu" secondAttribute="centerX" id="syd-iP-f5e"/>
-                <constraint firstItem="OPc-b4-szQ" firstAttribute="width" secondItem="gTV-IL-0wX" secondAttribute="width" id="uM0-hz-15c"/>
-                <constraint firstItem="OPc-b4-szQ" firstAttribute="centerY" secondItem="ZTg-uK-7eu" secondAttribute="centerY" id="xCO-U0-WGa"/>
-                <constraint firstItem="OPc-b4-szQ" firstAttribute="height" secondItem="gTV-IL-0wX" secondAttribute="height" id="zBJ-hD-Ptp"/>
+                <constraint firstItem="OPc-b4-szQ" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="2.5" id="MgZ-ZF-H0a"/>
+                <constraint firstAttribute="bottom" secondItem="OPc-b4-szQ" secondAttribute="bottom" constant="2.5" id="NP9-fw-98V"/>
+                <constraint firstItem="OPc-b4-szQ" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="2.5" id="Xxs-EY-cdx"/>
+                <constraint firstAttribute="trailing" secondItem="OPc-b4-szQ" secondAttribute="trailing" constant="2.5" id="o7c-TD-N70"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
             <size key="customSize" width="109" height="49"/>

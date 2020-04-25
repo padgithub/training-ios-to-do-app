@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina5_9" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14868" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina5_9" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14824"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -74,7 +72,6 @@
                     <subviews>
                         <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Add task" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Yg8-Yy-qSz">
                             <rect key="frame" x="36.666666666666657" y="10.333333333333329" width="321.66666666666674" height="41"/>
-                            <nil key="textColor"/>
                             <fontDescription key="fontDescription" type="system" pointSize="20"/>
                             <textInputTraits key="textInputTraits"/>
                         </textField>
@@ -370,9 +367,6 @@
                         </view>
                         <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="dateAndTime" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="9AZ-rd-yNw">
                             <rect key="frame" x="0.0" y="596" width="375" height="216"/>
-                            <date key="date" timeIntervalSinceReferenceDate="584362766.90517604">
-                                <!--2019-07-09 10:59:26 +0000-->
-                            </date>
                         </datePicker>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZFO-ih-S46">
                             <rect key="frame" x="0.0" y="556" width="375" height="40"/>
